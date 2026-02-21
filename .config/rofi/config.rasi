@@ -1,0 +1,5 @@
+configuration {
+    run-command: "{cmd}";
+    drun-launch-command: "{cmd}";
+}
+

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<openbox_menu>
+    <menu id="power-menu" label="Power">
+        <item label="  Shutdown">
+            <action name="Execute">
+                <command>systemctl poweroff</command>
+            </action>
+        </item>
+        <item label="  Reboot">
+            <action name="Execute">
+                <command>systemctl reboot</command>
+            </action>
+        </item>
+        <item label="  Lock">
+            <action name="Execute">
+                <command>swaylock</command>
+                <!-- или для hyprland: hyprlock -->
+            </action>
+        </item>
+        <item label="  Suspend">
+            <action name="Execute">
+                <command>systemctl suspend</command>
+            </action>
+        </item>
+        <item label="  Logout">
+            <action name="Execute">
+                <command>pkill -KILL -u $USER</command>
+                <!-- или для sway: swaymsg exit -->
+                <!-- или для hyprland: hyprctl dispatch exit -->
+            </action>
+        </item>
+        <separator/>
+        <item label="  Cancel">
+            <action name="Close"/>
+        </item>
+    </menu>
+</openbox_menu>

@@ -1,0 +1,51 @@
+{
+
+    // Для самого редактора (красивые лигатуры и читаемость)
+    "editor.fontFamily": "monospace, 'JetBrainsMono Nerd Font'",
+    
+    // Для терминала (строго фиксированная ширина, чтобы иконки не плыли)
+    "terminal.integrated.fontFamily": "'JetBrainsMono Nerd Font Mono'",
+    
+    // Обязательно включи лигатуры для JetBrains Mono
+    "editor.fontLigatures": true,
+
+
+    "emmet.includeLanguages": {
+        "django-html": "html"
+    },
+
+    
+    "workbench.activityBar.location": "bottom",
+    "workbench.colorTheme": "Yukinord",
+    "editor.fontSize": 18,
+    "editor.tabSize": 2,
+    "window.controlsStyle": "hidden",
+    "window.menuBarVisibility": "compact",
+    "window.commandCenter": false,
+
+    "editor.lineNumbers": "relative",
+    "editor.cursorSurroundingLines": 8,
+    "explorer.confirmPasteNative": false,
+
+    "editor.cursorBlinking": "solid",
+    "editor.cursorStyle": "block",
+    "vim.mouseSelectionGoesIntoVisualMode": false,
+    "vim.startInInsertMode": false,
+    "vim.leaveEditorBerforeInsertMode": true,
+
+    "editor.hover.enabled": "off",
+    //"workbench.colorCustomizations": {
+    //    "editorCursor.foreground": "#aeafad35" 
+    //},
+    "workbench.colorCustomizations": {
+        "editorGutter.addedBackground": "#487e4acc",
+        "editorGutter.modifiedBackground": "#1b81a8cc",
+        "editorCursor.foreground": "#0095ff"
+    },
+    "workbench.editor.editorActionsLocation": "titleBar",
+    "vim.vimrc.enable": true,
+    "vim.vimrc.path": "~/.config/VSCodium/User/vimrc_expression"
+
+
+
+}

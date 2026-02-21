@@ -1,0 +1,75 @@
+// -*- mode: jsonc -*-
+{
+    "layer": "top",
+    "position": "top",
+    "mod": "dock",
+    "height": 30,
+    "spacing": 4,
+
+    "modules-left": [
+        "niri/workspaces",
+        "custom/language",
+        "custom/window_title"
+    ],
+    "modules-center": [
+        "cpu",
+        "memory",
+        "temperature"
+    ],
+    "modules-right": [
+        "pulseaudio",
+        "network",
+        "backlight",
+        "keyboard-state",
+        "battery",
+        "clock",
+        "tray",
+        "custom/power"
+    ],
+
+    // ... (оставляю ваши настройки niri/workspaces, cpu и т.д. без изменений) ...
+
+    "custom/language": {
+        "exec": "niri msg --json inputs | jq -r '.[] | select(type==\"object\" and .current_layout_name != null) | .current_layout_name' | head -n1 | cut -c1-2 | tr '[:lower:]' '[:upper:]'",
+        "format": "  {}",
+        "signal": 1, // Обновится при pkill -RTMIN+1 waybar
+        "tooltip": false
+    },
+
+    "custom/window_title": {
+        "exec": "niri msg --json windows | jq -r '.[] | select(.is_focused==true) | .title' | cut -c1-30",
+        "format": "{}",
+        "signal": 2, // Обновится при pkill -RTMIN+2 waybar
+        "tooltip": true
+    },
+
+    "keyboard-state": {
+        "numlock": false,
+        "capslock": true,
+        "format": "{name} {icon}",
+        "format-icons": {
+            "locked": "",
+            "unlocked": ""
+        }
+    },
+
+    "clock": {
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format-alt": "{:%Y-%m-%d}"
+    },
+
+    "cpu": { "format": "{usage}% ", "tooltip": false },
+    "memory": { "format": "{}% " },
+
+    "pulseaudio": {
+        "format": "{volume}% {icon} {format_source}",
+        "format-icons": { "default": ["", "", ""] },
+        "on-click": "pavucontrol"
+    },
+
+    "custom/power": {
+        "format": "",
+        "on-click": "bash ~/.config/waybar/scripts/power.sh",
+        "tooltip": false
+    }
+}

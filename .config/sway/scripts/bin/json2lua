@@ -1,0 +1,3 @@
+#!/bin/sh
+
+LUAROCKS_SYSCONFDIR='/etc/luarocks' exec '/usr/bin/lua5.4' -e 'package.path="/home/comu/.config/sway/scripts/share/lua/5.4/?.lua;/home/comu/.config/sway/scripts/share/lua/5.4/?/init.lua;"..package.path;package.cpath="/home/comu/.config/sway/scripts/lib/lua/5.4/?.so;"..package.cpath;local k,l,_=pcall(require,"luarocks.loader") _=k and l.add_context("lua-cjson","2.1.0.10-1")' '/home/comu/.config/sway/scripts/lib/luarocks/rocks-5.4/lua-cjson/2.1.0.10-1/bin/json2lua' "$@"

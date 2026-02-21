@@ -1,0 +1,5 @@
+bindsym $button_volume_up $volume_up && $refresh_i3status
+bindsym $button_volume_down $volume_down && $refresh_i3status
+bindsym $button_volume_mute $volume_mute && $refresh_i3status
+
+bindsym $button_micro_mute $micro_mute

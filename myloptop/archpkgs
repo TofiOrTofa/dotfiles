@@ -1,0 +1,49 @@
+<-- системные утелиты -->
+bluetooth: {
+  bluez;
+  bluez-utils;
+  blueman: "графическая утелита для подключения устройств по блютузу";
+};
+
+<-- языки программирования -->
+lua: {
+  lua: "сам интерпритатор lua";
+  luarocks: "что бы можно было скачивать пакеты для lua";
+};
+python;
+c++: {
+  base-devel: {
+    gcc;
+  };
+};
+
+<-- оконные менеджеры -->
+i3:{
+  rofi;
+  polybar;
+  picom;
+};
+sway:{
+  wofi;
+  waybar;
+};
+niri;
+
+<-- приложения -->
+firefox;
+chromium;
+telegram-desktop;
+thunar;
+unityhub;
+strawberry;
+vscodium;
+vim;
+
+<-- остальное -->
+stow;
+curl;
+git;
+tree;
+hyprpicker: копировонье цветов(интерфейса нету);
+
+

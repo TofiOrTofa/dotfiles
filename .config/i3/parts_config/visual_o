@@ -1,0 +1,74 @@
+mode "insert (visual)" {
+  bindsym $button_volume_up exec --no-startup-id $volume_up && $refresh_i3status
+  bindsym $button_volume_down exec --no-startup-id $volume_down && $refresh_i3status
+  bindsym $button_volume_mute exec --no-startup-id $volume_mute && $refresh_i3status
+  bindsym $button_micro_mute exec --no-startup-id $micro_mute
+  
+  bindsym Shift+semicolon exec ~/.config/rofi/scripts/commands/commands.sh ; mode "insert"
+  
+  bindsym Shift+c reload ; mode "insert"
+  bindsym Shift+r restart ; mode "insert"
+  bindsym Shift+e exec "i3-nagbar -t warning -m 'You pressid the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes,exit i3' 'i3-msg exit' " ; mode "insert"
+  bindsym Shift+p exec --no-startup-id xrandr --output eDP-1 --auto ; mode "insert"
+  
+  bindsym t $terminal ; mode "insert"
+  #bindsym d $search_apps ; mode "insert"
+  bindsym Shift+q kill ; mode "insert"
+  
+  bindsym q move scratchpad ; mode "insert"
+  bindsym m scratchpad show ; mode "insert"
+  
+  bindsym v split v ; mode "insert"
+  bindsym n split h ; mode "insert"
+  
+  bindsym f floating toggle ; mode "insert"
+  bindsym Shift+f fullscreen toggle ; mode "insert"
+  
+  bindsym s layout stacking ; mode "insert"
+  bindsym w layout tabbed ; mode "insert"
+  bindsym e layout toggle split ; mode "insert"
+  bindsym Shift+t layout toggle tabbed ; mode "insert"
+  
+  bindsym h focus left ; mode "insert"
+  bindsym j focus down ; mode "insert"
+  bindsym k focus up ; mode "insert"
+  bindsym l focus right ; mode "insert"
+  
+  bindsym i workspace next ; mode "insert"
+  bindsym u workspace prev ; mode "insert"
+  
+  bindsym Shift+h move left ; mode "insert"
+  bindsym Shift+j move down ; mode "insert"
+  bindsym Shift+k move up ; mode "insert"
+  bindsym shift+l move right ; mode "insert"
+  
+  bindsym Shift+i move container to workspace next ; mode "insert"
+  bindsym Shift+u move container to workspace prev ; mode "insert"
+  
+  bindsym 1 $ws1 ; mode "insert"
+  bindsym 2 $ws2 ; mode "insert"
+  bindsym 3 $ws3 ; mode "insert"
+  bindsym 4 $ws4 ; mode "insert"
+  bindsym 5 $ws5 ; mode "insert"
+  bindsym 6 $ws6 ; mode "insert"
+  bindsym 7 $ws7 ; mode "insert"
+  bindsym 8 $ws8 ; mode "insert"
+  bindsym 9 $ws9 ; mode "insert"
+  bindsym 0 $ws10 ; mode "insert"
+  
+  
+  bindsym Shift+1 move container to $ws1 ; mode "insert"
+  bindsym Shift+2 move container to $ws2 ; mode "insert"
+  bindsym Shift+3 move container to $ws3 ; mode "insert"
+  bindsym Shift+4 move container to $ws4 ; mode "insert"
+  bindsym Shift+5 move container to $ws5 ; mode "insert"
+  bindsym Shift+6 move container to $ws6 ; mode "insert"
+  bindsym Shift+7 move container to $ws7 ; mode "insert"
+  bindsym Shift+8 move container to $ws8 ; mode "insert"
+  bindsym Shift+9 move container to $ws9 ; mode "insert"
+  
+  bindsym r mode "resize"
+  bindsym o mode "insert"
+  bindsym a mode "visual+insert"
+  bindsym d mode "rofi"
+}

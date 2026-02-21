@@ -1,0 +1,34 @@
+
+
+-- что бы работала гибернация --
+
+если у тебя выключается экран, а потом снова включается, 
+то скорей всего arch не видит swap раздел, 
+что бы он его увидел, нужно зайти в /etc/default/grub, 
+и записать в переменную GRUB_CMDLINE_LINUX_DEFAULT свой UUID swap раздела,
+его можно узнать с помощью команды lsblk -f
+
+GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet resume=UUID=<UUID-swap-раздела>"
+после нужно ввести: sudo grub-mkconfig -o /boot/grub/grub.cfg
+эта команда обновит конфигурацию GRUB
+
+после проверь команду: cat /proc/cmdline
+если в выводе есть UUID твоего swap раздела, то всё круто,
+arch увидел swap раздел,
+
+после этого у меня система начала вспотыкатьься об видеокарту,
+что бы такого не было, нужно залезть снова в файл /etc/default/grub
+и добавить после своего UUID параметр amdgpu.runpm=0
+всё вместе должно будет выглядеть вот так:
+  GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet resume=UUID=<UUID-swap-раздела> amdgpu.runpm=0"
+  и после этого снова нужно будет выполнить команду sudo grub-mkconfig -o /boot/grub/grub.cfg
+
+после этого скорей всего работать гибернация не начнёт,
+потэтому нужно прописать ещё команду
+echo "shutdown" | sudo tee /sys/power/disk
+после неё нужно будет попробовать войти в гибернацию, 
+если всё работает, то нужно будет войти в файл /etc/system.d/sleep.conf
+раскоментировать строчку #HibernateMode и сделать, что бы она выглядела так:
+HibernateMode=shutdown
+
+после этого всё должно зароботать

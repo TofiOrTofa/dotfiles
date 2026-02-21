@@ -1,0 +1,171 @@
+* {
+    /* `otf-font-awesome` is required to be installed for icons */
+    font-family:FiraCode Bold, JetBrainsMono Nerd Font, FontAwesome, Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14;
+    min-height: 0;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+}
+
+
+ @define-color background-color #2E3440; /*nord0*/
+ @define-color background-alt-color #4C566A; /*nord3*/
+ @define-color foreground-color #E5E9F0; /*nord5*/
+ @define-color primary-color #88C0D0; /*nord8*/
+ @define-color secondary-color #81A1C1; /*nord9*/
+ @define-color disabled-color #434C5E; /*nord2*/
+ @define-color alert-color #BF616A; /*nord11*/
+
+ @define-color network-color #EBCB8B; /*nord13*/
+ @define-color mode-color #B08770; /*nord12*/
+ @define-color battery-color #A3BE8C; /*nord14*/
+ @define-color workspaces-color #B48EAD; /*nord15*/
+ @define-color clock-color #81A1C1;
+ /*#5E81AC;*/ /*nord10*/
+ @define-color language-color #8FBCBB; /*nord7*/
+
+ @define-color volume-color @language-color;
+ @define-color disk-color @workspaces-color;
+ @define-color active-window #000000;
+ @define-color tray-color @network-color;
+
+
+@keyframes blink-critical-a {
+  from {
+    /* Обычное состояние модуля */
+    background-color: @battery-color;
+    color: @alert-color;
+    /* Создаем рамку 3px со всех сторон цветом фона бара */
+    box-shadow: 
+        inset 0 3px 1px @battery-color,  /* верх */
+        inset 0 -3px 1px @battery-color, /* низ */
+        inset 3px 0 1px @battery-color,  /* лево */
+        inset -3px 0 1px @battery-color; /* право */
+  }
+  to {
+    /* Состояние инверсии */
+    background-color: @alert-color;
+    color: @battery-color;
+    /* Те же рамки остаются, меняется только центр */
+    box-shadow: 
+        inset 0 3px 1px @battery-color,
+        inset 0 -3px 1px @battery-color,
+        inset 3px 0 1px @battery-color,
+        inset -3px 0 1px @battery-color;
+  }
+}
+
+
+#waybar {
+    background-color: @background-color;
+    color: @foreground-color;
+}
+
+#tray,
+#workspaces,
+#language,
+#mode,
+#temperature,
+#memory,
+#cpu,
+#battery,
+#disk,
+#pulseaudio,
+#backlight,
+#clock,
+#network {
+  padding-left: 8pt;
+  padding-right: 8pt;
+}
+
+
+#memory.critical,
+#cpu.critical,
+#temperature.critical,
+#battery.critical {
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-name: blink-critical;
+  animation-duration: 1s;
+}
+#network.disconnected,
+#memory.warning,
+#cpu.warning,
+#temperature.warning,
+#battery.warning {
+  color: @alert-color;
+}
+
+#custom-arrow1,
+#custom-arrow2,
+#custom-arrow3,
+#custom-arrow4,
+#custom-arrow5,
+#custom-arrow6,
+#custom-arrow7,
+#custom-arrow8,
+#custom-arrow9,
+#custom-arrow10 {
+  font-size: 16;
+}
+
+botton {
+  box-shadow: inset 0 -3px transparent;
+  border: none;
+  border-radius: 0;
+}
+
+#tray {background-color: @tray-color; color: @background-color} 
+#custom-arrow1 {background-color: @workspaces-color; color: @tray-color}
+
+
+#workspaces {
+  background-color: @workspaces-color;
+  color: @background-color;
+  font-weight: 400;
+}
+#custom-arrow2 {background-color: @language-color; color: @workspaces-color;}
+
+#workspaces button{
+  padding-left: 1;
+  padding-right: 1;
+  color: @background-color;
+}
+#workspaces button:hover {
+  padding-left: 2;
+  padding-right: 2;
+}
+#workspaces button.focused {
+  padding-left: 5;
+  padding-right: 5;
+  color: @background-color;
+  font-weight: 800;
+}
+#language {
+  background-color: @language-color;
+  color: @background-color;
+  font-weight: 700;
+}
+#custom-arrow3 {background-color: @mode-color; color: @language-color;}
+#mode {
+  background-color: @mode-color;
+  color: @background-color;
+  font-weight: 900;
+}
+#custom-arrow4 {color: @mode-color;}
+
+
+#custom-arrow5 {color: @battery-color;}
+#battery {background-color: @battery-color; color: @background-color; font-weight: 900;}
+#custom-arrow6 {background-color: @battery-color; color: @volume-color;}
+#pulseaudio {background-color: @volume-color; color: @background-color;}
+#custom-arrow7 {background-color: @volume-color; color: @foreground-color;}
+#backlight {background-color: @foreground-color; color: @background-color;}
+#custom-arrow8 {background-color: @foreground-color; color: @clock-color;}
+#clock {background-color: @clock-color; color: @background-color; font-weight: 900;}
+#custom-arrow9 {background-color: @clock-color; color: @network-color;}
+#network {background-color: @network-color; color: @background-color;}
+

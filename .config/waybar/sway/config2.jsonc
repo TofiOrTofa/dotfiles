@@ -1,0 +1,130 @@
+// -*- mode: jsonc -*-
+{
+  "layer":"top",
+  "position":"top",
+  "height": 12,
+  
+  "modules-left":[
+    "tray", "custom/arrow1",
+    "sway/workspaces", "custom/arrow2",
+    "sway/language", "custom/arrow3",
+    "sway/mode", "custom/arrow4"
+  ],
+  "modules-center":["temperature", "memory", "cpu"],
+  "modules-right":[
+    "custom/arrow5", "battery", 
+    "custom/arrow6", "pulseaudio",
+    "custom/arrow7", "backlight", 
+    "custom/arrow8", "clock", 
+    "custom/arrow9", "network"
+  ],
+
+  
+  "tray":{"icon-size": 14, "spacing": 2},
+  "sway/workspaces":{
+    "disable-scroll": false,
+    "all-outputs": true,
+    "warp-on-scroll": false,
+    "format": "{name}"
+  },
+  "sway/language": {"format": "{}"},
+  "sway/mode": {"format":"{}", "max-leight": 50},
+  
+  "temperature": {
+    "thermal-zone": 2,
+    "hwmon-path":"/sys/class/hwmon/hwmon4/temp1_input",
+    "critical-threshold": 80,
+    "format-critical":"TEM {temperatureC}",
+    "format":"TEM {temperatureC}",
+    "states": {
+      "warning": 70,
+      "critical": 90
+    }
+  },
+  "memory": {
+    "format": "RAM {}%",
+    "states": {
+      "warning": 70,
+      "critical": 90
+    }
+  },
+  "cpu": {
+    "format": "CPU {}%",
+    "states": {
+      "warning": 70,
+      "critical": 90
+    }
+  },
+
+  "battery": {
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon} {capacity}%",
+    "format-full": "{icon} {capacity}%",
+    "format-charging": "{icon} {capacity}%",
+    "format-plugged": "{icon} {capacity}%",
+    "format-alt": "{time} {icon}",
+    "format-icons":["bat", "baT", "bAt", "Bat", "BaT", "BAt", "BAT"]
+  },
+  "pulseaudio": {
+    "format":"VOL {volume}%/{format_source}%",
+    "format-bluetooth":"B_VOL {volume}%/{format_source}%",
+    "format-muted":"muted/{format_source}%",
+    "format-source-muted":"muted",
+    "on-click":"pavucontrol"
+  },
+  "backlight": {},
+  "clock": {},
+  "network": {
+    "format-wifi": "{essid} ({signalStrength}%)",
+    "format-ethernet": "{ipaddr}/{cidr}",
+    "tooltip-format": "{ifname} via {gwaddr}",
+    "format-linded": "{ifname} (No IP)",
+    "format-disconnected": "#w#",
+    "format-alt": "{ifname}: {ipaddr}/{cidr}"
+  },
+
+  
+  "custom/arrow1":{
+    "format":"",
+    "tooltip": false
+  },
+  "custom/arrow2":{
+    "format":"",
+    "tooltip": false
+  },
+  "custom/arrow3":{
+    "format":"",
+    "tooltip": false
+  },
+  "custom/arrow4":{
+    "format":"",
+    "tooltip": false
+  },
+  "custom/arrow5":{
+    "format":"",
+    "tooltip": false
+  },
+  "custom/arrow6":{
+    "format":"",
+    "tooltip": false
+  },
+  "custom/arrow7":{
+    "format":"",
+    "tooltip": false
+  },
+  "custom/arrow8":{
+    "format":"",
+    "tooltip": false
+  },
+  "custom/arrow9":{
+    "format":"",
+    "tooltip": false
+  },
+  "custom/arrow10":{
+    "format":"",
+    "tooltip": false
+  }
+} 

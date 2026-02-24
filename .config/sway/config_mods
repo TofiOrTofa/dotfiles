@@ -57,7 +57,7 @@ set $button_mic_min $ctrl+Shift+$button_vol_down
 set $button_mic_mute XF86AudioMicMute
 
 set $button_screenshot Print
-set $screenshot_app flameshot gui
+set $screenshot_app grim -g "$(slurp)" - | swappy -f -
 
 set $ws1 workspace number "1"
 set $ws2 workspace number "2"
@@ -80,14 +80,16 @@ titlebar_padding 0
 
 output * bg  /home/comu/wallpapers/static/wallpaper4 fill
 
-bar {
-    swaybar_command waybar -c ~/.config/waybar/sway/config.jsonc
-}
+#bar {
+#    swaybar_command waybar -c ~/.config/waybar/sway/config.jsonc
+#}
 
 smart_gaps on
 smart_borders on
-corner_radius 12
+corner_radius 0
 shadows disable
+focus_wrapping on
+
 
 
 client.focused           #7FB4E6 #7FB4E6 #FFFFFF #7FB4E6
@@ -97,3 +99,5 @@ client.urgent            #BF616A #BF616A #ECEFF4 #BF616A
 
 include ~/.config/sway/config.d/*
 exec ~/.config/sway/scripts/autostart.lua
+exec sudo powertop --auto-tune
+# render_awake_timeout 10

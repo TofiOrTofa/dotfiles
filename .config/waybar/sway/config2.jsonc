@@ -49,7 +49,8 @@
     }
   },
   "cpu": {
-    "format": "CPU {}%",
+    "interval":4,
+    "format": "CPU {usage}%  {avg_frequency}GHz",
     "states": {
       "warning": 70,
       "critical": 90

@@ -1,0 +1,7 @@
+// keybinds managed by niri-settings. Consider moving existing binds here.
+binds {
+    Mod+B { spawn-sh "pgrep -x 'waybar' && killall waybar || waybar &"; }
+    Mod+Z { spawn "wooz"; }
+    Mod+G { maximize-window-to-edges; }
+    Mod+Shift+T { toggle-column-tabbed-display; }
+}

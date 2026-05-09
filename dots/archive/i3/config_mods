@@ -1,0 +1,368 @@
+
+
+set $mod Mod4
+set $alt Mod1
+set $ctrl control
+
+font pango:monospace 8
+
+exec --no-startup-id dex --autostart --environment i3
+gaps outer 5
+gaps inner 10
+##################################
+#                                #
+#   Window Colors and Borders    #
+#                                #
+##################################
+
+client.focused           #7FB4E6 #7FB4E6 #FFFFFF #7FB4E6
+client.focused_inactive  #A8E4A0 #A8E4A0 #2E3440 #A8E4A0
+client.unfocused         #F0C674 #F0C674 #F0C674 #F0C674
+client.urgent            #BF616A #BF616A #ECEFF4 #BF616A
+
+# Remove title bars
+for_window [class="^.*"] border pixel 2
+hide_edge_borders smart
+default_floating_border normal
+exec --no-startup-id /usr/lib/xdg-desktop-portal-gtk &
+exec --no-startup-id dbus-update-activation-environment --systemd DISPLAY XAUTHORITY WAYLAND_DISPLAY
+exec --no-startup-id /usr/lib/xdg-desktop-portal-gtk &
+
+#################################
+#                               #
+#       default apps            #
+#                               #
+#################################
+
+set $browser exec firefox
+set $terminal exec alacritty
+set $search_apps exec rofi -show drun
+
+#################################
+#                               #
+#     функциональный ряв f      #
+#                               #
+#################################
+
+set $sun_up brightnessctl set +10%
+set $sun_down brightnessctl set 10%-
+set $sun_mux brightnessctl set 100%
+set $sun_min brightnessctl set 0%
+
+set $button_sun_up XF86MonBrightnessUp
+set $button_sun_down XF86MonBrightnessDown
+
+set $volume_up pactl set-sink-volume @DEFAULT_SINK@ +5%
+set $volume_down pactl set-sink-volume @DEFAULT_SINK@ -5%
+set $volume_mute pactl set-sink-mute @DEFAULT_SINK@ toggle
+set $micro_up 
+set $micro_down 
+set $micro_mute pactl set-source-mute @DEFAULT_SOURCE@ toggle && ([ "$(pactl get-source-mute @DEFAULT_SOURCE@)" = "Mute: yes" ] && echo 1 || echo 0) | sudo tee /sys/class/leds/platform::micmute/brightness
+
+
+
+set $button_volume_up XF86AudioRaiseVolume
+set $button_volume_down XF86AudioLowerVolume
+set $button_volume_mute XF86AudioMute
+set $button_micro_mute XF86AudioMicMute
+
+set $print Print
+set $prtsc_app flameshot gui
+#################################
+#                               #
+#        floating mod           #
+#                               #
+#################################
+
+#for_window [class="kitty"] floating enable, resize set 600 px 600 px
+
+floating_maximum_size 1200 x 800
+
+# Автоматически уменьшать все плавающие окна до стандарта
+for_window [floating] resize set 800 800
+
+#################################
+#                               #
+#          workspace            #
+#                               #
+#################################
+
+
+set $ws1 workspace number "1"
+set $ws2 workspace number "2"
+set $ws3 workspace number "3"
+set $ws4 workspace number "4"
+set $ws5 workspace number "5"
+set $ws6 workspace number "6"
+set $ws7 workspace number "7"
+set $ws8 workspace number "8"
+set $ws9 workspace number "9"
+
+
+#################################
+#                               #
+#         binds keymap          #
+#                               #
+#################################
+set $refresh_i3status killall -SIGUSR1 i3status
+floating_modifier $mod
+
+
+
+bindsym $button_sun_up exec $sun_up
+bindsym $button_sun_down exec $sun_down
+
+bindsym $button_volume_up exec --no-startup-id $volume_up && $refresh_i3status
+bindsym $button_volume_down exec --no-startup-id $volume_down && $refresh_i3status
+bindsym $button_volume_mute exec --no-startup-id $volume_mute && $refresh_i3status
+bindsym $button_micro_mute exec --no-startup-id $micro_mute
+bindsym $print exec --no-startup-id $prtsc_app
+
+bindsym Shift+semicolon exec ~/.config/rofi/scripts/commands/commands.sh
+
+bindsym Shift+c reload
+bindsym Shift+r restart
+bindsym Shift+e exec "i3-nagbar -t warning -m 'You pressid the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes,exit i3' 'i3-msg exit' "
+bindsym Shift+p exec --no-startup-id xrandr --output eDP-1 --auto
+
+bindsym t $terminal
+#bindsym d $search_apps
+bindsym Shift+q kill
+
+bindsym q move scratchpad
+bindsym m scratchpad show
+
+bindsym g exec --no-startup-id ~/.config/i3/scripts/gaps.sh
+
+bindsym bar split v
+bindsym minus split h
+
+bindsym f floating toggle
+#; [floating] resize set 800 px 800 px, move position center
+bindsym Shift+f fullscreen toggle
+
+bindsym s layout stacking
+bindsym w layout tabbed
+bindsym e layout toggle split
+bindsym Shift+t layout toggle tabbed
+
+bindsym h focus left
+bindsym j focus down
+bindsym k focus up
+bindsym l focus right
+
+bindsym i exec i3-msg workspace $(($(i3-msg -t get_workspaces | jq '.[] | select(.focused==true).num') + 1))
+bindsym u exec i3-msg workspace $(($(i3-msg -t get_workspaces | jq '.[] | select(.focused==true).num') - 1))
+
+bindsym Shift+i workspace next
+bindsym Shift+u workspace prev
+
+bindsym x focus parent
+bindsym c focus child
+
+bindsym Shift+h move left
+bindsym Shift+j move down
+bindsym Shift+k move up
+bindsym shift+l move right
+
+bindsym $ctrl+i exec i3-msg move container to workspace $(($(i3-msg -t get_workspaces | jq '.[] | select(.focused==true).num') + 1))
+bindsym $ctrl+u exec i3-msg move container to workspace $(($(i3-msg -t get_workspaces | jq '.[] | select(.focused==true).num') - 1))
+
+
+bindsym $ctrl+Shift+i move container to workspace next
+bindsym $ctrl+Shift+u move container to workspace prev
+
+bindsym $ctrl+Up exec --no-startup-id $volume_up && $refresh_i3status
+bindsym $ctrl+Down exec --no-startup-id $volume_down && $refresh_i3status
+
+bindsym $ctrl+space exec playerctl play-pause
+
+
+bindsym 1 $ws1
+bindsym 2 $ws2
+bindsym 3 $ws3
+bindsym 4 $ws4
+bindsym 5 $ws5
+bindsym 6 $ws6
+bindsym 7 $ws7
+bindsym 8 $ws8
+bindsym 9 $ws9
+bindsym 0 $ws10
+
+
+bindsym Shift+1 move container to $ws1
+bindsym Shift+2 move container to $ws2
+bindsym Shift+3 move container to $ws3
+bindsym Shift+4 move container to $ws4
+bindsym Shift+5 move container to $ws5
+bindsym Shift+6 move container to $ws6
+bindsym Shift+7 move container to $ws7
+bindsym Shift+8 move container to $ws8
+bindsym Shift+9 move container to $ws9
+
+bindsym r mode "resize"
+bindsym o mode "insert"
+bindsym a mode "insert"
+bindsym d mode "rofi"
+bindsym v mode "micro"
+
+#mode "visual+insert" {
+#  bindsym $button_volume_up exec --no-startup-id $volume_up && $refresh_i3status
+#  bindsym $button_volume_down exec --no-startup-id $volume_down && $refresh_i3status
+#  bindsym $button_volume_mute exec --no-startup-id $volume_mute && $refresh_i3status
+#  bindsym $button_micro_mute exec --no-startup-id $micro_mute
+#
+#
+#  bindsym $mod+t $terminal
+#  bindsym $mod+d $search_app
+#  bindsym $mod+q kill
+#
+#  bindsym $mod+h focus left
+#  bindsym $mod+j focus down
+#  bindsym $mod+k focus up
+#  bindsym $mod+l focus right
+#
+#  bindsym $mod+i workspace next
+#  bindsym $mod+u workspace prev
+#
+#  bindsym $mod+Shift+h move left
+#  bindsym $mod+Shift+j move down
+#  bindsym $mod+Shift+k move up
+#  bindsym $mod+Shift+l move right
+#
+#  bindsym $mod+Shift+i move container to workspace next
+#  bindsym $mod+Shift+u move container to workspace prev
+#
+#  bindsym $mod+1 $ws1
+#  bindsym $mod+2 $ws2
+#  bindsym $mod+3 $ws3
+#  bindsym $mod+4 $ws4
+#  bindsym $mod+5 $ws5
+#  bindsym $mod+6 $ws6
+#  bindsym $mod+7 $ws7
+#  bindsym $mod+8 $ws8
+#  bindsym $mod+9 $ws9
+#  bindsym $mod+0 $ws10
+#  
+#
+#  bindsym $mod+Shift+1 move container to $ws1
+#  bindsym $mod+Shift+2 move container to $ws2
+#  bindsym $mod+Shift+3 move container to $ws3
+#  bindsym $mod+Shift+4 move container to $ws4
+#  bindsym $mod+Shift+5 move container to $ws5
+#  bindsym $mod+Shift+6 move container to $ws6
+#  bindsym $mod+Shift+7 move container to $ws7
+#  bindsym $mod+Shift+8 move container to $ws8
+#  bindsym $mod+Shift+9 move container to $ws9
+#
+#  bindsym $mod+r mode "resize"
+#  bindsym $mod+i mode "insert"
+#  bindsym $mod+v mode "visual"
+#  bindsym $mod+Escape mode "visual"
+#  bindsym $mod+Return mode "visual"
+#  bindsym $mod+d mode "rofi"
+#}
+mode "insert" {
+  bindsym $button_volume_up exec --no-startup-id $volume_up && $refresh_i3status
+  bindsym $button_volume_down exec --no-startup-id $volume_down && $refresh_i3status
+  bindsym $button_volume_mute exec --no-startup-id $volume_mute && $refresh_i3status
+  bindsym $button_micro_mute exec --no-startup-id $micro_mute
+
+  bindsym $print exec --no-startup-id $prtsc_app
+
+  bindsym Super_L mode "default"
+  #bindsym $mod+o mode "insert (visual)"
+}
+mode "resize" {
+  bindsym $button_volume_up exec --no-startup-id $volume_up && $refresh_i3status
+  bindsym $button_volume_down exec --no-startup-id $volume_down && $refresh_i3status
+  bindsym $button_volume_mute exec --no-startup-id $volume_mute && $refresh_i3status
+  bindsym $button_micro_mute exec --no-startup-id $micro_mute
+  
+  bindsym $print exec --no-startup-id $prtsc_app
+
+  bindsym h resize shrink width 10 px or 10 ppt
+  bindsym k resize grow height 10 px or 10 ppt
+  bindsym j resize shrink height 10 px or 10 ppt
+  bindsym l resize grow width 10 px or 10 ppt
+ 
+  bindsym Left resize shrink width 10 px or 10 ppt
+  bindsym Up resize grow height 10 px or 10 ppt
+  bindsym Down resize shrink height 10 px or 10 ppt
+  bindsym Right resize grow width 10 px or 10 ppt
+
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+  bindsym Super_L mode "default"
+  bindsym v mode "default"
+  bindsym o mode "insert"
+  bindsym a mode "insert"
+}
+#  bindsym $button_volume_up exec --no-startup-id $volume_up && $refresh_i3status
+#  bindsym $button_volume_down exec --no-startup-id $volume_down && $refresh_i3status
+#  bindsym $button_volume_mute exec --no-startup-id $volume_mute && $refresh_i3status
+#  bindsym $button_micro_mute exec --no-startup-id $micro_mute
+#
+#
+#
+#  bindsym m mode "micro"  
+#  bindsym p exec --no-startup-id $volume_app
+#  
+#  bindsym $ctrl+Up exec --no-startup-id $volume_up
+#  bindsym $ctrl+Down exec --no-startup-id $volume_down
+#
+#  bindsym Super_L mode "default"
+#  bindsym o mode "insert"
+#  bindsym Return mode "default"
+#  bindsym Escape mode "default"
+#}
+mode "micro" {
+  bindsym $button_volume_up exec --no-startup-id $volume_up && $refresh_i3status
+  bindsym $button_volume_down exec --no-startup-id $volume_down && $refresh_i3status
+  bindsym $button_volume_mute exec --no-startup-id $volume_mute && $refresh_i3status
+  bindsym $button_micro_mute exec --no-startup-id $micro_mute
+  bindsym $print exec --no-startup-id $prtsc_app
+
+  bindsym p exec --no-startup-id $volume_app
+
+  bindsym Super_L mode "default"
+  bindsym o mode "insert"
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+
+
+mode "rofi" {
+  bindsym $button_volume_up exec --no-startup-id $volume_up && $refresh_i3status
+  bindsym $button_volume_down exec --no-startup-id $volume_down && $refresh_i3status
+  bindsym $button_volume_mute exec --no-startup-id $volume_mute && $refresh_i3status
+  bindsym $button_micro_mute exec --no-startup-id $micro_mute
+  bindsym $print exec --no-startup-id $prtsc_app
+
+  bindsym d exec --no-startup-id rofi -show drun, mode "default"
+  bindsym f exec --no-startup-id rofi -show filebrowser, mode "default"
+  bindsym r exec --no-startup-id rofi -show recursivebrowser, mode "default"
+  bindsym w exec --no-startup-id rofi -show window, mode "default"
+
+  bindsym Super_L mode "default"
+  bindsym o mode "insert"
+}
+include ~/.config/i3/parts_config/default_o
+exec_always setxkbmap -layout "us,ru" -option "grp:caps_toggle"
+
+#################################
+#                               #
+#           autostart           #
+#                               #
+#################################
+
+exec --no-startup-id ~/.config/i3/scripts/autostart.sh
+
+################################
+#                              #
+#        window rule           #
+#                              #
+################################
+
+for_window [class="Screen_board"] floating enable, resize set 1980 1080, move position center
+

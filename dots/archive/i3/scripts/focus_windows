@@ -1,0 +1,4 @@
+#!/bin/bash
+# focus_toggle_border.sh
+i3-msg [class=".*"] border pixel 2  # всем окнам границу 2px
+i3-msg [id=$(xdotool getactivewindow)] border pixel 0  # активному 0px

@@ -1,0 +1,51 @@
+set noswapfile
+
+" прокрутка
+set scrolloff=1
+set scrolljump=-50
+set sidescrolloff=0
+
+set nottimeout
+set showcmd
+
+" умные отступы -
+
+set autoindent
+
+set nosmartindent
+set nocindent
+
+
+" подсветка -
+autocmd VimEnter * syntax off
+
+" старый терминал
+let &t_SI = "\e[4 q"
+let &t_EI = "\e[4 q"
+set guicursor=a:blinkon0-Underline
+highlight Visual cterm=underline ctermbg=NONE ctermfg=NONE guibg=NONE guifg=NONE
+set t_Co=0
+set notermguicolors
+set noshowmode
+
+" перенос слов
+set wrap
+" set linebreak
+
+" строка разделения
+set laststatus=2
+set fillchars=stl:-
+set statusline=%=
+highlight StatusLine cterm=NONE ctermfg=White ctermbg=NONE
+
+" подсветка пробелов в конце строк
+highlight ExtraWhitespace ctermbg=9 guibg=#BF616A
+match ExtraWhitespace /\s\+$/
+
+" автоматическое удаление пробелов при сохранении; исключения: markdown
+autocmd BufWritePre * if &ft !~ 'markdown' | silent! %s/\s\+$//e | endif
+
+" типы файлов -
+filetype plugin on
+filetype indent off
+autocmd BufWinEnter * setlocal nocindent nosmartindent indentexpr=

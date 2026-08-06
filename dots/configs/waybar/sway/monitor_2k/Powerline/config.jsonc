@@ -1,0 +1,192 @@
+// -*- mode: jsonc -*-
+{
+
+  //"output": "eDP-1",
+  
+  "layer":"top",
+  "position":"top",
+  "height": 24,
+  "margin": "22 0 0 0", // верх право низ лево
+  
+  "modules-left":[
+    //"custom/gaps-logic",
+    "tray", "custom/arrow1",
+    "sway/workspaces", "custom/arrow2",
+    "sway/language", "custom/arrow3",
+    "sway/mode", "custom/arrow4"
+  ],
+  "modules-center":["group/characteristic"],
+  "modules-right":[
+    "custom/arrow5", "battery", 
+    "custom/arrow6", "pulseaudio",
+    "custom/arrow7", "backlight", 
+    "custom/arrow8", "clock", 
+    "custom/arrow9", "network"
+  ],
+
+  "custom/gaps-logic":{
+    "format": "", // Он ничего не рисует
+    "exec": "lua /home/comu/.config/sway/scripts/waybar/autogaps/main.lua",
+    "return-type": "json"
+  },
+
+
+  "tray":{"icon-size": 14, "spacing": 2},
+  "sway/workspaces":{
+    "disable-scroll": false,
+    "all-outputs": true,
+    "warp-on-scroll": false,
+    "format": "{icon}",
+    "format-icons": {
+      "0": "零",
+      "1": "一",
+      "2": "二",
+      "3": "三",
+      "4": "四",
+      "5": "五",
+      "6": "六",
+      "7": "七",
+      "8": "八",
+      "9": "九",
+      "10": "十"
+	}
+  },
+  "sway/language": {"format": "  {}  "},
+  "sway/mode": {"format":"{}", "max-leight": 50},
+
+  "group/characteristic": {
+    "orientation": "horizontal",
+    "modules":["temperature", "memory", "cpu"]
+  },
+  
+  "temperature": {
+    "thermal-zone": 2,
+    "hwmon-path":"/sys/class/hwmon/hwmon4/temp1_input",
+    "critical-threshold": 80,
+    "format-critical":"TEM  {temperatureC}",
+    "format":"TEM {temperatureC}",
+    "states": {
+      "warning": 70,
+      "critical": 90
+    }
+  },
+  "memory": {
+    "format": "RAM {}%",
+    "states": {
+      "warning": 80,
+      "critical": 90
+    }
+  },
+  "cpu": {
+    "interval":4,
+    "format": "CPU  {usage}%   {avg_frequency}GHz",
+    "states": {
+      "warning": 70,
+      "critical": 90
+    }
+  },
+
+  "battery": {
+    "states": {
+      "good": 80,
+      "warning": 20,
+      "critical": 10
+    },
+    "format": "{icon}  {capacity}%",
+    "format-full": "{icon}  {capacity}%",
+    "format-charging": "{icon}  {capacity}%",
+    "format-plugged": "{icon}  {capacity}%",
+    "format-alt": "{time}  {icon}  |  {power:.1f}W",
+    "format-icons":["bat", "baT", "bAt", "Bat", "BaT", "BAt", "BAT"]
+  },
+  "pulseaudio": {
+    "format-source": "{volume}",
+    "format-source-muted": "muted",
+       
+    "format": "VOL  {volume}% / {format_source}%",
+    "format-bluetooth": "B_VOL  {volume}% / {format_source}%",
+
+    "on-click": "pavucontrol"
+  },
+  "backlight": {},
+   "clock": {
+      "interval": 60,
+  	  "format": "  {:%H:%M}  ",
+      "format-alt": "{:%A, %B %d, %Y (%R)}",
+      "tooltip-format": "<small><tt>{calendar}</tt></small>",
+      "timezones": [
+        "Etc/GMT-5",
+        "Etc/GMT-3"
+      ],
+
+         "calendar": {
+            "mode"          : "year",
+            "mode-mon-col"  : 3,
+              "weeks-pos"     : "right",
+              "on-scroll"     : 1,
+              "format": {
+                "months":     "<span color='#ffead3'><b>{}</b></span>",
+                "days":       "<span color='#ecc6d9'><b>{}</b></span>",
+                "weeks":      "<span color='#99ffdd'><b>W{:%U}</b></span>",
+                "weekdays":   "<span color='#ffcc66'><b>{}</b></span>",
+                "today":      "<span color='#ff6699'><b><u>{}</u></b></span>"
+              }
+          },
+          "actions": {
+            "on-click-right": "mode",
+            "on-scroll-up": "tz_up",
+            "on-scroll-down": "tz_down"
+        }
+    },
+
+    "network": {
+    "format-wifi": "{essid} ({signalStrength}%)",
+    "format-ethernet": "{ipaddr}/{cidr}",
+    "tooltip-format": "{ifname} via {gwaddr}",
+    "format-linded": "{ifname} (No IP)",
+    "format-disconnected": "#w#",
+    "format-alt": "{ifname}: {ipaddr}/{cidr}"
+  },
+
+  
+  "custom/arrow1":{
+    "format":"",
+    "tooltip": false
+  },
+  "custom/arrow2":{
+    "format":"",
+    "tooltip": false
+  },
+  "custom/arrow3":{
+    "format":"",
+    "tooltip": false
+  },
+  "custom/arrow4":{
+    "format":"",
+    "tooltip": false
+  },
+  "custom/arrow5":{
+    "format":"",
+    "tooltip": false
+  },
+  "custom/arrow6":{
+    "format":"",
+    "tooltip": false
+  },
+  "custom/arrow7":{
+    "format":"",
+    "tooltip": false
+  },
+  "custom/arrow8":{
+    "format":"",
+    "tooltip": false
+  },
+  "custom/arrow9":{
+    "format":"",
+    "tooltip": false
+  },
+  "custom/arrow10":{
+    "format":"",
+    "tooltip": false
+  }
+} 

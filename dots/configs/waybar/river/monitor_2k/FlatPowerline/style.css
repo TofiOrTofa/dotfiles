@@ -1,0 +1,168 @@
+@import url("./colors.css");
+
+
+window#waybar               {
+  font-family                 :
+                                "FiraCode Bold",
+                                "FontAwesome",
+                                "Noto Sans CJK JP",
+                                "sans-serif";
+  font-size                   : 14px;
+  padding                     : 0;
+                            }
+
+
+*                           {
+    font-size                 : 14px;
+    min-height                : 0;
+    border                    : none;
+    border-radius             : 0;
+    padding                   : 0;
+    margin                    : 0;
+                            }
+
+
+
+@keyframes blink-critical   {
+  from                        {
+    background-color            : @battery-color;
+    color                       : @alert-color;
+    box-shadow                  :
+      /* up    */                 inset   0     3px   1px   @battery-color,
+      /* down  */                 inset   0     -3px  1px   @battery-color,
+      /* left  */                 inset   3px   0     1px   @battery-color,
+      /* right */                 inset   -3px  0     1px   @battery-color;
+                              }
+  to                          {
+    background-color            : @alert-color;
+    color                       : @battery-color;
+    box-shadow                  :
+      /* up    */                 inset   0     3px   1px   @battery-color,
+      /* down  */                 inset   0     -3px  1px   @battery-color,
+      /* left  */                 inset   3px   0     1px   @battery-color,
+      /* right */                 inset   -3px  0     1px   @battery-color;
+                              }
+                            }
+
+
+#waybar                     {
+    background-color          : @background-color;
+    padding                   : 0;
+                            }
+
+#waybar.solo                {
+  background-color            : rgba(30, 30, 46, 0);
+  padding                     :   0     0     0     20px;
+                            }
+
+
+#tray,        #tags,
+#layout,      #mode,
+#temperature, #memory,
+#cpu,         #battery,
+#disk,        #pulseaudio,
+#backlight,   #clock,
+#network                    {
+  padding-left                : 8pt;
+  padding-right               : 8pt;
+                            }
+
+
+
+#temperature.critical,
+#mamory.critical,
+#cpu.critical               {
+  color                       : @alert-color
+                            }
+#battery.critical           {
+  animation-name              : blink-critical;
+  animation-duration          : 1s;
+  animation-timing-function   : linear;
+  animation-iteration-count   : infinite;
+  animation-direction         : alternate;
+                            }
+
+#memory.warning,
+#cpu.warning,
+#temperature.warning,
+#network.disconnected,
+#battery.warning            {
+  color                       : @alert-color;
+                            }
+
+
+botton                      {
+  box-shadow                  : inset   0   -3px  transparent;
+  border                      : none;
+  border-radius               : 0;
+                            }
+
+#tray                       {
+  background-color            : @background-color-tray;
+  color                       : @foreground-color-tray
+                            }
+
+
+#tags                       {
+  background-color            : @background-color-workspaces;
+  color                       : @foreground-color-workspaces;
+  font-weight                 : 400;
+                            }
+
+#tags   button              {
+  padding-left                : 1px;
+  padding-right               : 1px;
+  color                       : @foreground-color-workspaces;
+                            }
+#tags   button.occupied     {
+  font-weight                 : 500;
+  padding-left                : 3px;
+  padding-right               : 3px;
+                            }
+#tags   button:hover        {
+  padding-left                : 2px;
+  padding-right               : 2px;
+}
+#tags   button.focused      {
+  padding-left                : 5px;
+  padding-right               : 5px;
+  color                       : @foreground-color-workspaces;
+  font-weight                 : 800;
+                            }
+
+#layout                     {
+  background-color            : @background-color-language;
+  color                       : @foreground-color-language;
+  font-weight                 : 700;
+                            }
+#mode                       {
+  background-color            : @background-color-mode;
+  color                       : @foreground-color-mode;
+  font-weight                 : 900;
+                            }
+
+
+
+#battery                    {
+  background-color            : @background-color-battery;
+  color                       : @foreground-color-battery;
+  font-weight                 : 900;
+                            }
+#pulseaudio                 {
+  background-color            : @background-color-volume;
+  color                       : @foreground-color-volume;
+                            }
+#backlight                  {
+  background-color            : @background-color-backlight;
+  color                       : @foreground-color-backlight;
+                            }
+#clock                      {
+  background-color            : @background-color-clock;
+  color                       : @foreground-color-clock;
+  font-weight                 : 900;
+                            }
+#network                    {
+  background-color            : @background-color-network;
+  color                       : @foreground-color-network;
+                            }
+

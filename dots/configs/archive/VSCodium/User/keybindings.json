@@ -1,0 +1,491 @@
+// Place your key bindings in this file to override the defaults
+[
+//>                                                                             редактор
+// файл ctrl
+    //движение
+    {// низ
+        "key": "ctrl+j",
+        "when": "editorTextFocus",
+        "command": "cursorDown"},
+    {// верх
+        "key": "ctrl+k",
+        "when": "editorTextFocus",
+        "command": "cursorUp"},
+    {// лево
+        "key": "ctrl+h",
+        "when": "editorTextFocus",
+        "command": "cursorLeft"},
+    {// право
+        "key": "ctrl+l",
+        "when": "editorTextFocus",
+        "command": "cursorRight"},
+
+    {// конец слова
+        "key": "ctrl+w",
+        "when": "textInputFocus",
+        "command": "cursorWordRight"},
+    {// начало слова
+        "key": "ctrl+b",
+        "when": "textInputFocus",
+        "command": "cursorWordLeft"},
+
+    {// начало строки
+        "key": "ctrl+s",
+        "when": "editorTextFocus",
+        "command": "cursorHome"},
+    {// конец строки
+        "key": "ctrl+e",
+        "when": "editorTextFocus",
+        "command": "cursorEnd"},
+
+    {// начало файла
+        "key": "ctrl+c ctrl+g",
+        "when": "editorTextFocus",
+        "command": "cursorTop"},
+    {// конец файла
+        "key": "ctrl+c ctrl+shift+g",
+        "when": "editorTextFocus",
+        "command": "cursorBottom"},
+
+    //простое выделение
+    {// лево
+        "key": "ctrl+shift+h",
+        "when": "!editorColumnSelection && textInputFocus",
+        "command": "cursorLeftSelect"},
+    {// низ
+        "key": "ctrl+shift+j",
+        "when": "!editorColumnSelection && textInputFocus",
+        "command": "cursorDownSelect"},
+    {// верх
+        "key":"ctrl+shift+k",
+        "when": "!editorColumnSelection && textInputFocus",
+        "command": "cursorUpSelect"},
+    {// право
+        "key": "ctrl+shift+l",
+        "when": "!editorColumnSelection && textInputFocus",
+        "command": "cursorRightSelect"},
+
+    {// конец слова
+        "key": "ctrl+shift+w",
+        "when": "textInputFocus",
+        "command": "cursorWordRightSelect"},
+    {// начало слова
+        "key": "ctrl+shift+b",
+        "when": "textInputFocus",
+        "command": "cursorWordLeftSelect"},
+
+    {// начало строки
+        "key": "ctrl+shift+s",
+        "when": "editorTextFocus",
+        "command": "cursorHomeSelect"},
+    {// конец строки
+        "key": "ctrl+shift+e",
+        "when": "editorTextFocus",
+        "command": "cursorEndSelect"},
+    //блочное выделение
+    {// лево
+        "key":"ctrl+shift+h",
+        "when": "editorColumnSelection && textInputFocus",
+        "command": "cursorColumnSelectLeft"},
+    {// низ
+        "key": "ctrl+shift+j",
+        "when": "editorColumnSelection && textInputFocus",
+        "command": "cursorColumnSelectDown"},
+    {// верх
+        "key": "ctrl+shift+k",
+        "when": "editorColumnSelection && textInputFocus",
+        "command": "cursorColumnSelectUp"},
+    {// право
+        "key": "ctrl+shift+l",
+        "when": "editorColumnSelection && textInputFocus",
+        "command": "cursorColumnSelectRight"},
+
+    {// конец выделения 
+        "key": "ctrl+a",
+        "command": "editor.action.insertCursorAtEndOfEachLineSelected",
+        "when": "editorHasSelection",},
+
+    //other
+    {// копия
+        "key": "ctrl+shift+c",
+        "command": "editor.action.clipboardCopyAction"},
+    {// вставка
+        "key": "ctrl+shift+v",
+        "command": "editor.action.clipboardPasteAction",
+        "when": "editorTextFocus && !editorReadonly"},
+    {// поиск по слову
+        "key": "ctrl+/",
+        "command": "actions.find",
+        "when": "editorFocus"},
+    {// режим блочного выделения
+        "key": "ctrl+v",
+        "command": "editor.action.toggleColumnSelection",
+        "when": "editorTextFocus"},
+    {// включение подсказок
+        "key": "ctrl+t",
+        "command": "editor.action.triggerSuggest",
+        "when": "editorTextFocus && !editorReadonly"},
+    {// отмена действия
+        "key": "ctrl+u",
+        "command": "undo",
+        "when": "editorTextFocus && !editorReadonly"},
+
+    // редактирование
+    {// создание и перемещение на пустую строку снизу
+        "key": "ctrl+o",
+        "when": "editorTextFocus && !editorReadonly",
+        "command": "editor.action.insertLineAfter"},
+    {// создание и перемещение на пустую строку вверх
+        "key": "ctrl+shift+o",
+        "when": "editorTextFocus && !editorReadonly",
+        "command": "editor.action.insertLineBefore"},
+    {// чистка строки
+        "key": "ctrl+shift+x",
+        "command": "runCommands",
+        "args": {
+            "commands": [
+                "editor.action.deleteLines",
+                "editor.action.insertLineBefore"]},
+        "when": "editorTextFocus && !editorReadonly"},
+    {// удаление символа справа от курсора // когда ничего не выделенно
+        "key": "ctrl+x",
+        "when": "!editorHasSelection && editorTextFocus && !editorReadonly",
+        "command": "deleteRight"},
+    {
+        "key": "ctrl+x",
+        "when": "textInputFocus && !editorReadonly && editorHasSelection",
+        "command": "editor.action.clipboardCutAction"},
+    {
+        "key": "ctrl+r",
+        "command": "editor.action.rename",
+        "when": "editorTextFocus && !editorReadonly"},
+    {// дублирование из буфера на новую строку наже
+        "key": "ctrl+enter",
+        "command": "runCommands",
+        "args": {
+            "commands": [
+                "editor.action.clipboardCopyAction",
+                "cancelSelection",
+                "editor.action.insertLineAfter",
+                "editor.action.clipboardPasteAction"]},
+        "when": "editorTextFocus && !editorReadonly && editorHasSelection"},
+    {// дублирует выделенное на новую строку выше
+        "key": "ctrl+shift+enter",
+        "command": "runCommands",
+        "args": {
+            "commands": [
+                "editor.action.clipboardCopyAction",
+                "cancelSelection",
+                "editor.action.insertLineBefore",
+                "editor.action.clipboardPasteAction"]},
+        "when": "editorTextFocus && !editorReadonly && editorHasSelection"},
+    {// дублирует активную строку вних
+        "key": "ctrl+enter",
+        "when": "editorTextFocus && !editorReadonly && !editorHasSelection",
+        "command": "editor.action.copyLinesDownAction"},
+    {// дублирует активную строку вверх
+        "key": "ctrl+shift+enter",
+        "when": "editorTextFocus && !editorReadonly && !editorHasSelection",
+        "command": "editor.action.copyLinesUpAction"},
+
+    // редактирование файла
+    {
+        "key": "ctrl+shift+; ctrl+w",
+        "command": "workbench.action.files.save",
+        "when": "editorTextFocus"},
+    {
+        "key": "ctrl+shift+; ctrl+q",
+        "command": "workbench.action.closeActiveEditor",
+        "when": "editorTextFocus"},
+    {
+        "key": "ctrl+shift+; ctrl+x",
+        "command": "runCommands",
+        "args": {
+            "commands": [
+                "workbench.action.files.save",
+                "workbench.action.closeActiveEditor"]},
+        "when": "editorTextFocus"},
+    
+
+// вкладки any
+    // передвижение
+    {// слудующая вкладка 
+        "key": "ctrl+.",
+        "when": "editorFocus",
+        "command": "workbench.action.nextEditorInGroup"},
+    {// предыдущая вкладка
+        "key": "ctrl+,",
+        "when": "editorFocus",
+        "command": "workbench.action.previousEditorInGroup"},
+    {// слудующая вкладка 
+        "key": "alt+.",
+        "command": "workbench.action.nextEditorInGroup"},
+    {// предыдущая вкладка
+        "key": "alt+,",
+        "command": "workbench.action.previousEditorInGroup"},
+    // перемещение
+    {
+        "key": "ctrl+shift+.",
+        "when": "editorFocus",
+        "command": "workbench.action.moveEditorRightInGroup"},
+    {
+        "key": "ctrl+shift+,",
+        "when": "editorFocus",
+        "command": "workbench.action.moveEditorLeftInGroup"},
+    {
+        "key": "alt+shift+.",
+        "when": "editorFocus",
+        "command": "workbench.action.moveEditorRightInGroup"},
+    {
+        "key": "alt+shift+,",
+        "when": "editorFocus",
+        "command": "workbench.action.moveEditorLeftInGroup"},
+    
+
+// контейнеры ctrl+c
+    {// лево
+        "key": "ctrl+c ctrl+h",
+        "when": "editorFocus",
+        "command": "workbench.action.focusLeftGroup"},
+    {// низ
+        "key": "ctrl+c ctrl+j",
+        "when": "editorFocus",
+        "command": "workbench.action.focusBelowGroup"},
+    {// верх
+        "key": "ctrl+c ctrl+k",
+        "when": "editorFocus",
+        "command": "workbench.action.focusAboveGroup"},
+    {// право
+        "key": "ctrl+c ctrl+l",
+        "when": "editorFocus",
+        "command": "workbench.action.focusRightGroup"},
+
+    {// дублирование
+        "key": "ctrl+shift+\\",
+        "when": "editorFocus",
+        "command": "workbench.action.splitEditor"},
+    // перемещения ctrl+c shift
+    {// лево
+        "key": "ctrl+c ctrl+shift+h",
+        "command": "workbench.action.moveEditorToLeftGroup"},
+    {// низ
+        "key": "ctrl+c ctrl+shift+j",
+        "command": "workbench.action.moveEditorToBelowGroup"},
+    {// верх
+        "key": "ctrl+c ctrl+shift+k",
+        "command": "workbench.action.moveEditorToAboveGroup"},
+    {// право
+        "key": "ctrl+c ctrl+shift+l",
+        "command": "workbench.action.moveEditorToRightGroup"},
+//                                                                              внешнее alt
+    // общее
+    {
+        "key": "alt+r",
+        "command":"workbench.action.zoomReset"},
+    {
+        "key": "alt+=",
+        "command":"workbench.action.zoomIn"},
+    {
+        "key": "alt+-",
+        "command":"workbench.action.zoomOut"},
+    // editor
+    {// сохранение файла
+        "key": "alt+s",
+        "command": "workbench.action.files.save"},
+    {// закрытие окна
+        "key": "alt+q",
+        "command": "workbench.action.closeActiveEditor"},
+    // sidebar
+    {// открытие 
+        "key": "alt+l",
+        "command": "workbench.files.action.focusFilesExplorer",
+        "when": "editorFocus"},
+    {// закрытие
+        "key": "alt+h",
+        "command": "runCommands",
+        "args": {
+            "commands": [
+                "workbench.action.focusActiveEditorGroup",
+                "workbench.action.toggleSidebarVisibility"]},
+        "when": "sideBarFocus"},
+    
+    {// открытие проводника
+        "key": "alt+f",
+        "command": "workbench.view.explorer"},
+    {// переключение
+        "key": "alt+w",
+        "command": "workbench.action.toggleSidebarVisibility"},
+    {// открытие поиска совподений во всех файлах из проводника
+        "key": "alt+/",
+        "command": "workbench.view.search"},
+    {
+        "key": "alt+t",
+        "command": "workbench.action.terminal.toggleTerminal"},
+    {
+        "key": "alt+m",
+        "command": "markdown.showPreviewToSide",
+        "when": "editorLangId == 'markdown'"},
+
+    //other
+    {// активные окна
+        "key": "alt+d",
+        "command": "workbench.action.showAllEditors"},
+    {
+        "key": "alt+shift+d",
+        "command": "workbench.action.openRecent"},
+
+    {// палетка команд 
+        "key": "alt+p",
+        "command": "workbench.action.showCommands"},
+    { "key": "alt+shift+;", "command": "workbench.action.showCommands"},
+
+
+//>                                                                             sidebar
+    {// свёрнутая папку
+        "key": "ctrl+h",
+        "command": "list.collapse",
+        "when": "explorerViewletFocus && !inputFocus"},
+    {// низ
+        "key": "ctrl+j",
+        "command": "list.focusDown",
+        "when": "explorerViewletFocus && !inputFocus"},
+    {// верх
+        "key": "ctrl+k",
+        "command": "list.focusUp",
+        "when": "explorerViewletFocus && !inputFocus"},
+    {// раскрытая папка
+        "key": "ctrl+l",
+        "command": "list.select", // Откроет файл или раскроет папку
+        "when": "explorerViewletFocus && !inputFocus"},
+    {// создать папку
+        "key": "ctrl+shift+enter",
+        "when": "explorerViewletFocus && !inputFocus",
+        "command": "explorer.newFolder"},
+    {// создать папку
+        "key": "ctrl+shift+o",
+        "when": "explorerViewletFocus && !inputFocus",
+        "command": "explorer.newFolder"},
+    {// создать файл
+        "key": "ctrl+enter",
+        "when": "explorerViewletFocus && !inputFocus",
+        "command": "explorer.newFile"},
+    {// создать файл
+        "key": "ctrl+o",
+        "when": "explorerViewletFocus && !inputFocus",
+        "command": "explorer.newFile"},
+    {// переименовать
+        "key": "ctrl+r",
+        "when": "explorerViewletFocus && !inputFocus",
+        "command": "renameFile"},
+    {// удалить
+        "key": "ctrl+x",
+        "when": "explorerViewletFocus && !inputFocus",
+        "command": "deleteFile"},
+
+//>                                                                             terminal
+    {// стоп
+        "key": "ctrl+c ctrl+c",
+        "command": "workbench.action.terminal.sendSequence",
+        "when": "terminalFocus",
+        "args": { "text": "\u0003" }},
+
+//>                                                                             quickopen
+
+    {
+        "key": "ctrl+j",
+        "command": "workbench.action.quickOpenSelectNext",
+        "when": "inQuickOpen"},
+    {
+        "key": "ctrl+k",
+        "command": "workbench.action.quickOpenSelectPrevious",
+        "when": "inQuickOpen"},
+
+
+
+//>                                                                             clear default binds
+    {// поиск 
+        "key": "ctrl+f",
+        "command": "-actions.find"},
+    {// панель
+        "key": "ctrl+j",
+        "command": "-workbench.action.togglePanel" },
+    { 
+        "key": "ctrl+k", 
+        "when": "keybindingsFocus",
+        "command": "-keybindings.editor.defineKeybinding"},
+    { 
+        "key": "ctrl+l",
+        "when": "chatStringsToTranslate.canChat",
+        "command": "-workbench.action.chat.open"},
+    { 
+        "key": "ctrl+q", 
+        "command": "-workbench.action.quit"},
+    {
+        "key": "ctrl+t",
+        "command": "-workbench.action.showAllSymbols"},
+    {
+        "key": "ctrl+c",
+        "command": "-editor.action.clipboardCopyAction",
+        "when": "editorTextFocus"},
+    // 2. Отменяем стандартную вставку на Ctrl+V
+    {
+        "key": "ctrl+v",
+        "command": "-editor.action.clipboardPasteAction"},
+    {
+        "key": "ctrl+r",
+        "command": "-workbench.action.openRecent" },
+// затычки
+    {
+        "key": "alt+h",
+        "command": "runCommands",
+        "args": { "commands": [] },
+        "when": "editorFocus && !menuBarVisible"},
+    {
+        "key": "alt+v",
+        "command": "runCommands",
+        "args": { "commands": []},
+        "when": "editorFocus"},
+    
+    {
+        "key": "ctrl+shift+alt+c",
+        "command": "-copyRelativeFilePath",
+        "when": "!editorFocus"},
+    {
+        "key": "ctrl+shift+c",
+        "command": "-workbench.action.browser.addElementToChat",
+        "when": "browserHasUrl && chatIsEnabled && config.chat.sendElementsToChat.enabled && !browserHasError && activeEditor == 'workbench.editor.browser'"},
+    {
+        "key": "ctrl+shift+c",
+        "command": "-workbench.action.terminal.openNativeConsole",
+        "when": "!terminalFocus"},
+    { "key": "ctrl+j", "command": "-workbench.action.togglePanel" },
+    { "key": "ctrl+j", "command": "-workbench.action.terminal.toggleTerminal" },
+    { "key": "ctrl+k", "command": "-workbench.action.showCommands" },
+    { "key": "ctrl+k", "command": "-keybindings.editor.defineKeybinding", "when": "keybindingsFocus" },
+    { "key": "ctrl+h", "command": "-builtin.action.hide" },
+    { "key": "ctrl+l", "command": "-workbench.action.focusExtensions" },
+    { "key": "ctrl+l", "command": "-workbench.action.chat.open", "when": "chatStringsToTranslate.canChat" },
+    { "key": "ctrl+w", "command": "-workbench.action.closeActiveEditor" },
+    { "key": "ctrl+b", "command": "-workbench.action.toggleSidebarVisibility" },
+    { "key": "ctrl+s", "command": "-workbench.action.files.save" },
+    { "key": "ctrl+e", "command": "-workbench.action.quickOpen" },
+    { "key": "ctrl+f", "command": "-actions.find" },
+    { "key": "ctrl+q", "command": "-workbench.action.quit" },
+    { "key": "ctrl+t", "command": "-workbench.action.showAllSymbols" },
+    { "key": "ctrl+t", "command": "-workbench.action.terminal.new" },
+    { "key": "ctrl+r", "command": "-workbench.action.openRecent" },
+    { "key": "ctrl+o", "command": "-workbench.action.files.openFile" },
+    { "key": "ctrl+shift+c", "command": "-workbench.action.terminal.openNativeConsole" },
+    { "key": "ctrl+shift+c", "command": "-workbench.action.browser.addElementToChat" },
+    { "key": "ctrl+shift+v", "command": "-markdown.showPreview" },
+    { "key": "ctrl+v", "command": "-editor.action.clipboardPasteAction" },
+    { "key": "ctrl+x", "command": "-editor.action.clipboardCutAction" },
+    { "key": "ctrl+a", "command": "-editor.action.selectAll" },
+    { "key": "ctrl+,", "command": "-workbench.action.openSettings" },
+    { "key": "ctrl+.", "command": "-editor.action.quickFix" },
+    { "key": "alt+f", "command": "-workbench.action.showFileMenu" },
+    { "key": "alt+w", "command": "-editor.action.toggleWordWrap" },
+    { "key": "alt+d", "command": "-editor.action.addSelectionToNextFindMatch" },
+    {"key": "ctrl+shift+c", "command": "-workbench.action.chat.copyCodeBlock", "when": "inChat"},
+    {"key": "ctrl+shift+c", "command": "-interactive.copyCodeBlock", "when": "resourceScheme == 'vscode-interactive'"}
+]

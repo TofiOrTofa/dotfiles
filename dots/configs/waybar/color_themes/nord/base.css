@@ -1,0 +1,42 @@
+/* ========================================================================= */
+/* 1. БАЗОВАЯ ПАЛИТРА (NORD THEME)                                           */
+/* ========================================================================= */
+@define-color nord0 #2E3440;
+@define-color nord2 #434C5E;
+@define-color nord3 #4C566A;
+@define-color nord5 #E5E9F0;
+@define-color nord7 #8FBCBB;
+@define-color nord8 #88C0D0;
+@define-color nord9 #81A1C1;
+@define-color nord11 #BF616A;
+@define-color nord12 #B08770;
+@define-color nord13 #EBCB8B;
+@define-color nord14 #A3BE8C;
+@define-color nord15 #B48EAD;
+
+/* ========================================================================= */
+/* 2. НАЗНАЧЕНИЕ РОЛЕЙ ДЛЯ МОДУЛЕЙ                                           */
+/* ========================================================================= */
+/* Системные цвета */
+@define-color background-color     @nord0;
+@define-color background-alt-color @nord3;
+@define-color foreground-color     @nord5;
+@define-color primary-color        @nord8;
+@define-color secondary-color      @nord9;
+@define-color disabled-color       @nord2;
+@define-color alert-color          @nord11;
+
+/* Цвета конкретных модулей */
+@define-color network-color     @nord13;
+@define-color mode-color        @nord12;
+@define-color battery-color     @nord14;
+@define-color workspaces-color  @nord15;
+@define-color clock-color       @nord9;
+@define-color language-color    @nord7;
+
+/* Группированные модули (теперь они зависят от палитры, а не друг от друга) */
+@define-color volume-color      @nord7;
+@define-color disk-color        @nord15;
+@define-color active-window     #000000;
+@define-color tray-color        @nord13;
+

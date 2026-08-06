@@ -1,0 +1,136 @@
+// -*- mode: jsonc -*-
+                            {
+
+  //"output"                  : "eDP-1",
+
+  "layer"                     : "top",
+  "position"                  : "top",
+  "height"                    : 24,
+  "margin"                    : "0 0 0 0", // up right down left
+
+  "modules-left"              : [
+                                "tray",
+                                "river/tags",
+                                "river/layout",
+                                "river/mode"
+                              ],
+  "modules-center"            : ["group/characteristic"],
+  "modules-right"             : [
+                                "battery",
+                                "pulseaudio",
+                                "backlight",
+                                "clock",
+                                "network"
+                              ],
+
+
+
+  "tray"                      : {"icon-size": 14, "spacing": 2},
+  "river/tags"                : {
+    "num-tags"                  : 9,
+    "set-tags"                  : [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ],
+    "disable-scroll"            : false,
+    "all-outputs"               : true,
+    "warp-on-scroll"            : false,
+    "tag-labels"                : [
+                                  "一", "二", "三",
+                                  "四", "五", "六",
+                                  "七", "八", "九"
+                                ]
+                              },
+  "river/mode"                : {"format":"{}"},
+  "river/layout"              : {"format":"{}"},
+
+
+  "group/characteristic"      : {
+    "orientation"               : "horizontal",
+    "modules"                   :["temperature", "memory", "cpu"]
+                              },
+
+  "temperature"               : {
+    "thermal-zone"              : 2,
+    "hwmon-path"                :"/sys/class/hwmon/hwmon4/temp1_input",
+    "critical-threshold"        : 80,
+    "format-critical"           :"TEM  {temperatureC}",
+    "format"                    :"TEM {temperatureC}",
+    "states"                    : {
+      "warning"                   : 70,
+      "critical"                  : 90
+                                }
+                              },
+  "memory"                    : {
+    "format"                    : "RAM {}%",
+    "states"                    : {
+      "warning"                   : 80,
+      "critical"                  : 90
+                                }
+                              },
+  "cpu"                       : {
+    "interval"                  : 4,
+    "format"                    : "CPU  {usage}%   {avg_frequency}GHz",
+    "states"                    : {
+      "warning"                   : 70,
+      "critical"                  : 90
+                                }
+                              },
+
+  "battery"                   : {
+    "states"                    : {
+      "good"                      : 80,
+      "warning"                   : 20,
+      "critical"                  : 10
+                                },
+    "format"                    : "{icon}  {capacity}%",
+    "format-full"               : "{icon}  {capacity}%",
+    "format-charging"           : "{icon}  {capacity}%",
+    "format-plugged"            : "{icon}  {capacity}%",
+    "format-alt"                : "{time}  {icon}  |  {power:.1f}W",
+    "format-icons"              :[
+                                  "bat", "baT", "bAt", "Bat",
+                                  "BaT", "BAt", "BAT"
+                                ]
+                              },
+  "pulseaudio"                : {
+    "format-source"             : "{volume}",
+    "format-source-muted"       : "muted",
+    "format"                    : "VOL  {volume}% / {format_source}%",
+    "format-bluetooth"          : "B_VOL  {volume}% / {format_source}%",
+    "on-click"                  : "pavucontrol"
+                              },
+  "backlight"                 : {},
+   "clock"                    : {
+      "interval"                : 60,
+  	  "format"                  : "  {:%H:%M}  ",
+      "format-alt"              : "{:%A, %B %d, %Y (%R)}",
+      "tooltip-format"          : "<small><tt>{calendar}</tt></small>",
+      "timezones"               : ["Etc/GMT-5", "Etc/GMT-3"],
+
+         "calendar"             : {
+            "mode"                : "year",
+            "mode-mon-col"        : 3,
+              "weeks-pos"         : "right",
+              "on-scroll"         : 1,
+              "format"            : {
+                "months"          : "<span color='#ffead3'><b>{}</b></span>",
+                "days"            : "<span color='#ecc6d9'><b>{}</b></span>",
+                "weeks"           : "<span color='#99ffdd'><b>W{:%U}</b></span>",
+                "weekdays"        : "<span color='#ffcc66'><b>{}</b></span>",
+                "today"           : "<span color='#ff6699'><b><u>{}</u></b></span>"
+                                  }
+                                },
+          "actions"             : {
+            "on-click-right"      : "mode",
+            "on-scroll-up"        : "tz_up",
+            "on-scroll-down"      : "tz_down"
+                                }
+                              },
+
+    "network"                 : {
+    "format-wifi"               : "{essid} ({signalStrength}%)",
+    "format-ethernet"           : "{ipaddr}/{cidr}",
+    "tooltip-format"            : "{ifname} via {gwaddr}",
+    "format-linked"             : "{ifname} (No IP)",
+    "format-disconnected"       : "#w#",
+    "format-alt"                : "{ifname}: {ipaddr}/{cidr}"
+                              }
+                            }

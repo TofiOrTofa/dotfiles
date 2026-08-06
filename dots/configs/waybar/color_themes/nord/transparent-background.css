@@ -1,0 +1,54 @@
+/* ========================================================================= */
+/* 1. БАЗОВАЯ ПАЛИТРА (NORD THEME)                                           */
+/* ========================================================================= */
+@define-color nord0                 #2E3440;
+@define-color nord2                 #434C5E;
+@define-color nord3                 #4C566A;
+@define-color nord4                 #D8DEE9;
+@define-color nord5                 #E5E9F0;
+@define-color nord6                 #ECEFF4;
+@define-color nord7                 #8FBCBB;
+@define-color nord8                 #88C0D0;
+@define-color nord9                 #81A1C1;
+@define-color nord11                #BF616A;
+@define-color nord12                #B08770;
+@define-color nord13                #EBCB8B;
+@define-color nord14                #A3BE8C;
+@define-color nord15                #B48EAD;
+
+/* ========================================================================= */
+/* 2. НАЗНАЧЕНИЕ РОЛЕЙ ДЛЯ МОДУЛЕЙ                                           */
+/* ========================================================================= */
+/* Системные цвета */
+@define-color background-color      transparent;
+@define-color background-alt-color  @nord3;
+@define-color foreground-color      @nord0;
+@define-color primary-color         @nord8;
+@define-color secondary-color       @nord9;
+@define-color disabled-color        @nord2;
+@define-color alert-color           @nord11;
+
+
+/* Бэкграунды модулей */
+@define-color background-color-tray        @nord13;
+@define-color background-color-workspaces  @nord15;
+@define-color background-color-language    @nord7;
+@define-color background-color-mode        @nord12;
+@define-color background-color-battery     @nord14;
+@define-color background-color-volume      @nord7;
+@define-color background-color-backlight   @nord4;
+@define-color background-color-clock       @nord9;
+@define-color background-color-network     @nord13;
+
+/* Цвета шрифтов */
+@define-color foreground-color-tray        @foreground-color;
+@define-color foreground-color-workspaces  @foreground-color;
+@define-color foreground-color-language    @foreground-color;
+@define-color foreground-color-mode        @foreground-color;
+@define-color foreground-color-battery     @foreground-color;
+@define-color foreground-color-volume      @foreground-color;
+@define-color foreground-color-backlight   @foreground-color;
+@define-color foreground-color-clock       @foreground-color;
+@define-color foreground-color-network     @foreground-color;
+
+@define-color active-window     #000000;

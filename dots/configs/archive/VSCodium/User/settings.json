@@ -1,0 +1,250 @@
+{
+//>----------------------------------------------------------------------------<внешний вид (UI)
+// шрифт
+  // общее
+    "editor.fontLigatures": false,
+  // едитор
+    "editor.fontFamily": "Fira Code",// шрифт
+    "editor.fontWeight": "450",// ширина шрифта
+    "editor.lineHeight": 22,// высота отступов между строками
+    "editor.fontSize": 20,// размер шрифта
+  // терминал
+    "terminal.integrated.fontFamily": "Fira Code",// шрифт
+    "terminal.integrated.fontSize": 16,
+    "terminal.integrated.fontWeight": "500",
+    "terminal.integrated.fontLigatures.enabled": true,
+// полоски скрола
+    "editor.scrollbar.horizontal": "auto",
+    "editor.scrollbar.horizontalScrollbarSize": 6,
+    "editor.scrollbar.ignoreHorizontalScrollbarInContentHeight": false,
+
+    "editor.scrollbar.scrollByPage": false,
+    "editor.overviewRulerBorder": false,
+    
+    "editor.scrollbar.vertical": "hidden",
+// сторонние элементы
+  // едитор
+    "editor.minimap.enabled": true,// возможность отоброжения миникарты кода
+    "editor.minimap.autohide": "mouseover",// отображение при наведении курсора
+    "editor.minimap.size": "fit",
+    "editor.minimap.scale": 1,
+    "editor.minimap.side": "right",
+    "editor.minimap.maxColumn": 60,
+    "editor.minimap.showSlider": "always",
+    "editor.matchBrackets": "near",// подсветка скобок
+    "editor.occurrencesHighlight": "off",// подсветка слов
+    "editor.stickyScroll.enabled": false,// прилипание заголовков
+    // вкладки
+    "window.density.editorTabHeight": "compact",
+  // sidebar
+    "workbench.list.smoothScrolling": true,// плавный скрол
+//>----------------------------------------------------------------------------<поведение (функционал)
+// zoom
+    // tachpad
+    "editor.mouseWheelZoom": true,
+    "terminal.integrated.mouseWheelZoom": true,
+// персонально ЯП
+    "editor.semanticHighlighting.enabled":true,
+
+    "python.languageServer": "Jedi",
+    "[python]": {
+        "editor.tabSize": 4,
+        "editor.rulers": [79, 88],
+        "editor.suggest.insertMode": "replace",
+    },
+    
+
+    "C_Cpp.intelliSenseEngine": "default",
+    "[c]": {
+      "editor.tabSize": 2,
+      "editor.wordBasedSuggestions": "off",
+      "editor.suggest.insertMode": "replace",
+    },
+    "[lua]": {
+      "editor.tabSize": 2,
+    },
+    "[json]": {
+      "editor.tabSize": 2,
+    },
+    "[html]": {
+      "editor.tabSize": 2,
+
+      "editor.linkedEditing": true,
+      "html.autoClosingTags": true
+    },
+    "[css]": {
+      "editor.tabSize": 2,
+    },
+    "[javascript]": {
+      "editor.tabSize": 2,
+      "editor.maxTokenizationLineLength": 2500,
+      "editor.rulers": [80, 100],
+      "editor.bracketPairColorization.enabled": true,
+      "editor.guides.bracketPairs": "active",
+
+
+      "files.trimTrailingWhitespace": true,
+      "files.insertFinalNewline": true
+
+    },
+    "[typescript]": {
+      "editor.tabSize": 2,
+      "editor.maxTokenizationLineLength": 2000,
+      "editor.rulers": [80, 100],
+
+      "files.trimTrailingWhitespace": true,
+      "files.insertFinalNewline": true
+
+    },
+//>----------------------------------------------------------------------------<расширения
+
+
+
+    
+    
+    
+    "editor.hideCursorInOverviewRuler": true,
+
+    
+    "workbench.activityBar.iconClickBehavior": "toggle",
+    "window.titleBarStyle": "native",
+    "window.menuBarVisibility": "hidden",
+    "window.customMenuBarAltFocus": false,
+
+    
+
+    // для расширения джанго
+    /*"emmet.includeLanguages": {
+        "django-html": "html"
+    },*/
+
+    "workbench.colorTheme": "Tokyo Night Storm",
+    "editor.tabSize": 4,
+    "window.controlsStyle": "hidden",
+      // 2. Настройка цветов интерфейса (Комментарии)
+  "workbench.colorCustomizations": {
+    "editorRuler.foreground": "#ffffff10",
+    "[Tokyo Night Storm]": {
+      "editor.foreground": "#a9b1d6",      // Основной цвет текста
+      "editorCursor.foreground": "#c0caf5",
+      "editor.foldBackground": "#24283c",
+//      "comments": "#636da6"                // Те самые серо-голубые комментарии с первого фото
+    }
+  },
+
+  // 3. Тонкая настройка синтаксиса (Переменные и Кавычки)
+  "editor.tokenColorCustomizations": {
+    "[Tokyo Night Storm]": {
+      "textMateRules": [
+        {
+          // Убираем яркость с переменных, параметров и 'self'
+          "scope": [
+            "variable.parameter",
+            "variable.other",
+            "variable.language.special.self.python",
+            "variable.parameter.function.language.python"
+          ],
+          "settings": {
+            "foreground": "#a9b1d6" // Делаем их цветом обычного текста
+          }
+        },
+        {
+          // Приглушаем строки (текст в кавычках)
+          "scope": [
+            "string",
+            "string.quoted",
+            "string.punctuation.section.embedded"
+          ],
+          "settings": {
+            "foreground": "#88b0aa", // Пыльно-зеленый, не бросается в глаза
+            "fontStyle": ""
+          }
+        },
+        {
+          // Делаем сами кавычки еще чуть темнее
+          "scope": "punctuation.definition.string",
+          "settings": {
+            "foreground": "#90c8c0"
+          }
+        },
+        {
+          // Если хочешь, чтобы числа тоже не горели оранжевым (опционально)
+          "scope": "constant.numeric",
+          "settings": {
+            "foreground": "#a9b1d6" // Или поставь свой цвет
+          }
+        }
+      ]
+    }
+  },
+
+
+
+    "editor.lineNumbers": "relative",
+    "editor.cursorSurroundingLines": 8,
+    "explorer.confirmPasteNative": false,
+
+    "editor.cursorBlinking": "solid",
+    "editor.cursorHeight": 15,
+    "editor.cursorWidth": 2,
+    "editor.cursorSmoothCaretAnimation": "off",
+    "editor.cursorStyle": "line",
+
+    "editor.hover.enabled": "off",
+    "workbench.editor.editorActionsLocation": "titleBar",
+    "workbench.activityBar.location": "top",
+    "workbench.editor.showTabs": "none",
+    "window.commandCenter": false,
+
+    "excalidraw.workspaceLibraryPath": ".",
+    "excalidraw.theme": "dark",
+    
+    "Lua.diagnostics.enable": false,
+    "workbench.sideBar.location": "right",
+    "workbench.editor.enablePreview": false,
+    "workbench.layoutControl.enabled": false,
+    "git.openRepositoryInParentFolders": "never",
+    "workbench.tree.indent": 24,
+    "workbench.panel.showLabels": false,
+
+    "python.analysis.indexing": false,
+"python.analysis.packageIndexDepths": [
+    {
+        "name": "",
+        "depth": 0
+    }
+],
+"python.analysis.autoImportCompletions": false,
+
+
+  "editor.quickSuggestions": {
+    "other": "off",
+    "comments": "off",
+    "strings": "off"
+  },
+  "editor.suggestOnTriggerCharacters": false, // Не показывать при вводе спецсимволов (типа точки)
+  "editor.parameterHints.enabled": false,      // Не показывать подсказки по аргументам функций сами
+
+
+  /*"editor.suggest.showMethods": true,
+  "editor.suggest.showFunctions": true,
+  "editor.suggest.showVariables": true,
+  "editor.suggest.showConstants": true,
+  "editor.suggest.showKeywords": true,
+  "editor.suggest.showSnippets": true,*/
+
+  "ruff.enable": true,
+  //"ruff.lint.run": "onType"
+  "problems.visibility": true,
+
+  "keyboard.dispatch": "keyCode",
+  "workbench.panel.defaultLocation": "right",
+
+  "python.linting.pylintArgs": [
+    "--disable=missing-module-docstring",
+    "--disable=missing-class-docstring",
+    "--disable=missing-function-docstring"
+  ],
+  "mypy.dmypyExecutable": "mypy"
+
+}

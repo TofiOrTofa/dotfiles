@@ -1,0 +1,46 @@
+;; Костыли для Emacs, чтобы пойти против воли Столлмана:
+(setq-default indent-tabs-mode t) ; заставить использовать табы
+(setq-default tab-width 8)        ; поставить ширину 8
+(setq c-basic-offset 8)           ; исправить отступы в Си
+
+;; Отключаем подсветку синтаксиса (делаем текст монохромным)
+(global-font-lock-mode 0)
+(set-face-foreground 'default "white")
+
+(setq inferior-lisp-program "sbcl")
+(require 'sly)
+(add-hook 'lisp-mode-hook 'sly-mode)
+
+(with-eval-after-load 'sly
+  ;; --- МОНОХРОМНЫЕ ОШИБКИ И ПРЕДУПРЕЖДЕНИЯ В КОДЕ ---
+  (set-face-attribute 'sly-error-face nil 
+                      :underline '(:style line :color "white") 
+                      :foreground 'unspecified :background 'unspecified)
+
+  (set-face-attribute 'sly-warning-face nil 
+                      :underline '(:style line :color "gray50") 
+                      :foreground 'unspecified :background 'unspecified)
+
+  (set-face-attribute 'sly-style-warning-face nil 
+                      :underline '(:style wave :color "gray40") 
+                      :foreground 'unspecified :background 'unspecified)
+
+  (set-face-attribute 'sly-compiler-note-face nil 
+                      :underline '(:style line :color "gray30") 
+                      :foreground 'unspecified :background 'unspecified)
+
+  ;; --- МОНОХРОМНЫЙ ОТЛАДЧИК (SLY-DB) ---
+  (set-face-attribute 'sly-db-section-face nil :foreground 'unspecified :weight 'bold)
+  (set-face-attribute 'sly-db-frame-label-face nil :foreground 'unspecified)
+  (set-face-attribute 'sly-db-restartable-frame-face nil :foreground 'unspecified :weight 'normal))
+
+;; --- БЕЗОПАСНАЯ ОЧИСТКА REPL ПРИ ЗАПУСКЕ ---
+(add-hook 'sly-mrepl-mode-hook
+          (lambda ()
+	    (ignore-errors
+              (set-face-attribute 'sly-mrepl-output-face nil :foreground 'unspecified)
+              (set-face-attribute 'sly-mrepl-prompt-face nil :foreground 'unspecified :weight 'bold))))
+
+
+;; что бы работало расширение для common lisp( .cl )
+(add-to-list 'auto-mode-alist '("\\.cl\\'" . lisp-mode))

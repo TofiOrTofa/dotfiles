@@ -25,7 +25,7 @@ for_window [class="^.*"] border pixel 2
 hide_edge_borders smart
 default_floating_border normal
 exec --no-startup-id /usr/lib/xdg-desktop-portal-gtk &
-exec --no-startup-id dbus-update-activation-environment --systemd DISPLAY XAUTHORITY WAYLAND_DISPLAY
+exec --no-startup-id dbus-update-activation-environment --systemd DISPLAY XAUTHORITY WAYLAND_DISPLAY &
 exec --no-startup-id /usr/lib/xdg-desktop-portal-gtk &
 
 #################################
@@ -55,8 +55,8 @@ set $button_sun_down XF86MonBrightnessDown
 set $volume_up pactl set-sink-volume @DEFAULT_SINK@ +5%
 set $volume_down pactl set-sink-volume @DEFAULT_SINK@ -5%
 set $volume_mute pactl set-sink-mute @DEFAULT_SINK@ toggle
-set $micro_up 
-set $micro_down 
+set $micro_up
+set $micro_down
 set $micro_mute pactl set-source-mute @DEFAULT_SOURCE@ toggle && ([ "$(pactl get-source-mute @DEFAULT_SOURCE@)" = "Mute: yes" ] && echo 1 || echo 0) | sudo tee /sys/class/leds/platform::micmute/brightness
 
 
@@ -243,7 +243,7 @@ bindsym v mode "micro"
 #  bindsym $mod+8 $ws8
 #  bindsym $mod+9 $ws9
 #  bindsym $mod+0 $ws10
-#  
+#
 #
 #  bindsym $mod+Shift+1 move container to $ws1
 #  bindsym $mod+Shift+2 move container to $ws2
@@ -278,14 +278,14 @@ mode "resize" {
   bindsym $button_volume_down exec --no-startup-id $volume_down && $refresh_i3status
   bindsym $button_volume_mute exec --no-startup-id $volume_mute && $refresh_i3status
   bindsym $button_micro_mute exec --no-startup-id $micro_mute
-  
+
   bindsym $print exec --no-startup-id $prtsc_app
 
   bindsym h resize shrink width 10 px or 10 ppt
   bindsym k resize grow height 10 px or 10 ppt
   bindsym j resize shrink height 10 px or 10 ppt
   bindsym l resize grow width 10 px or 10 ppt
- 
+
   bindsym Left resize shrink width 10 px or 10 ppt
   bindsym Up resize grow height 10 px or 10 ppt
   bindsym Down resize shrink height 10 px or 10 ppt
@@ -305,9 +305,9 @@ mode "resize" {
 #
 #
 #
-#  bindsym m mode "micro"  
+#  bindsym m mode "micro"
 #  bindsym p exec --no-startup-id $volume_app
-#  
+#
 #  bindsym $ctrl+Up exec --no-startup-id $volume_up
 #  bindsym $ctrl+Down exec --no-startup-id $volume_down
 #

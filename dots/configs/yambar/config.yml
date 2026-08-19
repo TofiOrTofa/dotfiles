@@ -1,0 +1,190 @@
+attributes:
+  theme:
+    colors:
+      bg_focused:             &theme_bg_focused_color 285577FF
+      fg_focused:             &theme_fg_focused_color FFFFFFFF
+      border_focused:         &theme_border_focused_color 4C7899FF
+      bg_unfocused:           &theme_bg_unfocused_color 333333FF
+      fg_unfocused:           &theme_fg_unfocused_color 888888FF
+      border_unfocused:       &theme_border_unfocused_color 222222FF
+      bg_warning:             &theme_bg_warning_color DD352EFF
+      fg_warning:             &theme_fg_warning_color FFFFFFFF
+      border_warning:         &theme_border_warning_color CC241DFF
+
+    fonts:
+      tags:                   &theme_font_tags terminus:size=14:style=Bold
+      default:                &theme_font_default terminus:size=14:style=Bold
+
+    styles:
+      normal_string:          &theme_style_normal_string
+        font: *theme_font_default
+        foreground: *theme_fg_unfocused_color
+        deco:
+          stack:
+            - background: {color: *theme_bg_unfocused_color}
+#            - border: {size: 1, color: *theme_border_unfocused_color}
+      focus_string:           &theme_style_focus_string
+        font: *theme_font_default
+        foreground: *theme_fg_focused_color
+        deco:
+          stack:
+            - background: {color: *theme_bg_focused_color}
+#            - border: {size: 1, color: *theme_border_focused_color}
+      warning_string:         &theme_style_warning_string
+        font: *theme_font_default
+        foreground: *theme_fg_warning_color
+        deco:
+          stack:
+            - background: {color: *theme_bg_warning_color}
+#            - border: {size: 1, color: *theme_border_warning_color}
+    texts:
+      tag:            &txt_tag            " {id} "
+      layout:         &txt_layout         " [{layout}]= "
+      mode:
+        default:      &txt_mode_default   " {mode} "
+        normal:       &txt_mode_normal    " normal "
+      title:          &txt_title          " {title} "
+
+      bat:            &txt_bat            " BAT: {capacity}% "
+      vol:
+        volume:       &txt_vol            " VOL: {cubic_volume}% "
+        bluetooth:    &txt_bvol           " BVOL: {cubic_volume}% "
+        micro:        &txt_mic            " MIC: {cubic_volume}% "
+        mic_mut:      &txt_mic_mut        ""
+      clock:          &txt_clock          " CLOCK: {time} "
+
+      separator:      &txt_separator      " | "
+
+
+
+bar:
+  location: top
+  # margin: 10
+  # bottom
+  height: 22
+  background: 285577FF
+
+  left:
+    - river:
+        title:
+          list:
+            spacing: 0
+            items:
+              - string:
+                  <<: *theme_style_normal_string
+                  text: *txt_separator
+              - map:
+                  default:
+                    string:
+                      <<: *theme_style_focus_string
+                      text: *txt_mode_default
+                  conditions:
+                    mode == normal:
+                      string:
+                        <<: *theme_style_normal_string
+                        text: *txt_mode_normal
+              - string:
+                  <<: *theme_style_normal_string
+                  text: *txt_separator
+              - string:
+                  <<: *theme_style_normal_string
+                  text: *txt_layout
+              - string:
+                  <<: *theme_style_focus_string
+                  text: *txt_title
+        content:
+          map:
+            conditions:
+              focused: # active tag
+                string:
+                  <<: *theme_style_focus_string
+                  font: *theme_font_tags
+                  text: *txt_tag
+              urgent: # warning tag
+                string:
+                  <<: *theme_style_warning_string
+                  font: *theme_font_tags
+                  text: *txt_tag
+              occupied: # busy tag
+                string:
+                  <<: *theme_style_normal_string
+                  font: *theme_font_tags
+                  text: *txt_tag
+              visible: # other monitor visible tag
+                string:
+                  <<: *theme_style_focus_string
+                  font: *theme_font_tags
+                  text: *txt_tag
+
+#  center:
+  right:
+    - script:
+        path: /home/comu/test.sh
+        args: []
+        content:
+          string:
+            <<: *theme_style_focus_string
+            text: "{windows}"
+    - label:
+        content:
+          string:
+            <<: *theme_style_normal_string
+            text: *txt_separator
+    - battery:
+        name: BAT1
+        content:
+          map:
+            default:
+              string: { <<: *theme_style_normal_string, text: *txt_bat }
+            conditions:
+              capacity <= 10 && state == "discharging":
+                string: { <<: *theme_style_warning_string, text: *txt_bat }
+              state == "full":
+                string: { <<: *theme_style_focus_string, text: *txt_bat }
+    - label:
+        content:
+          string:
+            <<: *theme_style_normal_string
+            text: *txt_separator
+    - pipewire:
+        content:
+          map:
+            conditions:
+              type == "sink":
+                map:
+                  default:
+                    string:
+                      <<: *theme_style_normal_string
+                      text: *txt_vol
+                  conditions:
+                    icon == "audio-headset-bluetooth" && muted:
+                      string:
+                        <<: *theme_style_warning_string
+                        text: *txt_bvol
+                    icon == "audio-headset-bluetooth" && ~muted:
+                      string:
+                        <<: *theme_style_normal_string
+                        text: *txt_bvol
+                    muted:
+                      string:
+                        <<: *theme_style_warning_string
+                        text: *txt_vol
+              type == "source": # microfone
+                map:
+                  default:
+                    string:
+                      <<: *theme_style_normal_string
+                      text: *txt_mic
+                  conditions:
+                    muted:
+                      string:
+                        text: *txt_mic_mut
+    - label:
+        content:
+          string:
+            <<: *theme_style_normal_string
+            text: *txt_separator
+    - clock:
+        time-format: "%H %M"
+        content:
+          string: { <<: *theme_style_normal_string, text: *txt_clock }

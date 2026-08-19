@@ -1,4 +1,4 @@
-set noswapfile
+" set noswapfile
 
 " прокрутка
 set scrolloff=1
@@ -8,12 +8,6 @@ set sidescrolloff=0
 set nottimeout
 set showcmd
 
-" умные отступы -
-
-set autoindent
-
-set nosmartindent
-set nocindent
 
 
 " подсветка -
@@ -48,4 +42,4 @@ autocmd BufWritePre * if &ft !~ 'markdown' | silent! %s/\s\+$//e | endif
 " типы файлов -
 filetype plugin on
 filetype indent off
-autocmd BufWinEnter * setlocal nocindent nosmartindent indentexpr=
+autocmd VimEnter * setlocal autoindent nocindent nosmartindent indentexpr=

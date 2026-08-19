@@ -5,10 +5,10 @@ local river_static_config_path = os.getenv("HOME") .. "/.config/river";
 package.path = river_config_path .. "/config.d/?.lua;" .. package.path;
 
 -- конфиги
-local inputs = require("inputs");
-local layouts = require("layouts");
-local keybindings = require("binds");
-local autostart = require("autostart");
+local inputs                            = require("inputs");
+local layouts                           = require("layouts");
+local keybindings                       = require("binds");
+local autostart                         = require("autostart");
 
 init = {};
 init.path = river_config_path .. "/init";
@@ -83,20 +83,25 @@ end
 
 local function generate_binds_section(keybindings)
     local output = {};
-    
+
     for _, mode in ipairs(sorted_keys(keybindings)) do
-        table.insert(output, string.format("\n# %s\n# РЕЖИМ: %s\n# %s\n", string.rep("-", 40), mode:upper(), string.rep("-", 40)));
-        
+        table.insert(output, string.format(
+			"\n# %s\n# РЕЖИМ: %s\n# %s\n",
+			string.rep("-", 40),
+			mode:upper(),
+			string.rep("-", 40)));
+
         for _, modifier in ipairs(sorted_keys(keybindings[mode])) do
-            table.insert(output, string.format("# Модификатор: %s\n", modifier));
-            
+            table.insert(output, string.format(
+			"# Модификатор: %s\n", modifier));
+
             for _, key in ipairs(sorted_keys(keybindings[mode][modifier])) do
                 -- Вызываем функцию из конфига и получаем таблицу её действий
-                local actions = keybindings[mode][modifier][key]();
-                
+                local actions = keybindings[mode][modifier][key];
+
                 -- Пропускаем через наш обработчик макросов
                 local bash_code = process_binding(mode, modifier, key, actions);
-                
+
                 table.insert(output, bash_code);
             end;
         end;
@@ -108,7 +113,7 @@ end;
 -- 1. шебанг
 init.file:write("#!/usr/bin/env bash\n\n");
 init.file:write(
-  [[dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=river]], "\n",
+  [[dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=river MESA_LOADER_DRIVER_OVERRIDE _JAVA_AWT_WM_NONREPARENTING]], "\n",
   [[systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP]], "\n",
   "\n\n"
 );
@@ -146,6 +151,7 @@ end;
 init.file:write("\n\n");
 
 -- 4. Запись макетов, и установка дефолта
+init.file:write([[mkfifo "/tmp/river_ribbot_bar"]], "\n");
 init.file:write([[# --- Layouts ---]]);
 init.file:write("\n\n");
 local layouts_name = sorted_keys(layouts);
@@ -156,7 +162,7 @@ for _, name in ipairs(layouts_name) do
       'riverctl spawn %s &%s',
       name, "\n");
   else
-    line = 'riverctl spawn river-luatile &\n'
+    line = "stdbuf -oL river-luatile > /tmp/river_ribbon_bar\n"
   end;
   init.file:write(line);
 end;
@@ -205,21 +211,21 @@ local binds_bash_code = generate_binds_section(keybindings)
 init.file:write(binds_bash_code)
 -- for _, mode in ipairs(modes_name) do
 --     local modifiers_table = keybindings[mode];
---     
+--
 --     -- Красивая полоска для режима
 --     init.file:write("# " .. string.rep("-", 50) .. "\n");
 --     init.file:write(string.format("# РЕЖИМ: %s\n", mode:upper()));
 --     init.file:write("# " .. string.rep("-", 50) .. "\n\n");
---     
+--
 --     local sorted_modifiers = sorted_keys(modifiers_table);
---     
+--
 --     for _, modifier in ipairs(sorted_modifiers) do
 --         local keys_table = modifiers_table[modifier];
 --         init.file:write(string.format("# Модификатор: %s\n", modifier));
---         
+--
 --         -- Сортируем клавиши по алфавиту, чтобы они не скакали
 --         local sorted_keys = sorted_keys(keys_table);
---         
+--
 --         for _, key in ipairs(sorted_keys) do
 --             local func = keys_table[key];
 --             local river_action = func();

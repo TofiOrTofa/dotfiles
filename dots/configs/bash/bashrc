@@ -1,0 +1,91 @@
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+# Только потом объявляем переменные окружения
+export OZONE_PLATFORM=wayland
+export ELECTRON_OZONE_PLATFORM_HINT=wayland
+export LIBVA_DRIVER_NAME=vdpau
+export WLR_RENDERER=vulkan
+export CHROMIUM_FLAGS="--enable-features=Vulkan,VulkanFromANGLE --use-vulkan=native"
+export GSK_RENDERER=vulkan
+export MESA_LOADER_DRIVER_OVERRIDE=zink
+
+
+
+
+# alias ls='ls --color=auto'
+# alias grep='grep --color=auto'
+alias vim="vim -X"
+alias river='river -no-xwayland'
+alias emacs='env DISPLAY= WAYLAND_DISPLAY= emacs -nw'
+
+
+# разделение систем >---------------------------------------------------------<
+nixos() {
+	if [ -z "$1" ]; then
+		echo "Использование: nixos <команда> [аргументы]"
+		return 1
+	fi
+
+	PATH="$HOME/.nix-profile/bin" "$@"
+}
+emerge() {
+	/home/comu/gentoo/startprefix -c "emerge $*"
+}
+alias gentoo="$HOME/gentoo/startprefix_in_the_moment"
+arch() {
+	if [ -z "$1" ]; then
+		echo "Использование: arch <команда> [аргументы]"
+		return 1
+	fi
+
+
+	PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin" "$@"
+}
+# тэги >----------------------------------------------------------------------<
+
+# 1. Добавить тег к файлу (Использование: tag фото.jpg авто)
+tag() {
+	setfattr -n user.tag."$2" -v "1" "$1"
+}
+
+# 2. Удалить конкретный тег с файла (Использование: untag фото.jpg авто)
+untag() {
+	setfattr -x user.tag."$2" "$1" 2>/dev/null ||\
+		echo "Тег '$2' не найден у файла '$1'"
+}
+
+# 3. Показать все теги конкретного файла (Использование: filetags фото.jpg)
+filetags() {
+	getfattr -d "$1" 2>/dev/null |\
+		grep "user.tag." |\
+		cut -d '.' -f 3 |\
+		cut -d '=' -f 1
+}
+
+findtag() {
+	local file
+	# Использованием --header для подсказки и --prompt для красивого приглашения строки
+	file=$(\
+		getfattr -R -n user.tag."$1" . 2>/dev/null |\
+		grep "# file:" | cut -d ' ' -f 3 |\
+		fzf --header="Тег: $1 |\
+		Выберите файл (Enter - открыть, Esc - выход)"\
+		--prompt="Поиск файла > "\
+	)
+
+	if [ -n "$file" ]; then
+		xdg-open "$file" &>/dev/null & disown
+		echo "Открываю: $file"
+	fi
+}
+t_findtag() {
+	~/find_by_tag.sh $PWD &>/dev/null & disown
+}
+
+
+# >---------------------------------------------------------------------------<
+
+
+PS1="\W $ "
+# PS1='[\u@\h \W]\$ '

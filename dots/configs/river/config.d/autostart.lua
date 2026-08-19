@@ -1,3 +1,4 @@
 return {
-  [[waybar]],
+  [[yambar]],
+  [[xwayland-satellite :1]]
 }

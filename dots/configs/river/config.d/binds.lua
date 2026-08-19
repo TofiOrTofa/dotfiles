@@ -1,534 +1,253 @@
-return {
-
-  ["normal"] = {
-
-    ["None"] = {
-      ["XF86AudioRaiseVolume"] = function ()
-        return {[[spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+']]};
-      end,
-      ["XF86AudioLowerVolume"] = function ()
-        return {[[spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-']]};
-      end,
-      ["XF86AudioMute"] = function ()
-        return {[[spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle']]};
-      end,
-
-      ["XF86AudioMicMute"] = function ()
-        return {[[spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle']]};
-      end,
-
-      ["XF86MonBrightnessUp"] = function ()
-        return {[[spawn 'brightnessctl set +5%']]};
-      end,
-      ["XF86MonBrightnessDown"] = function ()
-        return {[[spawn 'brightnessctl set -- -5%']]};
-      end,
-
-      ["Print"] = function ()
-        return {[[spawn 'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png']]};
-      end,
-
-
-      ["I"] = function ()
-        return {[[enter-mode insert]]};
-      end,
-      ["O"] = function ()
-        return {[[enter-mode insert]]};
-      end,
-      ["A"] = function ()
-        return {[[enter-mode insert]]};
-      end,
-      ["D"] = function ()
-        return {[[enter-mode search]]};
-      end,
-      ["R"] = function ()
-        return {[[enter-mode resize]]};
-      end,
-
-
-      ["T"] = function ()
-        return {
-          [[spawn 'env LANG=C.UTF-8 LCALL=C.UTF-8 foot']]
-        };
-      end,
-
-
-      ["F"] = function ()
-        return {[[toggle-float]]};
-      end,
-
-      ["J"] = function ()
-        return {[[focus-view next]]};
-      end,
-      ["K"] = function ()
-        return {[[focus-view previous]]};
-      end,
-
-      ["H"] = function ()
-        return {[[zoom]]};
-      end,
-
-
-      ["period"] = function ()
-        return {
-		[[send-layout-cmd luatile "scroll_next()"]],
-		[[focus-view next]]
-	};
-      end,
-      ["comma"] = function ()
-        return {
-		[[send-layout-cmd luatile "scroll_prev()"]],
-		[[focus-view previous]]
-	};
-      end,
-
-
-      ["W"] = function ()
-        return {
-					[[spawn combining_tags]],
-					[[enter-mode insert]]
-				}
-      end,
-      ["B"] = function ()
-        return {
-					[[spawn window_add_tags]],
-					[[enter-mode insert]]
-				}
-      end,
-
-
-      ["1"] = function ()
-        return {[[set-focused-tags 1]]}
-      end,
-      ["2"] = function ()
-        return {[[set-focused-tags 2]]}
-      end,
-      ["3"] = function ()
-        return {[[set-focused-tags 4]]}
-      end,
-      ["4"] = function ()
-        return {[[set-focused-tags 8]]}
-      end,
-      ["5"] = function ()
-        return {[[set-focused-tags 16]]}
-      end,
-      ["6"] = function ()
-        return {[[set-focused-tags 32]]}
-      end,
-      ["7"] = function ()
-        return {[[set-focused-tags 64]]}
-      end,
-      ["8"] = function ()
-        return {[[set-focused-tags 128]]}
-      end,
-      ["9"] = function ()
-        return {[[set-focused-tags 256]]}
-      end
-    },
-
-    ["Shift"] = {
-
-      ["XF86AudioRaiseVolume"] = function ()
-        return {[[spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 20%+']]};
-      end,
-      ["XF86AudioLowerVolume"] = function ()
-        return {[[spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 20%-']]};
-      end,
-      ["XF86AudioMute"] = function ()
-        return {[[spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle']]};
-      end,
-
-      ["XF86AudioMicMute"] = function ()
-        return {[[spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle']]};
-      end,
-
-      ["XF86MonBrightnessUp"] = function ()
-        return {[[spawn 'brightnessctl set +20%']]};
-      end,
-      ["XF86MonBrightnessDown"] = function ()
-        return {[[spawn 'brightnessctl set -- -20%']]};
-      end,
-
-      ["Print"] = function ()
-        return {[[spawn 'grim ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%m-%s).png']]};
-      end,
-      ["Escape"] = function ()
-        return {
-          [[enter-mode screen_sleep]],
-          [[spawn "wlr-randr --output eDP-1 --off"]]
-        };
-      end,
-
-
-      ["I"] = function ()
-        return {[[enter-mode insert]]};
-      end,
-      ["O"] = function ()
-        return {[[enter-mode insert]]};
-      end,
-      ["A"] = function ()
-        return {[[enter-mode insert]]};
-      end,
-      ["D"] = function ()
-        return {[[enter-mode search]]};
-      end,
-      ["R"] = function ()
-        return {[[enter-mode resize]]};
-      end,
-
-
-      ["E"] = function ()
-        return {[[exit]]};
-      end,
-
-      ["Q"] = function ()
-        return {[[close]]};
-      end,
-      ["C"] = function ()
-        return {[[close]]};
-      end,
-
-
-      ["F"] = function ()
-        return {[[toggle-fullscreen]]};
-      end,
-
-      ["J"] = function ()
-        return {[[swap next]]};
-      end,
-      ["K"] = function ()
-        return {[[swap previous]]};
-      end,
-
-      ["period"] = function ()
-        return {
-		[[send-layout-cmd luatile "scroll_next()"]],
-		[[swap next]]
-	};
-      end,
-      ["comma"] = function ()
-        return {
-		[[send-layout-cmd luatile "scroll_prev()"]],
-		[[swap previous]]
-	};
-      end,
-
-      ["H"] = function ()
-        return {[[send-layout-cmd rivertile "main-count +1"]]};
-      end,
-      ["L"] = function ()
-        return {[[send-layout-cmd rivertile "main-count -1"]]};
-      end,
-
-
-      ["semicolon"] = function ()
-        return {[[spawn command_center]]}
-      end,
-
-
-
-      ["1"] = function ()
-        return {[[set-view-tags 1]]}
-      end,
-      ["2"] = function ()
-        return {[[set-view-tags 2]]}
-      end,
-      ["3"] = function ()
-        return {[[set-view-tags 4]]}
-      end,
-      ["4"] = function ()
-        return {[[set-view-tags 8]]}
-      end,
-      ["5"] = function ()
-        return {[[set-view-tags 16]]}
-      end,
-      ["6"] = function ()
-        return {[[set-view-tags 32]]}
-      end,
-      ["7"] = function ()
-        return {[[set-view-tags 64]]}
-      end,
-      ["8"] = function ()
-        return {[[set-view-tags 128]]}
-      end,
-      ["9"] = function ()
-        return {[[set-view-tags 256]]}
-      end,
-    },
-
-    ["Control"] = {
-
-      ["Up"] = function ()
-        return {[[spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+']]};
-      end,
-      ["Down"] = function ()
-        return {[[spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-']]};
-      end,
-
-    }
-
-  },
-
-  ["insert"] = {
-
-    ["None"] = {
-
-      ["XF86AudioRaiseVolume"] = function ()
-        return {[[spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+']]};
-      end,
-      ["XF86AudioLowerVolume"] = function ()
-        return {[[spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-']]};
-      end,
-      ["XF86AudioMute"] = function ()
-        return {[[spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle']]};
-      end,
-
-      ["XF86AudioMicMute"] = function ()
-        return {[[spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle']]};
-      end,
-
-      ["XF86MonBrightnessUp"] = function ()
-        return {[[spawn 'brightnessctl set +5%']]};
-      end,
-      ["XF86MonBrightnessDown"] = function ()
-        return {[[spawn 'brightnessctl set -- -5%']]};
-      end,
-
-      ["Print"] = function ()
-        return {[[spawn 'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png']]};
-
-      end,
-
-      ["Super_L"] = function ()
-        return {[[enter-mode normal]]}
-      end
-
-    },
-
-    ["Shift"] = {
-
-      ["XF86AudioRaiseVolume"] = function ()
-        return {[[spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 20%+']]};
-      end,
-      ["XF86AudioLowerVolume"] = function ()
-        return {[[spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 20%-']]};
-      end,
-      ["XF86AudioMute"] = function ()
-        return {[[spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle']]};
-      end,
-
-      ["XF86AudioMicMute"] = function ()
-        return {[[spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle']]};
-      end,
-
-      ["XF86MonBrightnessUp"] = function ()
-        return {[[spawn 'brightnessctl set +20%']]};
-      end,
-      ["XF86MonBrightnessDown"] = function ()
-        return {[[spawn 'brightnessctl set +20%']]};
-      end,
-
-      ["Print"] = function ()
-        return {[[spawn 'grim ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%m-%s).png']]};
-      end,
-
-    }
-
-  },
-
-  ["resize"] = {
-
-    ["None"] = {
-
-      ["XF86AudioRaiseVolume"] = function ()
-        return {[[spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+']]};
-      end,
-      ["XF86AudioLowerVolume"] = function ()
-        return {[[spawn'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-']]};
-      end,
-      ["XF86AudioMute"] = function ()
-        return {[[spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle']]};
-      end,
-
-      ["XF86AudioMicMute"] = function ()
-        return {[[spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle']]};
-      end,
-
-      ["XF86MonBrightnessUp"] = function ()
-        return {[[spawn 'brightnessctl set +5%']]};
-      end,
-      ["XF86MonBrightnessDown"] = function ()
-        return {[[spawn 'brightnessctl set -- -5%']]};
-      end,
-
-      ["Print"] = function ()
-        return {[[spawn 'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png']]};
-      end,
-
-
-      ["H"] = function ()
-        return {[[send-layout-cmd rivertile "main-ratio -0.05"]]};
-      end,
-      ["L"] = function ()
-        return {[[send-layout-cmd rivertile "main-ratio +0.05"]]};
-      end,
-
-      ["Super_L"] = function ()
-        return {[[enter-mode normal]]};
-      end,
-      ["I"] = function ()
-        return {[[enter-mode insert]]};
-      end,
-      ["D"] = function ()
-        return {[[enter-mode search]]};
-      end
-
-    },
-
-    ["Shift"] = {
-
-      ["XF86AudioRaiseVolume"] = function ()
-        return {[[spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 20%+']]};
-      end,
-      ["XF86AudioLowerVolume"] = function ()
-        return {[[spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 20%-']]};
-      end,
-      ["XF86AudioMute"] = function ()
-        return {[[spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle']]};
-      end,
-
-      ["XF86AudioMicMute"] = function ()
-        return {[[spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle']]};
-      end,
-
-      ["XF86MonBrightnessUp"] = function ()
-        return {[[spawn 'brightnessctl set +20%']]};
-      end,
-      ["XF86MonBrightnessDown"] = function ()
-        return {[[spawn 'brightnessctl set -- -20%']]};
-      end,
-
-      ["Print"] = function ()
-        return {[[spawn 'grim ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%m-%s).png']]};
-      end,
-
-
-      ["H"] = function ()
-        return {[[send-layout-cmd rivertile "main-ratio -0.2"]]};
-      end,
-      ["L"] = function ()
-        return {[[send-layout-cmd rivertile "main-ratio +0.2"]]};
-      end
-
-    },
-
-  },
-
-  ["search"] = {
-
-    ["None"] = {
-
-      ["XF86AudioRaiseVolume"] = function ()
-        return {[[spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+']]};
-      end,
-      ["XF86AudioLowerVolume"] = function ()
-        return {[[spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-']]};
-      end,
-      ["XF86AudioMute"] = function ()
-        return {[[spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle']]};
-      end,
-
-      ["XF86AudioMicMute"] = function ()
-        return {[[spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle']]};
-      end,
-
-      ["XF86MonBrightnessUp"] = function ()
-        return {[[spawn 'brightnessctl set +5%']]};
-      end,
-      ["XF86MonBrightnessDown"] = function ()
-        return {[[spawn 'brightnessctl set -- -5%']]};
-      end,
-
-      ["Print"] = function ()
-        return {[[spawn 'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png']]};
-      end,
-
-
-      ["Escape"] = function ()
-        return {[[enter-mode normal]]};
-      end,
-
-      ["D"] = function ()
-        return {
-          [[spawn 'fuzzel']],
-          [[enter-mode insert]]
-        };
-      end,
-      ["E"] = function ()
-        return {
-          [[spawn 'wofi-emoji']],
-          [[enter-mode insert]]
-        }
-      end,
-      ["L"] = function ()
-        return {
-          [[spawn "layoutmenu"]],
-          [[enter-mode insert]]
-        };
-      end,
-
-
-      ["Super_L"] = function ()
-        return {[[enter-mode normal]]};
-      end,
-      ["I"] = function ()
-        return {[[enter-mode insert]]}
-      end,
-      ["R"] = function ()
-        return {[[enter-mode resize]]}
-      end
-
-    },
-
-    ["Shift"] = {
-
-      ["XF86AudioRaiseVolume"] = function ()
-        return {[[spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 20%+']]};
-      end,
-      ["XF86AudioLowerVolume"] = function ()
-        return {[[spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 20%-']]};
-      end,
-      ["XF86AudioMute"] = function ()
-        return {[[spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle']]};
-      end,
-
-      ["XF86AudioMicMute"] = function ()
-        return {[[spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle']]};
-      end,
-
-      ["XF86MonBrightnessUp"] = function ()
-        return {[[spawn 'brightnessctl set +20%']]};
-      end,
-      ["XF86MonBrightnessDown"] = function ()
-        return {[[spawn 'brightnessctl set -- -20%']]};
-      end,
-
-      ["Print"] = function ()
-        return {[[spawn 'grim ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%m-%s).png']]};
-      end
-
-    }
-
-  },
-
-  ["screen_sleep"] = {
-    ["Shift"] = {
-      ["Escape"] = function ()
-        return {
-          [[enter-mode normal]],
-          [[spawn "wlr-randr --output eDP-1 --on"]]
-        };
-      end
-    }
+volume = {
+    up = function (percent)
+      return (
+        [[spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ ]]
+        .. percent
+        .. [[%+']]
+      )
+    end,
+    down = function (percent)
+      return (
+        [[spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ ]]
+        .. percent
+        .. [[%-']]
+      )
+    end,
+    mute = [[spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle']]
   }
-}
+microphone = {
+    up = function (percent)
+      return [[]]
+    end,
+    down = function (percent)
+      return [[]]
+    end,
+    mute = [[spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle']]
+  }
+brightness = {
+    up = function (percent)
+      return [[spawn 'brightnessctl set +]] .. percent .. [[%']]
+    end,
+    down = function (percent)
+      return [[spawn 'brightnessctl set -- -]] .. percent .. [[%']]
+    end,
+    mute = [[]]
+  }
+layout = {
+    windows = {
+        next = [[send-layout-cmd luatile "scroll_next()"]],
+        prev = [[send-layout-cmd luatile "scroll_prev()"]]
+      }
+  }
+screenshot = [[spawn 'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png']]
+terminal = [[spawn 'env LANG=C.UTF-8 LCALL=C.UTF-8 foot']]
+
+return                                {
+    ["normal"]                        = {
+        ["None"]                        = {
+            ["XF86AudioRaiseVolume"]      = {volume.up(10)},
+            ["XF86AudioLowerVolume"]      = {volume.down(5)},
+            ["XF86AudioMute"]             = {volume.mute},
+            ["XF86AudioMicMute"]          = {microphone.mute},
+            ["XF86MonBrightnessUp"]       = {brightness.up(10)},
+            ["XF86MonBrightnessDown"]     = {brightness.down(5)},
+            ["Print"]                     = {screenshot},
+
+            ["I"]                         = {[[enter-mode insert]]},
+            ["O"]                         = {[[enter-mode insert]]},
+            ["A"]                         = {[[enter-mode insert]]},
+            ["D"]                         = {[[enter-mode search]]},
+            ["R"]                         = {[[enter-mode resize]]},
+
+            ["T"]                         = {terminal},
+
+            ["F"]                         = {[[toggle-float]]};
+            ["J"]                         = {[[focus-view next]]};
+            ["K"]                         = {[[focus-view previous]]};
+            ["H"]                         = {[[zoom]]};
+
+            ["period"]                    = {
+                                              [[focus-view next]],
+                                              layout.windows.next
+                                            },
+            ["comma"]                     = {
+                                              [[focus-view previous]],
+                                              layout.windows.prev
+                                            },
+
+            ["W"]                         = {
+                                              [[spawn combining_tags]],
+                                              [[enter-mode insert]]
+                                            },
+            ["B"]                         = {
+                                              [[spawn window_add_tags]],
+                                              [[enter-mode insert]]
+                                            },
+
+            ["1"]                         = {[[set-focused-tags 1]]},
+            ["2"]                         = {[[set-focused-tags 2]]},
+            ["3"]                         = {[[set-focused-tags 4]]},
+            ["4"]                         = {[[set-focused-tags 8]]},
+            ["5"]                         = {[[set-focused-tags 16]]},
+            ["6"]                         = {[[set-focused-tags 32]]},
+            ["7"]                         = {[[set-focused-tags 64]]},
+            ["8"]                         = {[[set-focused-tags 128]]},
+            ["9"]                         = {[[set-focused-tags 256]]},
+                                          },
+        ["Shift"]                       = {
+            ["XF86AudioRaiseVolume"]      = {volume.up(20)},
+            ["XF86AudioLowerVolume"]      = {volume.down(10)},
+            ["XF86AudioMute"]             = {volume.mute},
+            ["XF86AudioMicMute"]          = {microphone.mute},
+            ["XF86MonBrightnessUp"]       = {brightness.up(20)},
+            ["XF86MonBrightnessDown"]     = {brightness.down(10)},
+            ["Print"]                     = {screenshot},
+
+            ["Escape"]                    = {
+                                              [[enter-mode screen_sleep]],
+                                              [[spawn "wlr-randr --output eDP-1 --off"]]
+                                            },
+            ["I"]                         = {[[enter-mode insert]]},
+            ["O"]                         = {[[enter-mode insert]]},
+            ["A"]                         = {[[enter-mode insert]]},
+            ["D"]                         = {[[enter-mode search]]},
+            ["R"]                         = {[[enter-mode resize]]},
+
+            ["E"]                         = {[[exit]]},
+            ["Q"]                         = {[[close]]},
+            ["C"]                         = {[[close]]},
+
+            ["F"]                         = {[[toggle-fullscreen]]},
+
+            ["J"]                         = {[[swap next]]},
+            ["K"]                         = {[[swap previous]]},
+
+            ["period"]                    = {
+                                              layout.windows.next,
+                                              [[swap next]]
+                                            },
+            ["comma"]                     = {
+                                              layout.windows.prev,
+                                              [[swap previous]]
+                                            },
+
+            ["H"]                         = {[[send-layout-cmd rivertile "main-count +1"]]},
+            ["L"]                         = {[[send-layout-cmd rivertile "main-count -1"]]},
+
+            ["semicolon"]                 = {[[spawn command_center]]},
+
+            ["1"]                         = {[[set-view-tags 1]]},
+            ["2"]                         = {[[set-view-tags 2]]},
+            ["3"]                         = {[[set-view-tags 4]]},
+            ["4"]                         = {[[set-view-tags 8]]},
+            ["5"]                         = {[[set-view-tags 16]]},
+            ["6"]                         = {[[set-view-tags 32]]},
+            ["7"]                         = {[[set-view-tags 64]]},
+            ["8"]                         = {[[set-view-tags 128]]},
+            ["9"]                         = {[[set-view-tags 256]]}
+                                          },
+        ["Control"]                     = {
+            ["Up"]                        = {volume.up(10)},
+            ["Down"]                      = {volume.down(5)}
+                                          }
+                                        },
+    ["insert"]                        = {
+        ["None"]                        = {
+            ["XF86AudioRaiseVolume"]      = {volume.up(10)},
+            ["XF86AudioLowerVolume"]      = {volume.down(5)},
+            ["XF86AudioMute"]             = {volume.mute},
+            ["XF86AudioMicMute"]          = {microphone.mute},
+            ["XF86MonBrightnessUp"]       = {brightness.up(10)},
+            ["XF86MonBrightnessDown"]     = {brightness.down(5)},
+            ["Print"]                     = {screenshot},
+
+            ["Super_L"]                   = {[[enter-mode normal]]}
+                                          },
+        ["Shift"]                       = {
+            ["XF86AudioRaiseVolume"]      = {volume.up(20)},
+            ["XF86AudioLowerVolume"]      = {volume.down(10)},
+            ["XF86AudioMute"]             = {volume.mute},
+            ["XF86AudioMicMute"]          = {microphone.mute},
+            ["XF86MonBrightnessUp"]       = {brightness.up(20)},
+            ["XF86MonBrightnessDown"]     = {brightness.down(10)},
+            ["Print"]                     = {screenshot}
+                                          }
+                                        },
+    ["resize"]                        = {
+        ["None"]                        = {
+            ["XF86AudioRaiseVolume"]      = {volume.up(10)},
+            ["XF86AudioLowerVolume"]      = {volume.down(5)},
+            ["XF86AudioMute"]             = {volume.mute},
+            ["XF86AudioMicMute"]          = {microphone.mute},
+            ["XF86MonBrightnessUp"]       = {brightness.up(10)},
+            ["XF86MonBrightnessDown"]     = {brightness.down(5)},
+            ["Print"]                     = {screenshot},
+
+            ["H"]                         = {[[send-layout-cmd rivertile "main-ratio -0.05"]]},
+            ["L"]                         = {[[send-layout-cmd rivertile "main-ratio +0.05"]]},
+
+            ["Super_L"]                   = {[[enter-mode normal]]},
+            ["I"]                         = {[[enter-mode insert]]},
+            ["D"]                         = {[[enter-mode search]]}
+                                          },
+        ["Shift"]                       = {
+            ["XF86AudioRaiseVolume"]      = {volume.up(20)},
+            ["XF86AudioLowerVolume"]      = {volume.down(10)},
+            ["XF86AudioMute"]             = {volume.mute},
+            ["XF86AudioMicMute"]          = {microphone.mute},
+            ["XF86MonBrightnessUp"]       = {brightness.up(20)},
+            ["XF86MonBrightnessDown"]     = {brightness.down(10)},
+            ["Print"]                     = {screenshot},
+
+            ["H"]                         = {[[send-layout-cmd rivertile "main-ratio -0.2"]]};
+            ["L"]                         = {[[send-layout-cmd rivertile "main-ratio +0.2"]]};
+                                          }
+                                        },
+    ["search"]                        = {
+        ["None"]                        = {
+            ["XF86AudioRaiseVolume"]      = {volume.up(10)},
+            ["XF86AudioLowerVolume"]      = {volume.down(5)},
+            ["XF86AudioMute"]             = {volume.mute},
+            ["XF86AudioMicMute"]          = {microphone.mute},
+            ["XF86MonBrightnessUp"]       = {brightness.up(10)},
+            ["XF86MonBrightnessDown"]     = {brightness.down(5)},
+            ["Print"]                     = {screenshot},
+
+
+            ["D"]                         = {
+                                              [[spawn 'fuzzel']],
+                                              [[enter-mode insert]]
+                                            },
+            ["E"]                         = {
+                                              [[spawn 'wofi-emoji']],
+                                              [[enter-mode insert]]
+                                            },
+            ["L"]                         = {
+                                              [[spawn "layoutmenu"]],
+                                              [[enter-mode insert]]
+                                            },
+
+            ["Escape"]                    = {[[enter-mode normal]]},
+            ["Super_L"]                   = {[[enter-mode normal]]},
+            ["I"]                         = {[[enter-mode insert]]},
+            ["R"]                         = {[[enter-mode resize]]}
+                                          },
+        ["Shift"]                       = {
+            ["XF86AudioRaiseVolume"]      = {volume.up(20)},
+            ["XF86AudioLowerVolume"]      = {volume.down(10)},
+            ["XF86AudioMute"]             = {volume.mute},
+            ["XF86AudioMicMute"]          = {microphone.mute},
+            ["XF86MonBrightnessUp"]       = {brightness.up(20)},
+            ["XF86MonBrightnessDown"]     = {brightness.down(10)},
+            ["Print"]                     = {screenshot};
+                                          }
+                                        },
+    ["screen_sleep"]                  = {
+        ["Shift"]                       = {
+            ["Escape"]                    = {
+                                              [[enter-mode normal]],
+                                              [[spawn "wlr-randr --output eDP-1 --on"]]
+                                            }
+                                          }
+                                        }
+                                      }

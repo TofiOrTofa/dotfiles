@@ -151,7 +151,7 @@ end;
 -- 1. шебанг
 init.file:write("#!/usr/bin/env bash\n\n");
 init.file:write(
-  [[dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=river]], "\n",
+  [[dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=river MESA_LOADER_DRIVER_OVERRIDE _JAVA_AWT_WM_NONREPARENTING]], "\n",
   [[systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP]], "\n",
   "\n\n"
 );

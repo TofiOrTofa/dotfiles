@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=river
+dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=river MESA_LOADER_DRIVER_OVERRIDE _JAVA_AWT_WM_NONREPARENTING
 systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 
 
@@ -22,23 +22,25 @@ riverctl input "pointer-1267-12533-ELAN2204:00_04F3:30F5_Touchpad" pointer-accel
 riverctl input "pointer-1267-12533-ELAN2204:00_04F3:30F5_Touchpad" tap enabled
 
 
+mkfifo "/tmp/river_ribbot_bar"
 # --- Layouts ---
 
-riverctl spawn river-luatile &
+stdbuf -oL river-luatile > /tmp/river_ribbon_bar
 riverctl spawn rivercarro &
 riverctl spawn rivertile &
 riverctl default-layout luatile
 
 # --- autostart ---
 
-riverctl spawn "waybar" &
+riverctl spawn "yambar" &
+riverctl spawn "xwayland-satellite :1" &
 
 
 # --- mods ---
 
-riverctl declare-mode screen_sleep
 riverctl declare-mode insert
 riverctl declare-mode search
+riverctl declare-mode screen_sleep
 riverctl declare-mode resize
 
 
@@ -51,16 +53,16 @@ riverctl map -layout 0 insert None Super_L enter-mode normal
 riverctl map -layout 0 insert None XF86AudioLowerVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'
 riverctl map -layout 0 insert None XF86AudioMicMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'
 riverctl map -layout 0 insert None XF86AudioMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
-riverctl map -layout 0 insert None XF86AudioRaiseVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+'
+riverctl map -layout 0 insert None XF86AudioRaiseVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+'
 riverctl map -layout 0 insert None XF86MonBrightnessDown spawn 'brightnessctl set -- -5%'
-riverctl map -layout 0 insert None XF86MonBrightnessUp spawn 'brightnessctl set +5%'
+riverctl map -layout 0 insert None XF86MonBrightnessUp spawn 'brightnessctl set +10%'
 # Модификатор: Shift
-riverctl map -layout 0 insert Shift Print spawn 'grim ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%m-%s).png'
-riverctl map -layout 0 insert Shift XF86AudioLowerVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 20%-'
+riverctl map -layout 0 insert Shift Print spawn 'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png'
+riverctl map -layout 0 insert Shift XF86AudioLowerVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-'
 riverctl map -layout 0 insert Shift XF86AudioMicMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'
 riverctl map -layout 0 insert Shift XF86AudioMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
 riverctl map -layout 0 insert Shift XF86AudioRaiseVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 20%+'
-riverctl map -layout 0 insert Shift XF86MonBrightnessDown spawn 'brightnessctl set +20%'
+riverctl map -layout 0 insert Shift XF86MonBrightnessDown spawn 'brightnessctl set -- -10%'
 riverctl map -layout 0 insert Shift XF86MonBrightnessUp spawn 'brightnessctl set +20%'
 
 # ----------------------------------------
@@ -68,7 +70,7 @@ riverctl map -layout 0 insert Shift XF86MonBrightnessUp spawn 'brightnessctl set
 # ----------------------------------------
 # Модификатор: Control
 riverctl map -layout 0 normal Control Down spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'
-riverctl map -layout 0 normal Control Up spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+'
+riverctl map -layout 0 normal Control Up spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+'
 # Модификатор: None
 riverctl map -layout 0 normal None 1 set-focused-tags 1
 riverctl map -layout 0 normal None 2 set-focused-tags 2
@@ -95,9 +97,9 @@ riverctl map -layout 0 normal None W spawn /home/comu/.config/river/macros/macro
 riverctl map -layout 0 normal None XF86AudioLowerVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'
 riverctl map -layout 0 normal None XF86AudioMicMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'
 riverctl map -layout 0 normal None XF86AudioMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
-riverctl map -layout 0 normal None XF86AudioRaiseVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+'
+riverctl map -layout 0 normal None XF86AudioRaiseVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+'
 riverctl map -layout 0 normal None XF86MonBrightnessDown spawn 'brightnessctl set -- -5%'
-riverctl map -layout 0 normal None XF86MonBrightnessUp spawn 'brightnessctl set +5%'
+riverctl map -layout 0 normal None XF86MonBrightnessUp spawn 'brightnessctl set +10%'
 riverctl map -layout 0 normal None comma spawn /home/comu/.config/river/macros/macro_normal_None_comma.sh
 riverctl map -layout 0 normal None period spawn /home/comu/.config/river/macros/macro_normal_None_period.sh
 # Модификатор: Shift
@@ -122,14 +124,14 @@ riverctl map -layout 0 normal Shift J swap next
 riverctl map -layout 0 normal Shift K swap previous
 riverctl map -layout 0 normal Shift L send-layout-cmd rivertile "main-count -1"
 riverctl map -layout 0 normal Shift O enter-mode insert
-riverctl map -layout 0 normal Shift Print spawn 'grim ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%m-%s).png'
+riverctl map -layout 0 normal Shift Print spawn 'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png'
 riverctl map -layout 0 normal Shift Q close
 riverctl map -layout 0 normal Shift R enter-mode resize
-riverctl map -layout 0 normal Shift XF86AudioLowerVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 20%-'
+riverctl map -layout 0 normal Shift XF86AudioLowerVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-'
 riverctl map -layout 0 normal Shift XF86AudioMicMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'
 riverctl map -layout 0 normal Shift XF86AudioMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
 riverctl map -layout 0 normal Shift XF86AudioRaiseVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 20%+'
-riverctl map -layout 0 normal Shift XF86MonBrightnessDown spawn 'brightnessctl set -- -20%'
+riverctl map -layout 0 normal Shift XF86MonBrightnessDown spawn 'brightnessctl set -- -10%'
 riverctl map -layout 0 normal Shift XF86MonBrightnessUp spawn 'brightnessctl set +20%'
 riverctl map -layout 0 normal Shift comma spawn /home/comu/.config/river/macros/macro_normal_Shift_comma.sh
 riverctl map -layout 0 normal Shift period spawn /home/comu/.config/river/macros/macro_normal_Shift_period.sh
@@ -145,21 +147,21 @@ riverctl map -layout 0 resize None I enter-mode insert
 riverctl map -layout 0 resize None L send-layout-cmd rivertile "main-ratio +0.05"
 riverctl map -layout 0 resize None Print spawn 'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png'
 riverctl map -layout 0 resize None Super_L enter-mode normal
-riverctl map -layout 0 resize None XF86AudioLowerVolume spawn'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'
+riverctl map -layout 0 resize None XF86AudioLowerVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'
 riverctl map -layout 0 resize None XF86AudioMicMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'
 riverctl map -layout 0 resize None XF86AudioMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
-riverctl map -layout 0 resize None XF86AudioRaiseVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+'
+riverctl map -layout 0 resize None XF86AudioRaiseVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+'
 riverctl map -layout 0 resize None XF86MonBrightnessDown spawn 'brightnessctl set -- -5%'
-riverctl map -layout 0 resize None XF86MonBrightnessUp spawn 'brightnessctl set +5%'
+riverctl map -layout 0 resize None XF86MonBrightnessUp spawn 'brightnessctl set +10%'
 # Модификатор: Shift
 riverctl map -layout 0 resize Shift H send-layout-cmd rivertile "main-ratio -0.2"
 riverctl map -layout 0 resize Shift L send-layout-cmd rivertile "main-ratio +0.2"
-riverctl map -layout 0 resize Shift Print spawn 'grim ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%m-%s).png'
-riverctl map -layout 0 resize Shift XF86AudioLowerVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 20%-'
+riverctl map -layout 0 resize Shift Print spawn 'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png'
+riverctl map -layout 0 resize Shift XF86AudioLowerVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-'
 riverctl map -layout 0 resize Shift XF86AudioMicMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'
 riverctl map -layout 0 resize Shift XF86AudioMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
 riverctl map -layout 0 resize Shift XF86AudioRaiseVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 20%+'
-riverctl map -layout 0 resize Shift XF86MonBrightnessDown spawn 'brightnessctl set -- -20%'
+riverctl map -layout 0 resize Shift XF86MonBrightnessDown spawn 'brightnessctl set -- -10%'
 riverctl map -layout 0 resize Shift XF86MonBrightnessUp spawn 'brightnessctl set +20%'
 
 # ----------------------------------------
@@ -183,14 +185,14 @@ riverctl map -layout 0 search None Super_L enter-mode normal
 riverctl map -layout 0 search None XF86AudioLowerVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'
 riverctl map -layout 0 search None XF86AudioMicMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'
 riverctl map -layout 0 search None XF86AudioMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
-riverctl map -layout 0 search None XF86AudioRaiseVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+'
+riverctl map -layout 0 search None XF86AudioRaiseVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+'
 riverctl map -layout 0 search None XF86MonBrightnessDown spawn 'brightnessctl set -- -5%'
-riverctl map -layout 0 search None XF86MonBrightnessUp spawn 'brightnessctl set +5%'
+riverctl map -layout 0 search None XF86MonBrightnessUp spawn 'brightnessctl set +10%'
 # Модификатор: Shift
-riverctl map -layout 0 search Shift Print spawn 'grim ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%m-%s).png'
-riverctl map -layout 0 search Shift XF86AudioLowerVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 20%-'
+riverctl map -layout 0 search Shift Print spawn 'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png'
+riverctl map -layout 0 search Shift XF86AudioLowerVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-'
 riverctl map -layout 0 search Shift XF86AudioMicMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'
 riverctl map -layout 0 search Shift XF86AudioMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
 riverctl map -layout 0 search Shift XF86AudioRaiseVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 20%+'
-riverctl map -layout 0 search Shift XF86MonBrightnessDown spawn 'brightnessctl set -- -20%'
+riverctl map -layout 0 search Shift XF86MonBrightnessDown spawn 'brightnessctl set -- -10%'
 riverctl map -layout 0 search Shift XF86MonBrightnessUp spawn 'brightnessctl set +20%'

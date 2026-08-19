@@ -1,8 +1,11 @@
 { config, ... }:
 
 let
+  iwm = {
+    ".config/i3".source = ./dots/configs/archive/i3;
+  };
   sway = {
-    ".config/sway/config".source = ./dots/configs/sway/config_mods;
+    ".config/sway/config".source = ./dots/configs/sway/config;
     ".config/sway/config.d".source = ./dots/configs/sway/config.d;
   };
   river = {
@@ -66,5 +69,5 @@ in
   ];
 
 
-  home.file = river // vim // zram // waybar // wofi // tmux;
+  home.file = river // sway // iwm // vim // zram // waybar // wofi // tmux;
 }

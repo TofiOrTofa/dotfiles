@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 riverctl spawn 'fuzzel'
-riverctl enter-mode insert
+riverctl enter-mode normal

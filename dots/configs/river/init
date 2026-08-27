@@ -22,10 +22,10 @@ riverctl input "pointer-1267-12533-ELAN2204:00_04F3:30F5_Touchpad" pointer-accel
 riverctl input "pointer-1267-12533-ELAN2204:00_04F3:30F5_Touchpad" tap enabled
 
 
-mkfifo "/tmp/river_ribbot_bar"
+mkfifo "/tmp/river_ribbon_bar"
 # --- Layouts ---
 
-stdbuf -oL river-luatile > /tmp/river_ribbon_bar
+stdbuf -oL river-luatile > /tmp/river_ribbon_bar &
 riverctl spawn rivercarro &
 riverctl spawn rivertile &
 riverctl default-layout luatile
@@ -38,32 +38,10 @@ riverctl spawn "xwayland-satellite :1" &
 
 # --- mods ---
 
-riverctl declare-mode insert
-riverctl declare-mode search
 riverctl declare-mode screen_sleep
 riverctl declare-mode resize
+riverctl declare-mode search
 
-
-# ----------------------------------------
-# РЕЖИМ: INSERT
-# ----------------------------------------
-# Модификатор: None
-riverctl map -layout 0 insert None Print spawn 'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png'
-riverctl map -layout 0 insert None Super_L enter-mode normal
-riverctl map -layout 0 insert None XF86AudioLowerVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'
-riverctl map -layout 0 insert None XF86AudioMicMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'
-riverctl map -layout 0 insert None XF86AudioMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
-riverctl map -layout 0 insert None XF86AudioRaiseVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+'
-riverctl map -layout 0 insert None XF86MonBrightnessDown spawn 'brightnessctl set -- -5%'
-riverctl map -layout 0 insert None XF86MonBrightnessUp spawn 'brightnessctl set +10%'
-# Модификатор: Shift
-riverctl map -layout 0 insert Shift Print spawn 'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png'
-riverctl map -layout 0 insert Shift XF86AudioLowerVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-'
-riverctl map -layout 0 insert Shift XF86AudioMicMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'
-riverctl map -layout 0 insert Shift XF86AudioMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
-riverctl map -layout 0 insert Shift XF86AudioRaiseVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 20%+'
-riverctl map -layout 0 insert Shift XF86MonBrightnessDown spawn 'brightnessctl set -- -10%'
-riverctl map -layout 0 insert Shift XF86MonBrightnessUp spawn 'brightnessctl set +20%'
 
 # ----------------------------------------
 # РЕЖИМ: NORMAL
@@ -71,71 +49,65 @@ riverctl map -layout 0 insert Shift XF86MonBrightnessUp spawn 'brightnessctl set
 # Модификатор: Control
 riverctl map -layout 0 normal Control Down spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'
 riverctl map -layout 0 normal Control Up spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+'
-# Модификатор: None
-riverctl map -layout 0 normal None 1 set-focused-tags 1
-riverctl map -layout 0 normal None 2 set-focused-tags 2
-riverctl map -layout 0 normal None 3 set-focused-tags 4
-riverctl map -layout 0 normal None 4 set-focused-tags 8
-riverctl map -layout 0 normal None 5 set-focused-tags 16
-riverctl map -layout 0 normal None 6 set-focused-tags 32
-riverctl map -layout 0 normal None 7 set-focused-tags 64
-riverctl map -layout 0 normal None 8 set-focused-tags 128
-riverctl map -layout 0 normal None 9 set-focused-tags 256
-riverctl map -layout 0 normal None A enter-mode insert
-riverctl map -layout 0 normal None B spawn /home/comu/.config/river/macros/macro_normal_None_B.sh
-riverctl map -layout 0 normal None D enter-mode search
-riverctl map -layout 0 normal None F toggle-float
-riverctl map -layout 0 normal None H zoom
-riverctl map -layout 0 normal None I enter-mode insert
-riverctl map -layout 0 normal None J focus-view next
-riverctl map -layout 0 normal None K focus-view previous
-riverctl map -layout 0 normal None O enter-mode insert
-riverctl map -layout 0 normal None Print spawn 'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png'
-riverctl map -layout 0 normal None R enter-mode resize
-riverctl map -layout 0 normal None T spawn 'env LANG=C.UTF-8 LCALL=C.UTF-8 foot'
-riverctl map -layout 0 normal None W spawn /home/comu/.config/river/macros/macro_normal_None_W.sh
-riverctl map -layout 0 normal None XF86AudioLowerVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'
-riverctl map -layout 0 normal None XF86AudioMicMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'
-riverctl map -layout 0 normal None XF86AudioMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
-riverctl map -layout 0 normal None XF86AudioRaiseVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+'
-riverctl map -layout 0 normal None XF86MonBrightnessDown spawn 'brightnessctl set -- -5%'
-riverctl map -layout 0 normal None XF86MonBrightnessUp spawn 'brightnessctl set +10%'
-riverctl map -layout 0 normal None comma spawn /home/comu/.config/river/macros/macro_normal_None_comma.sh
-riverctl map -layout 0 normal None period spawn /home/comu/.config/river/macros/macro_normal_None_period.sh
-# Модификатор: Shift
-riverctl map -layout 0 normal Shift 1 set-view-tags 1
-riverctl map -layout 0 normal Shift 2 set-view-tags 2
-riverctl map -layout 0 normal Shift 3 set-view-tags 4
-riverctl map -layout 0 normal Shift 4 set-view-tags 8
-riverctl map -layout 0 normal Shift 5 set-view-tags 16
-riverctl map -layout 0 normal Shift 6 set-view-tags 32
-riverctl map -layout 0 normal Shift 7 set-view-tags 64
-riverctl map -layout 0 normal Shift 8 set-view-tags 128
-riverctl map -layout 0 normal Shift 9 set-view-tags 256
-riverctl map -layout 0 normal Shift A enter-mode insert
-riverctl map -layout 0 normal Shift C close
-riverctl map -layout 0 normal Shift D enter-mode search
-riverctl map -layout 0 normal Shift E exit
-riverctl map -layout 0 normal Shift Escape spawn /home/comu/.config/river/macros/macro_normal_Shift_Escape.sh
-riverctl map -layout 0 normal Shift F toggle-fullscreen
-riverctl map -layout 0 normal Shift H send-layout-cmd rivertile "main-count +1"
-riverctl map -layout 0 normal Shift I enter-mode insert
-riverctl map -layout 0 normal Shift J swap next
-riverctl map -layout 0 normal Shift K swap previous
-riverctl map -layout 0 normal Shift L send-layout-cmd rivertile "main-count -1"
-riverctl map -layout 0 normal Shift O enter-mode insert
-riverctl map -layout 0 normal Shift Print spawn 'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png'
-riverctl map -layout 0 normal Shift Q close
-riverctl map -layout 0 normal Shift R enter-mode resize
-riverctl map -layout 0 normal Shift XF86AudioLowerVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-'
-riverctl map -layout 0 normal Shift XF86AudioMicMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'
-riverctl map -layout 0 normal Shift XF86AudioMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
-riverctl map -layout 0 normal Shift XF86AudioRaiseVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 20%+'
-riverctl map -layout 0 normal Shift XF86MonBrightnessDown spawn 'brightnessctl set -- -10%'
-riverctl map -layout 0 normal Shift XF86MonBrightnessUp spawn 'brightnessctl set +20%'
-riverctl map -layout 0 normal Shift comma spawn /home/comu/.config/river/macros/macro_normal_Shift_comma.sh
-riverctl map -layout 0 normal Shift period spawn /home/comu/.config/river/macros/macro_normal_Shift_period.sh
-riverctl map -layout 0 normal Shift semicolon spawn command_center
+# Модификатор: Mod4
+riverctl map -layout 0 normal Mod4 1 set-focused-tags 1
+riverctl map -layout 0 normal Mod4 2 set-focused-tags 2
+riverctl map -layout 0 normal Mod4 3 set-focused-tags 4
+riverctl map -layout 0 normal Mod4 4 set-focused-tags 8
+riverctl map -layout 0 normal Mod4 5 set-focused-tags 16
+riverctl map -layout 0 normal Mod4 6 set-focused-tags 32
+riverctl map -layout 0 normal Mod4 7 set-focused-tags 64
+riverctl map -layout 0 normal Mod4 8 set-focused-tags 128
+riverctl map -layout 0 normal Mod4 9 set-focused-tags 256
+riverctl map -layout 0 normal Mod4 B spawn /home/comu/.config/river/macros/macro_normal_Mod4_B.sh
+riverctl map -layout 0 normal Mod4 D enter-mode search
+riverctl map -layout 0 normal Mod4 F toggle-float
+riverctl map -layout 0 normal Mod4 H zoom
+riverctl map -layout 0 normal Mod4 J focus-view next
+riverctl map -layout 0 normal Mod4 K focus-view previous
+riverctl map -layout 0 normal Mod4 Print spawn 'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png'
+riverctl map -layout 0 normal Mod4 R enter-mode resize
+riverctl map -layout 0 normal Mod4 T spawn 'env LANG=C.UTF-8 LCALL=C.UTF-8 foot'
+riverctl map -layout 0 normal Mod4 W spawn /home/comu/.config/river/macros/macro_normal_Mod4_W.sh
+riverctl map -layout 0 normal Mod4 XF86AudioLowerVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'
+riverctl map -layout 0 normal Mod4 XF86AudioMicMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'
+riverctl map -layout 0 normal Mod4 XF86AudioMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
+riverctl map -layout 0 normal Mod4 XF86AudioRaiseVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+'
+riverctl map -layout 0 normal Mod4 XF86MonBrightnessDown spawn 'brightnessctl set -- -5%'
+riverctl map -layout 0 normal Mod4 XF86MonBrightnessUp spawn 'brightnessctl set +10%'
+riverctl map -layout 0 normal Mod4 comma spawn /home/comu/.config/river/macros/macro_normal_Mod4_comma.sh
+riverctl map -layout 0 normal Mod4 period spawn /home/comu/.config/river/macros/macro_normal_Mod4_period.sh
+# Модификатор: Mod4+Shift
+riverctl map -layout 0 normal Mod4+Shift 1 set-view-tags 1
+riverctl map -layout 0 normal Mod4+Shift 2 set-view-tags 2
+riverctl map -layout 0 normal Mod4+Shift 3 set-view-tags 4
+riverctl map -layout 0 normal Mod4+Shift 4 set-view-tags 8
+riverctl map -layout 0 normal Mod4+Shift 5 set-view-tags 16
+riverctl map -layout 0 normal Mod4+Shift 6 set-view-tags 32
+riverctl map -layout 0 normal Mod4+Shift 7 set-view-tags 64
+riverctl map -layout 0 normal Mod4+Shift 8 set-view-tags 128
+riverctl map -layout 0 normal Mod4+Shift 9 set-view-tags 256
+riverctl map -layout 0 normal Mod4+Shift C close
+riverctl map -layout 0 normal Mod4+Shift D enter-mode search
+riverctl map -layout 0 normal Mod4+Shift E exit
+riverctl map -layout 0 normal Mod4+Shift Escape spawn /home/comu/.config/river/macros/macro_normal_Mod4+Shift_Escape.sh
+riverctl map -layout 0 normal Mod4+Shift F toggle-fullscreen
+riverctl map -layout 0 normal Mod4+Shift H send-layout-cmd rivertile "main-count +1"
+riverctl map -layout 0 normal Mod4+Shift J swap next
+riverctl map -layout 0 normal Mod4+Shift K swap previous
+riverctl map -layout 0 normal Mod4+Shift L send-layout-cmd rivertile "main-count -1"
+riverctl map -layout 0 normal Mod4+Shift Print spawn 'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png'
+riverctl map -layout 0 normal Mod4+Shift Q close
+riverctl map -layout 0 normal Mod4+Shift R enter-mode resize
+riverctl map -layout 0 normal Mod4+Shift XF86AudioLowerVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-'
+riverctl map -layout 0 normal Mod4+Shift XF86AudioMicMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'
+riverctl map -layout 0 normal Mod4+Shift XF86AudioMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
+riverctl map -layout 0 normal Mod4+Shift XF86AudioRaiseVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 20%+'
+riverctl map -layout 0 normal Mod4+Shift XF86MonBrightnessDown spawn 'brightnessctl set -- -10%'
+riverctl map -layout 0 normal Mod4+Shift XF86MonBrightnessUp spawn 'brightnessctl set +20%'
+riverctl map -layout 0 normal Mod4+Shift comma spawn /home/comu/.config/river/macros/macro_normal_Mod4+Shift_comma.sh
+riverctl map -layout 0 normal Mod4+Shift period spawn /home/comu/.config/river/macros/macro_normal_Mod4+Shift_period.sh
+riverctl map -layout 0 normal Mod4+Shift semicolon spawn command_center
 
 # ----------------------------------------
 # РЕЖИМ: RESIZE
@@ -143,7 +115,6 @@ riverctl map -layout 0 normal Shift semicolon spawn command_center
 # Модификатор: None
 riverctl map -layout 0 resize None D enter-mode search
 riverctl map -layout 0 resize None H send-layout-cmd rivertile "main-ratio -0.05"
-riverctl map -layout 0 resize None I enter-mode insert
 riverctl map -layout 0 resize None L send-layout-cmd rivertile "main-ratio +0.05"
 riverctl map -layout 0 resize None Print spawn 'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png'
 riverctl map -layout 0 resize None Super_L enter-mode normal
@@ -177,7 +148,6 @@ riverctl map -layout 0 screen_sleep Shift Escape spawn /home/comu/.config/river/
 riverctl map -layout 0 search None D spawn /home/comu/.config/river/macros/macro_search_None_D.sh
 riverctl map -layout 0 search None E spawn /home/comu/.config/river/macros/macro_search_None_E.sh
 riverctl map -layout 0 search None Escape enter-mode normal
-riverctl map -layout 0 search None I enter-mode insert
 riverctl map -layout 0 search None L spawn /home/comu/.config/river/macros/macro_search_None_L.sh
 riverctl map -layout 0 search None Print spawn 'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png'
 riverctl map -layout 0 search None R enter-mode resize

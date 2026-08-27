@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-riverctl spawn "layoutmenu"
+riverctl spawn window_add_tags
 riverctl enter-mode normal

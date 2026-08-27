@@ -151,7 +151,7 @@ end;
 init.file:write("\n\n");
 
 -- 4. Запись макетов, и установка дефолта
-init.file:write([[mkfifo "/tmp/river_ribbot_bar"]], "\n");
+init.file:write([[mkfifo "/tmp/river_ribbon_bar"]], "\n");
 init.file:write([[# --- Layouts ---]]);
 init.file:write("\n\n");
 local layouts_name = sorted_keys(layouts);
@@ -162,7 +162,7 @@ for _, name in ipairs(layouts_name) do
       'riverctl spawn %s &%s',
       name, "\n");
   else
-    line = "stdbuf -oL river-luatile > /tmp/river_ribbon_bar\n"
+    line = "stdbuf -oL river-luatile > /tmp/river_ribbon_bar &\n"
   end;
   init.file:write(line);
 end;

@@ -44,7 +44,7 @@ terminal = [[spawn 'env LANG=C.UTF-8 LCALL=C.UTF-8 foot']]
 
 return                                {
     ["normal"]                        = {
-        ["None"]                        = {
+	["None"]                        = {
             ["XF86AudioRaiseVolume"]      = {volume.up(10)},
             ["XF86AudioLowerVolume"]      = {volume.down(5)},
             ["XF86AudioMute"]             = {volume.mute},
@@ -52,10 +52,8 @@ return                                {
             ["XF86MonBrightnessUp"]       = {brightness.up(10)},
             ["XF86MonBrightnessDown"]     = {brightness.down(5)},
             ["Print"]                     = {screenshot},
-
-            ["I"]                         = {[[enter-mode insert]]},
-            ["O"]                         = {[[enter-mode insert]]},
-            ["A"]                         = {[[enter-mode insert]]},
+	                                },
+        ["Mod4"]                        = {
             ["D"]                         = {[[enter-mode search]]},
             ["R"]                         = {[[enter-mode resize]]},
 
@@ -77,11 +75,11 @@ return                                {
 
             ["W"]                         = {
                                               [[spawn combining_tags]],
-                                              [[enter-mode insert]]
+                                              [[enter-mode normal]]
                                             },
             ["B"]                         = {
                                               [[spawn window_add_tags]],
-                                              [[enter-mode insert]]
+                                              [[enter-mode normal]]
                                             },
 
             ["1"]                         = {[[set-focused-tags 1]]},
@@ -94,7 +92,7 @@ return                                {
             ["8"]                         = {[[set-focused-tags 128]]},
             ["9"]                         = {[[set-focused-tags 256]]},
                                           },
-        ["Shift"]                       = {
+        ["Mod4+Shift"]                       = {
             ["XF86AudioRaiseVolume"]      = {volume.up(20)},
             ["XF86AudioLowerVolume"]      = {volume.down(10)},
             ["XF86AudioMute"]             = {volume.mute},
@@ -107,9 +105,6 @@ return                                {
                                               [[enter-mode screen_sleep]],
                                               [[spawn "wlr-randr --output eDP-1 --off"]]
                                             },
-            ["I"]                         = {[[enter-mode insert]]},
-            ["O"]                         = {[[enter-mode insert]]},
-            ["A"]                         = {[[enter-mode insert]]},
             ["D"]                         = {[[enter-mode search]]},
             ["R"]                         = {[[enter-mode resize]]},
 
@@ -151,28 +146,6 @@ return                                {
             ["Down"]                      = {volume.down(5)}
                                           }
                                         },
-    ["insert"]                        = {
-        ["None"]                        = {
-            ["XF86AudioRaiseVolume"]      = {volume.up(10)},
-            ["XF86AudioLowerVolume"]      = {volume.down(5)},
-            ["XF86AudioMute"]             = {volume.mute},
-            ["XF86AudioMicMute"]          = {microphone.mute},
-            ["XF86MonBrightnessUp"]       = {brightness.up(10)},
-            ["XF86MonBrightnessDown"]     = {brightness.down(5)},
-            ["Print"]                     = {screenshot},
-
-            ["Super_L"]                   = {[[enter-mode normal]]}
-                                          },
-        ["Shift"]                       = {
-            ["XF86AudioRaiseVolume"]      = {volume.up(20)},
-            ["XF86AudioLowerVolume"]      = {volume.down(10)},
-            ["XF86AudioMute"]             = {volume.mute},
-            ["XF86AudioMicMute"]          = {microphone.mute},
-            ["XF86MonBrightnessUp"]       = {brightness.up(20)},
-            ["XF86MonBrightnessDown"]     = {brightness.down(10)},
-            ["Print"]                     = {screenshot}
-                                          }
-                                        },
     ["resize"]                        = {
         ["None"]                        = {
             ["XF86AudioRaiseVolume"]      = {volume.up(10)},
@@ -187,7 +160,6 @@ return                                {
             ["L"]                         = {[[send-layout-cmd rivertile "main-ratio +0.05"]]},
 
             ["Super_L"]                   = {[[enter-mode normal]]},
-            ["I"]                         = {[[enter-mode insert]]},
             ["D"]                         = {[[enter-mode search]]}
                                           },
         ["Shift"]                       = {
@@ -216,20 +188,19 @@ return                                {
 
             ["D"]                         = {
                                               [[spawn 'fuzzel']],
-                                              [[enter-mode insert]]
+                                              [[enter-mode normal]]
                                             },
             ["E"]                         = {
                                               [[spawn 'wofi-emoji']],
-                                              [[enter-mode insert]]
+                                              [[enter-mode normal]]
                                             },
             ["L"]                         = {
                                               [[spawn "layoutmenu"]],
-                                              [[enter-mode insert]]
+                                              [[enter-mode normal]]
                                             },
 
             ["Escape"]                    = {[[enter-mode normal]]},
             ["Super_L"]                   = {[[enter-mode normal]]},
-            ["I"]                         = {[[enter-mode insert]]},
             ["R"]                         = {[[enter-mode resize]]}
                                           },
         ["Shift"]                       = {

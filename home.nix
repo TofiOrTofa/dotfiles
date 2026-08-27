@@ -7,7 +7,7 @@ let
   stable_pkgs = (with stable-pkgs; [
 
     neofetch
-		khal
+    khal
 
     python3
     python3Packages.autopep8
@@ -42,7 +42,7 @@ in
   imports = [
     ./config-files.nix
     ./script-files.nix
-    ./files_settings.nix
+    ./settings-files.nix
     ./applications.nix
   ];
   targets.genericLinux.enable = true;

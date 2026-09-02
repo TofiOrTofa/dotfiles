@@ -1,24 +1,19 @@
-" set noswapfile
 
 " прокрутка
 set scrolloff=1
 set scrolljump=-50
 set sidescrolloff=0
 
-" set nottimeout
-set showcmd
+set noruler
+set noshowcmd
+set noshowmode
+set cmdheight=1
 
-
-
-" подсветка -
-" autocmd VimEnter * syntax off
 
 
 " старый терминал
 set guicursor=a:blinkon0-Underline
-" set t_Co=0
 set notermguicolors
-set noshowmode
 
 " перенос слов
 set wrap

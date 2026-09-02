@@ -1,11 +1,6 @@
 augroup School21_style
     autocmd!
 
-    " systems
-    autocmd BufNewFile,BufRead *.c,*.cpp setlocal
-        \ tabstop=4 shiftwidth=4 softtabstop=4 expandtab
-        \ nowrap
-
     " scripts
     autocmd BufNewFile,BufRead *.sh,*.bash setlocal
         \ tabstop=4 shiftwidth=4 softtabstop=4 expandtab
@@ -55,7 +50,7 @@ augroup Linux_style
     autocmd!
 
     " scripts
-    autocmd BufNewFile,BufRead *.lua,Makefile,*.mk setlocal
+    autocmd BufNewFile,BufRead Makefile,*.mk setlocal
         \ tabstop=8 shiftwidth=8 softtabstop=8 noexpandtab
         \ nowrap
     autocmd BufReadPost *
@@ -68,13 +63,22 @@ augroup END
 augroup GNU_style
     autocmd!
 
-    " system
+    " systems
+    autocmd BufNewFile,BufRead *.c,*.cpp,*.h,*.lua setlocal
+        \ tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+        \ nowrap
+
+augroup END
 augroup other_style
     autocmd!
 
-    autocmd BufNewFile,BufRead *.nix,*.json,*.yaml setlocal
+    autocmd BufNewFile,BufRead *.nix,*.json,*.yml setlocal
         \ tabstop=2 shiftwidth=2 softtabstop=2 expandtab
         \ wrap
+
+    autocmd BufNewFile,BufRead *.zig setlocal
+        \ tabstop=4 shiftwidth=4 softtabstop=4 expandtab
+        \ nowrap
 
     autocmd BufNewFile,BufRead *.md,*.txt setlocal
         \ textwidth=110 wrap

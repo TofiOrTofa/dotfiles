@@ -1,0 +1,251 @@
+-- =============================================================================
+-- Модуль тестирования и ответов (Вместо Си-конструкций)
+-- =============================================================================
+local response = {
+  success = function(value) return { state = "success", value = value } end,
+  fail = function(value) return { state = "fail", value = error_value } end
+}
+
+
+local test = {}
+do
+
+  function test.critical(result, err)
+    if result and result.state ~= "fail" then return end
+    error("Critical error: " .. tostring(err or
+      (result and result.value or "result is nil")))
+  end
+  
+  function test.typ(expected_type, vars)
+      for _, var in ipairs(vars) do
+          if type(var) ~= expected_type then
+              return response.fail(string.format(
+                "expected %s, got %s",
+                expected_type, type(var)
+              ))
+          end
+      end
+      return response.success()
+  end
+
+  function test.var(vars)
+      for i = 1, #vars do
+          if vars[i] == nil then
+              return response.fail("Variable at index " .. i .. " is nil")
+          end
+      end
+      return response.success()
+  end
+
+end
+
+-- =============================================================================
+-- Утилиты для работы с таблицами
+-- =============================================================================
+local tables = {}
+
+function tables.merge(t1, t2)
+    test.critical(test.typ("table", {t1, t2}))
+    
+    local result = {}
+    for k, v in pairs(t1) do result[k] = v end
+    for k, v in pairs(t2) do result[k] = v end
+    return result
+end
+
+function tables.contains(t1, t2)
+    local check = test.typ("table", {t1, t2})
+    if check.state == "fail" then 
+        return t1 == t2 
+    end
+    
+    for k, v in pairs(t1) do
+        if type(v) == "table" then
+            if not tables.contains(v, t2[k]) then return false end
+        elseif v ~= t2[k] then 
+            -- Исправлен синтаксис else if
+            return false 
+        end
+    end 
+    return true
+end
+
+
+-- =============================================================================
+-- Глобальные функции API (Будут инициализированы внутри do-блока)
+-- =============================================================================
+local start, handle_layout, handle_matadata, scroll_next, scroll_prev
+
+do
+    -- Константы
+    local GAP  = 10
+    local PEEK = 0.22
+
+    -- Состояние менеджера окон
+    local STATE = {}
+
+    -- Конструктор состояния тега (замыкание-объект)
+    local function init_tag(tag_num, current, history)
+        current = current or {}
+        history = history or {}
+        
+        local tag = {
+            current = {
+                display = current.display or 0,
+                count   = current.count or 0,
+                max     = math.max(0, (current.count or 0) - 1)
+            },
+            history = {
+                display = history.display or current.display,
+                count   = history.count or current.count,
+            }
+        }
+        
+        -- Возвращаем функцию-интерфейс доступа к объекту
+        return function(arg)
+            if type(arg) == "table" and not tables.contains(arg, tag.current) then
+                return init_tag(tag_num, tables.merge(tag.current, arg), tag.current)
+            elseif type(arg) == "string" then
+                if arg == "log" then
+                    return tag.history
+                end
+                return tag.current[arg]
+            end
+        end
+    end
+
+    -- Математические расчеты
+    local calculate = {}
+
+    function calculate.valid_index(current_index, action, max_index)
+        local next_index = current_index
+        if action == "next" then
+            next_index = current_index + 1
+        elseif action == "prev" then
+            next_index = current_index - 1
+        end
+
+        if next_index > max_index then 
+            next_index = 0
+        elseif next_index < 0 then 
+            next_index = max_index
+        end
+        return next_index
+    end
+
+    local function generate_layout_coords(count, offset_index, width, height)
+        local coords = {}
+        local view_w = width * (1 - PEEK)
+        local view_h = height - GAP * 2
+        local step   = view_w + GAP
+
+        local target_x = (width - view_w) / 2
+
+        if count > 1 then
+            if offset_index == 0 then 
+                target_x = GAP
+            elseif offset_index == count - 1 then
+                target_x = width - view_w - GAP
+            end
+        end
+
+        local screen_base_x = target_x - (offset_index * step)
+
+        for i = 0, count - 1 do
+            coords[i + 1] = {
+                screen_base_x + (i * step), 
+                GAP,
+                view_w, 
+                view_h
+            }
+        end
+        return coords
+    end
+
+    local function get_tag_state(state, tag, current_count)
+        local tag_state = state[tag] or init_tag(tag, { count = current_count })
+
+        if tag_state("count") > current_count then
+            local display
+            if tag_state("log").display >= tag_state("max") then
+                display = tag_state("max")
+            else 
+                display = tag_state("log").display 
+            end
+            
+            if display > tag_state("display") then
+                display = display - 1
+            end
+            
+            tag_state = tag_state({
+                count   = current_count,
+                display = display
+            })
+        elseif tag_state("count") < current_count then
+            tag_state = tag_state({
+                count   = current_count,
+                display = tag_state("display") + 1
+            })
+        end
+        return tag_state
+    end
+
+    -- Экспорт функций наружу do-блока
+    function handle_layout(args)
+        if not args or args.count == 0 then return {} end
+
+        local tag = args.tags or 1
+        local tag_state = get_tag_state(STATE, tag, args.count)
+
+        local valid_index = calculate.valid_index(
+            tag_state("display"), "none", tag_state("max")
+        )
+
+        STATE[tag] = tag_state
+        STATE.current_tag = tag
+
+        print(string.format("%d %d", tag_state("count"), valid_index))
+
+        return generate_layout_coords(
+            tag_state("count"), valid_index,
+            args.width, args.height
+        )
+    end
+
+    function handle_metadata(args)
+      return { name="lua-scroll" }
+    end
+
+    local function perform_scroll(direction)
+        local tag = STATE.current_tag or 1
+        -- Безопасное получение текущего count
+        local current_state = STATE[tag] or init_tag(tag)
+        local current_count = current_state("count") or 1
+        
+        local tag_state = get_tag_state(STATE, tag, current_count)
+        local max_index = tag_state("max")
+
+        local next_index = calculate.valid_index(
+            tag_state("display"), direction, max_index
+        )
+
+        local updated = STATE[tag]({ display = next_index })
+        if updated then 
+            STATE[tag] = updated 
+        end
+    end
+
+    function scroll_next() perform_scroll("next") end
+    function scroll_prev() perform_scroll("prev") end
+
+    function start()
+        os.execute("riverctl default-attach-mode below")
+    end
+end
+
+-- Публикация в глобальную область (для вызова со стороны оконного менеджера River)
+_G.start         = start
+_G.handle_layout = handle_layout
+_G.scroll_next   = scroll_next
+_G.scroll_prev   = scroll_prev
+

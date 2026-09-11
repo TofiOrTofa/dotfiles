@@ -7,6 +7,10 @@ let
     ".config/sway/config.d".source = ./dots/configs/sway/config.d;
   };
   river = { ".config/river".source = ./dots/configs/river; };
+  river_luatile = {
+    ".config/river-luatile/layout.lua".source =
+      ./dots/configs/river-luatile/layout.lua;
+  };
   vim = {
     ".vimrc".source = ./dots/configs/vim/vimrc;
     ".vim/binds.vim".source = ./dots/configs/vim/binds.vim;
@@ -46,10 +50,10 @@ in
 {
   imports = [
     ./dots/configs/fastfetch/config.nix
-    ./dots/configs/foot/config.nix
+#    ./dots/configs/foot/config.nix
     ./dots/configs/fuzzel/fuzzel.nix
   ];
 
 
-  home.file = river // vim // zram  // wofi // tmux;
+  home.file = river // river_luatile // vim // zram  // wofi // tmux;
 }

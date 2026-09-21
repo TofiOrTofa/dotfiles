@@ -1,22 +1,21 @@
 #!/usr/bin/env lua
 
-local config_path = os.getenv("HOME") .. "/.dotfiles/configs";
-local river_path = config_path .. "/river/config.d";
-local wmenu_path = config_path .. "/wmenu";
+local config_path = os.getenv("HOME") .. "/.dotfiles/configs"
+local river_path = config_path .. "/river/config.d"
+local wmenu_path = config_path .. "/wmenu"
 local paths = {
     config_path .. "/river/config.d/?.lua",
     config_path .. "/wmenu/?.lua",
     package.path
-};
-package.path = table.concat(paths, ";");
-local layouts = require("layouts");
+}
+package.path = table.concat(paths, ";")
+local layouts = require("layouts")
 
-local flag = arg[1] == "--debug" and "debug";
+local flag = arg[1] == "--debug" and "debug"
 
 local log
 if flag == "debug" then
   log = function(log_mode, ...)
-    -- ИСПРАВЛЕНО: Было pring, из-за чего дебаг падал
     print(log_mode, ...);
   end;
 else

@@ -1,0 +1,302 @@
+#!/usr/bin/env bash
+
+dbus-update-activation-environment \
+    --systemd WAYLAND_DISPLAY \
+    XDG_CURRENT_DESKTOP=river \
+    MESA_LOADER_DRIVER_OVERRIDE \
+    _JAVA_AWT_WM_NONREPARENTING
+systemctl \
+    --user \
+    import-environment \
+    DISPLAY \
+    WAYLAND_DISPLAY \
+    XDG_CURRENT_DESKTOP
+RIVER_MACRO_DIR="${XDG_RUNTIME_DIG:-/tmp}/river-macros"
+[ ! -d "$RIVER_MACRO_DIR" ] && mkdir -p "$RIVER_MACRO_DIR"
+export PATH="$RIVER_MACRO_DIR:$PATH"
+
+# --- Interface settiongs ---
+riverctl border-width 2
+riverctl border-color-focused 0x93a1a1
+riverctl border-color-unfocused 0x073642
+riverctl set-repeat 50 300
+riverctl keyboard-layout -options "grp:caps_toggle" us,ru
+riverctl map-pointer normal Super BTN_LEFT move-view
+riverctl map-pointer normal Super BTN_RIGHT resize-view
+
+# --- Inputs settings ---
+TACHPAD="pointer-1267-12533-ELAN2204:00_04F3:30F5_Touchpad"
+riverctl input $TACHPAD accel-profile flat
+riverctl input $TACHPAD natural-scroll enabled
+riverctl input $TACHPAD pointer-accel 1.0
+riverctl input $TACHPAD tap enabled
+
+# --- Layouts ---
+riverctl spawn river-luatile &
+riverctl spawn rivercarro &
+riverctl spawn rivertile &
+riverctl default-layout luatile
+
+# --- autostart ---
+riverctl spawn "yambar" &
+riverctl spawn "xwayland-satellite :1" &
+
+
+# --- mods ---
+riverctl declare-mode screen_sleep
+riverctl declare-mode resize
+riverctl declare-mode search
+
+# ----------------------------------------
+# РЕЖИМ: NORMAL
+# ----------------------------------------
+normal_map() { riverctl map -layout 0 normal "$@"; }
+MOD="Mod4"
+
+
+# Модификатор: Control
+riverctl map -layout 0 normal Control Down spawn \
+    'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'
+riverctl map -layout 0 normal Control Up spawn \
+    'wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+'
+# Модификатор: Mod4
+riverctl map -layout 0 normal $MOD 1 set-focused-tags 1
+riverctl map -layout 0 normal $MOD 2 set-focused-tags 2
+riverctl map -layout 0 normal $MOD 3 set-focused-tags 4
+riverctl map -layout 0 normal $MOD 4 set-focused-tags 8
+riverctl map -layout 0 normal $MOD 5 set-focused-tags 16
+riverctl map -layout 0 normal $MOD 6 set-focused-tags 32
+riverctl map -layout 0 normal $MOD 7 set-focused-tags 64
+riverctl map -layout 0 normal $MOD 8 set-focused-tags 128
+riverctl map -layout 0 normal $MOD 9 set-focused-tags 256
+riverctl map -layout 0 normal $MOD B spawn river-window-share
+riverctl map -layout 0 normal $MOD D enter-mode search
+riverctl map -layout 0 normal $MOD F toggle-float
+riverctl map -layout 0 normal $MOD H zoom
+riverctl map -layout 0 normal $MOD J focus-view next
+riverctl map -layout 0 normal $MOD K focus-view previous
+riverctl map -layout 0 normal $MOD Print spawn 'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png'
+riverctl map -layout 0 normal $MOD R enter-mode resize
+riverctl map -layout 0 normal $MOD T spawn 'env LANG=C.UTF-8 LCALL=C.UTF-8 foot'
+riverctl map -layout 0 normal $MOD W spawn river-tag-merging
+riverctl map -layout 0 normal $MOD XF86AudioLowerVolume spawn \
+    'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'
+riverctl map -layout 0 normal Mod4 XF86AudioMicMute spawn \
+    'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'
+riverctl map -layout 0 normal Mod4 XF86AudioMute spawn \
+    'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
+riverctl map -layout 0 normal Mod4 XF86AudioRaiseVolume spawn \
+    'wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+'
+riverctl map -layout 0 normal Mod4 XF86MonBrightnessDown spawn 'brightnessctl set -- -5%'
+riverctl map -layout 0 normal Mod4 XF86MonBrightnessUp spawn 'brightnessctl set +10%'
+riverctl map -layout 0 normal Mod4 comma spawn river-scroll-prev
+riverctl map -layout 0 normal Mod4 period spawn river-scroll-next
+# Модификатор: Mod4+Shift
+riverctl map -layout 0 normal Mod4+Shift 1 set-view-tags 1
+riverctl map -layout 0 normal Mod4+Shift 2 set-view-tags 2
+riverctl map -layout 0 normal Mod4+Shift 3 set-view-tags 4
+riverctl map -layout 0 normal Mod4+Shift 4 set-view-tags 8
+riverctl map -layout 0 normal Mod4+Shift 5 set-view-tags 16
+riverctl map -layout 0 normal Mod4+Shift 6 set-view-tags 32
+riverctl map -layout 0 normal Mod4+Shift 7 set-view-tags 64
+riverctl map -layout 0 normal Mod4+Shift 8 set-view-tags 128
+riverctl map -layout 0 normal Mod4+Shift 9 set-view-tags 256
+riverctl map -layout 0 normal Mod4+Shift C close
+riverctl map -layout 0 normal Mod4+Shift D enter-mode search
+riverctl map -layout 0 normal Mod4+Shift E exit
+riverctl map -layout 0 normal Mod4+Shift Escape spawn river-normal-to-screen-sleep
+riverctl map -layout 0 normal Mod4+Shift F toggle-fullscreen
+riverctl map -layout 0 normal Mod4+Shift H send-layout-cmd rivertile "main-count +1"
+riverctl map -layout 0 normal Mod4+Shift J swap next
+riverctl map -layout 0 normal Mod4+Shift K swap previous
+riverctl map -layout 0 normal Mod4+Shift L send-layout-cmd rivertile "main-count -1"
+riverctl map -layout 0 normal Mod4+Shift Print spawn \
+    'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png'
+normal_map Mod4+Shift Q close
+normal_map Mod4+Shift R enter-mode resize
+normal_map Mod4+Shift XF86AudioLowerVolume spawn \
+    'wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-'
+normal_map Mod4+Shift XF86AudioMicMute spawn \
+    'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'
+normal_map Mod4+Shift XF86AudioMute spawn \
+    'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
+normal_map Mod4+Shift XF86AudioRaiseVolume spawn \
+    'wpctl set-volume @DEFAULT_AUDIO_SINK@ 20%+'
+normal_map Mod4+Shift XF86MonBrightnessDown spawn 'brightnessctl set -- -10%'
+normal_map Mod4+Shift XF86MonBrightnessUp spawn 'brightnessctl set +20%'
+normal_map Mod4+Shift comma spawn river-scroll-swap-prev
+normal_map Mod4+Shift period spawn river-scroll-swap-next
+normal_map Mod4+Shift semicolon spawn command_center
+
+if [ ! -f "$RIVER_MACRO_DIR/river-scroll-prev" ]; then
+    cat << 'EOF' > "$RIVER_MACRO_DIR/river-scroll-prev"
+#!/usr/bin/env sh
+riverctl send-layout-cmd luatile "scroll_prev()"
+riverctl focus-view previous
+EOF
+    chmod +x "$RIVER_MACRO_DIR/river-scroll-prev"
+fi
+if [ ! -f "$RIVER_MACRO_DIR/river-scroll-next" ]; then
+    cat << 'EOF' > "$RIVER_MACRO_DIR/river-scroll-next"
+#!/usr/bin/env sh
+riverctl send-layout-cmd luatile "scroll_next()"
+riverctl focus-view next
+EOF
+    chmod +x "$RIVER_MACRO_DIR/river-scroll-next"
+fi
+if [ ! -f "$RIVER_MACRO_DIR/river-scroll-swap-prev" ]; then
+    cat << 'EOF' > "$RIVER_MACRO_DIR/river-scroll-swap-prev"
+#!/usr/bin/env sh
+riverctl send-layout-cmd luatile "scroll_prev()"
+riverctl swap previous
+EOF
+    chmod +x "$RIVER_MACRO_DIR/river-scroll-swap-prev"
+fi
+if [ ! -f "$RIVER_MACRO_DIR/river-scroll-swap-next" ]; then
+    cat << 'EOF' > "$RIVER_MACRO_DIR/river-scroll-swap-next"
+#!/usr/bin/env sh
+riverctl send-layout-cmd luatile "scroll_next()"
+riverctl swap next
+EOF
+    chmod +x "$RIVER_MACRO_DIR/river-scroll-swap-next"
+fi
+if [ ! -f "$RIVER_MACRO_DIR/river-window-share" ]; then
+    cat << 'EOF' > "$RIVER_MACRO_DIR/river-window-share"
+#!/usr/bin/env sh
+riverctl spawn window_add_tags
+riverctl enter-mode normal
+EOF
+    chmod +x "$RIVER_MACRO_DIR/river-window-share"
+fi
+if [ ! -f "$RIVER_MACRO_DIR/river-tag-merging" ]; then
+    cat << 'EOF' > "$RIVER_MACRO_DIR/river-tag-merging"
+#!/usr/bin/env sh
+riverctl spawn combining_tags
+riverctl enter-mode normal
+EOF
+    chmod +x "$RIVER_MACRO_DIR/river-tag-merging"
+fi
+if [ ! -f "$RIVER_MACRO_DIR/river-normal-to-screen-sleep" ]; then
+    cat << 'EOF' > "$RIVER_MACRO_DIR/river-normal-to-screen-sleep"
+#!/usr/bin/env sh
+riverctl enter-mode screen_sleep
+riverctl spawn "wlr-randr --output eDP-1 --off"
+EOF
+    chmod +x "$RIVER_MACRO_DIR/river-normal-to-screen-sleep"
+fi
+
+# ----------------------------------------
+# РЕЖИМ: RESIZE
+# ----------------------------------------
+resize_map() { riverctl map -layout 0 resize "$@"; }
+# Модификатор: None
+resize_map None D enter-mode search
+resize_map None H send-layout-cmd rivertile "main-ratio -0.05"
+resize_map None L send-layout-cmd rivertile "main-ratio +0.05"
+resize_map None Print spawn \
+    'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png'
+resize_map None Super_L enter-mode normal
+resize_map None XF86AudioLowerVolume spawn \
+    'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'
+resize_map None XF86AudioMicMute spawn \
+    'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'
+resize_map None XF86AudioMute spawn \
+    'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
+resize_map None XF86AudioRaiseVolume spawn \
+    'wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+'
+resize_map None XF86MonBrightnessDown spawn 'brightnessctl set -- -5%'
+resize_map None XF86MonBrightnessUp spawn 'brightnessctl set +10%'
+# Модификатор: Shift
+resize_map Shift H send-layout-cmd rivertile "main-ratio -0.2"
+resize_map Shift L send-layout-cmd rivertile "main-ratio +0.2"
+resize_map Shift Print spawn \
+    'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png'
+resize_map Shift XF86AudioLowerVolume spawn \
+    'wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-'
+resize_map Shift XF86AudioMicMute spawn \
+    'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'
+resize_map Shift XF86AudioMute spawn \
+    'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
+resize_map Shift XF86AudioRaiseVolume spawn \
+    'wpctl set-volume @DEFAULT_AUDIO_SINK@ 20%+'
+resize_map Shift XF86MonBrightnessDown spawn 'brightnessctl set -- -10%'
+resize_map Shift XF86MonBrightnessUp spawn 'brightnessctl set +20%'
+
+# ----------------------------------------
+# РЕЖИМ: SCREEN_SLEEP
+# ----------------------------------------
+sleep_map() { riverctl map -layout 0 screen_sleep "$@"; }
+# Модификатор: Shift
+riverctl map -layout 0 screen_sleep Shift Escape spawn \
+    river-screen-sleep-to-normal
+
+if [ ! -f "$RIVER_MACRO_DIR/river-screen-sleep-to-normal" ]; then
+    cat << 'EOF' > "$RIVER_MACRO_DIR/river-screen-sleep-to-normal"
+#!/usr/bin/env sh
+riverctl enter-mode normal
+riverctl spawn "wlr-randr --output eDP-1 --on"
+EOF
+    chmod +x "$RIVER_MACRO_DIR/river-screen-sleep-to-normal"
+fi
+
+# ----------------------------------------
+# РЕЖИМ: SEARCH
+# ----------------------------------------
+search_map() { riverctl map -layout 0 search "$@"; }
+# Модификатор: None
+search_map None Escape enter-mode normal
+search_map None D spawn river-search-apps
+search_map None E spawn river-search-emoji
+search_map None L spawn river-switch-layout
+search_map None Print spawn \
+    'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png'
+search_map None R enter-mode resize
+search_map None Super_L enter-mode normal
+search_map None XF86AudioLowerVolume spawn \
+    'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'
+search_map None XF86AudioMicMute spawn \
+    'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'
+search_map None XF86AudioMute spawn \
+    'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
+search_map None XF86AudioRaiseVolume spawn \
+    'wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+'
+search_map None XF86MonBrightnessDown spawn 'brightnessctl set -- -5%'
+search_map None XF86MonBrightnessUp spawn 'brightnessctl set +10%'
+# Модификатор: Shift
+search_map Shift Print spawn \
+    'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png'
+search_map Shift XF86AudioLowerVolume spawn \
+    'wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-'
+search_map Shift XF86AudioMicMute spawn \
+    'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'
+search_map Shift XF86AudioMute spawn \
+    'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
+search_map Shift XF86AudioRaiseVolume spawn \
+    'wpctl set-volume @DEFAULT_AUDIO_SINK@ 20%+'
+search_map Shift XF86MonBrightnessDown spawn 'brightnessctl set -- -10%'
+search_map Shift XF86MonBrightnessUp spawn 'brightnessctl set +20%'
+
+if [ ! -f "$RIVER_MACRO_DIR/river-switch-layout" ]; then
+    cat << 'EOF' > "$RIVER_MACRO_DIR/river-switch-layout"
+#!/usr/bin/env sh
+riverctl spawn "layoutmenu"
+riverctl enter-mode normal
+EOF
+    chmod +x "$RIVER_MACRO_DIR/river-switch-layout"
+fi
+if [ ! -f "$RIVER_MACRO_DIR/river-search-emoji" ]; then
+    cat << 'EOF' > "$RIVER_MACRO_DIR/river-search-emoji"
+#!/usr/bin/env sh
+riverctl spawn 'wofi-emoji'
+riverctl enter-mode normal
+EOF
+    chmod +x "$RIVER_MACRO_DIR/river-search-emoji"
+fi
+if [ ! -f "$RIVER_MACRO_DIR/river-search-apps" ]; then
+    cat << 'EOF' > "$RIVER_MACRO_DIR/river-search-apps"
+#!/usr/bin/env sh
+riverctl spawn 'fuzzel'
+riverctl enter-mode normal
+EOF
+    chmod +x "$RIVER_MACRO_DIR/river-search-apps"
+fi

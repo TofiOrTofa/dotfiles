@@ -1,10 +1,20 @@
 #!/usr/bin/env bash
 
-dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=river MESA_LOADER_DRIVER_OVERRIDE _JAVA_AWT_WM_NONREPARENTING
-systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+dbus-update-activation-environment --systemd \
+    WAYLAND_DISPLAY \
+    XDG_CURRENT_DESKTOP=river \
+    MESA_LOADER_DRIVER_OVERRIDE \
+    _JAVA_AWT_WM_NONREPARENTING
+
+systemctl --user import-environment \
+    DISPLAY \
+    WAYLAND_DISPLAY \
+    XDG_CURRENT_DESKTOP
+[ ! -d "/tmp/river-macros" ] && mkdir -p "/tmp/river-macros"
 
 
 # --- Interface settiongs ---
+
 riverctl border-width 2
 riverctl border-color-focused 0x93a1a1
 riverctl border-color-unfocused 0x073642
@@ -22,10 +32,9 @@ riverctl input "pointer-1267-12533-ELAN2204:00_04F3:30F5_Touchpad" pointer-accel
 riverctl input "pointer-1267-12533-ELAN2204:00_04F3:30F5_Touchpad" tap enabled
 
 
-mkfifo "/tmp/river_ribbon_bar"
 # --- Layouts ---
 
-stdbuf -oL river-luatile > /tmp/river_ribbon_bar &
+riverctl spawn river-luatile &
 riverctl spawn rivercarro &
 riverctl spawn rivertile &
 riverctl default-layout luatile
@@ -39,12 +48,12 @@ riverctl spawn "xwayland-satellite :1" &
 # --- mods ---
 
 riverctl declare-mode screen_sleep
-riverctl declare-mode resize
 riverctl declare-mode search
+riverctl declare-mode resize
 
 
 # ----------------------------------------
-# РЕЖИМ: NORMAL
+# MODE: NORMAL
 # ----------------------------------------
 # Модификатор: Control
 riverctl map -layout 0 normal Control Down spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'
@@ -59,24 +68,53 @@ riverctl map -layout 0 normal Mod4 6 set-focused-tags 32
 riverctl map -layout 0 normal Mod4 7 set-focused-tags 64
 riverctl map -layout 0 normal Mod4 8 set-focused-tags 128
 riverctl map -layout 0 normal Mod4 9 set-focused-tags 256
-riverctl map -layout 0 normal Mod4 B spawn /home/comu/.config/river/macros/macro_normal_Mod4_B.sh
+riverctl map -layout 0 normal Mod4 B spawn "river-macros window-share"
+if [ ! -f "/tmp/river-macros/window-share" ]; then
+  cat << 'EOF' > "/tmp/river-macros/window-share"
+#!/usr/bin/env sh
+riverctl spawn window_add_tags
+riverctl enter-mode normal
+EOF
+  chmod +x "/tmp/river-macros/window-share"
+fi
+
 riverctl map -layout 0 normal Mod4 D enter-mode search
 riverctl map -layout 0 normal Mod4 F toggle-float
 riverctl map -layout 0 normal Mod4 H zoom
 riverctl map -layout 0 normal Mod4 J focus-view next
 riverctl map -layout 0 normal Mod4 K focus-view previous
-riverctl map -layout 0 normal Mod4 Print spawn 'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png'
 riverctl map -layout 0 normal Mod4 R enter-mode resize
 riverctl map -layout 0 normal Mod4 T spawn 'env LANG=C.UTF-8 LCALL=C.UTF-8 foot'
-riverctl map -layout 0 normal Mod4 W spawn /home/comu/.config/river/macros/macro_normal_Mod4_W.sh
-riverctl map -layout 0 normal Mod4 XF86AudioLowerVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'
-riverctl map -layout 0 normal Mod4 XF86AudioMicMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'
-riverctl map -layout 0 normal Mod4 XF86AudioMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
-riverctl map -layout 0 normal Mod4 XF86AudioRaiseVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+'
-riverctl map -layout 0 normal Mod4 XF86MonBrightnessDown spawn 'brightnessctl set -- -5%'
-riverctl map -layout 0 normal Mod4 XF86MonBrightnessUp spawn 'brightnessctl set +10%'
-riverctl map -layout 0 normal Mod4 comma spawn /home/comu/.config/river/macros/macro_normal_Mod4_comma.sh
-riverctl map -layout 0 normal Mod4 period spawn /home/comu/.config/river/macros/macro_normal_Mod4_period.sh
+riverctl map -layout 0 normal Mod4 W spawn "river-macros tag-mergin"
+if [ ! -f "/tmp/river-macros/tag-mergin" ]; then
+  cat << 'EOF' > "/tmp/river-macros/tag-mergin"
+#!/usr/bin/env sh
+riverctl spawn combining_tags
+riverctl enter-mode normal
+EOF
+  chmod +x "/tmp/river-macros/tag-mergin"
+fi
+
+riverctl map -layout 0 normal Mod4 comma spawn "river-macros scroll-prev"
+if [ ! -f "/tmp/river-macros/scroll-prev" ]; then
+  cat << 'EOF' > "/tmp/river-macros/scroll-prev"
+#!/usr/bin/env sh
+riverctl focus-view previous
+riverctl send-layout-cmd luatile "scroll_prev()"
+EOF
+  chmod +x "/tmp/river-macros/scroll-prev"
+fi
+
+riverctl map -layout 0 normal Mod4 period spawn "river-macros scroll-next"
+if [ ! -f "/tmp/river-macros/scroll-next" ]; then
+  cat << 'EOF' > "/tmp/river-macros/scroll-next"
+#!/usr/bin/env sh
+riverctl focus-view next
+riverctl send-layout-cmd luatile "scroll_next()"
+EOF
+  chmod +x "/tmp/river-macros/scroll-next"
+fi
+
 # Модификатор: Mod4+Shift
 riverctl map -layout 0 normal Mod4+Shift 1 set-view-tags 1
 riverctl map -layout 0 normal Mod4+Shift 2 set-view-tags 2
@@ -90,7 +128,16 @@ riverctl map -layout 0 normal Mod4+Shift 9 set-view-tags 256
 riverctl map -layout 0 normal Mod4+Shift C close
 riverctl map -layout 0 normal Mod4+Shift D enter-mode search
 riverctl map -layout 0 normal Mod4+Shift E exit
-riverctl map -layout 0 normal Mod4+Shift Escape spawn /home/comu/.config/river/macros/macro_normal_Mod4+Shift_Escape.sh
+riverctl map -layout 0 normal Mod4+Shift Escape spawn "river-macros normal-to-screen-sleep"
+if [ ! -f "/tmp/river-macros/normal-to-screen-sleep" ]; then
+  cat << 'EOF' > "/tmp/river-macros/normal-to-screen-sleep"
+#!/usr/bin/env sh
+riverctl enter-mode screen_sleep
+riverctl spawn 'wlr-randr --output eDP-1 --off'
+EOF
+  chmod +x "/tmp/river-macros/normal-to-screen-sleep"
+fi
+
 riverctl map -layout 0 normal Mod4+Shift F toggle-fullscreen
 riverctl map -layout 0 normal Mod4+Shift H send-layout-cmd rivertile "main-count +1"
 riverctl map -layout 0 normal Mod4+Shift J swap next
@@ -105,12 +152,38 @@ riverctl map -layout 0 normal Mod4+Shift XF86AudioMute spawn 'wpctl set-mute @DE
 riverctl map -layout 0 normal Mod4+Shift XF86AudioRaiseVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 20%+'
 riverctl map -layout 0 normal Mod4+Shift XF86MonBrightnessDown spawn 'brightnessctl set -- -10%'
 riverctl map -layout 0 normal Mod4+Shift XF86MonBrightnessUp spawn 'brightnessctl set +20%'
-riverctl map -layout 0 normal Mod4+Shift comma spawn /home/comu/.config/river/macros/macro_normal_Mod4+Shift_comma.sh
-riverctl map -layout 0 normal Mod4+Shift period spawn /home/comu/.config/river/macros/macro_normal_Mod4+Shift_period.sh
+riverctl map -layout 0 normal Mod4+Shift comma spawn "river-macros scroll-swap-prev"
+if [ ! -f "/tmp/river-macros/scroll-swap-prev" ]; then
+  cat << 'EOF' > "/tmp/river-macros/scroll-swap-prev"
+#!/usr/bin/env sh
+riverctl send-layout-cmd luatile "scroll_prev()"
+riverctl swap previous
+EOF
+  chmod +x "/tmp/river-macros/scroll-swap-prev"
+fi
+
+riverctl map -layout 0 normal Mod4+Shift period spawn "river-macros scroll-swap-next"
+if [ ! -f "/tmp/river-macros/scroll-swap-next" ]; then
+  cat << 'EOF' > "/tmp/river-macros/scroll-swap-next"
+#!/usr/bin/env sh
+riverctl send-layout-cmd luatile "scroll_next()"
+riverctl swap next
+EOF
+  chmod +x "/tmp/river-macros/scroll-swap-next"
+fi
+
 riverctl map -layout 0 normal Mod4+Shift semicolon spawn command_center
+# Модификатор: None
+riverctl map -layout 0 normal None Print spawn 'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png'
+riverctl map -layout 0 normal None XF86AudioLowerVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'
+riverctl map -layout 0 normal None XF86AudioMicMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle'
+riverctl map -layout 0 normal None XF86AudioMute spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
+riverctl map -layout 0 normal None XF86AudioRaiseVolume spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+'
+riverctl map -layout 0 normal None XF86MonBrightnessDown spawn 'brightnessctl set -- -5%'
+riverctl map -layout 0 normal None XF86MonBrightnessUp spawn 'brightnessctl set +10%'
 
 # ----------------------------------------
-# РЕЖИМ: RESIZE
+# MODE: RESIZE
 # ----------------------------------------
 # Модификатор: None
 riverctl map -layout 0 resize None D enter-mode search
@@ -136,19 +209,55 @@ riverctl map -layout 0 resize Shift XF86MonBrightnessDown spawn 'brightnessctl s
 riverctl map -layout 0 resize Shift XF86MonBrightnessUp spawn 'brightnessctl set +20%'
 
 # ----------------------------------------
-# РЕЖИМ: SCREEN_SLEEP
+# MODE: SCREEN_SLEEP
 # ----------------------------------------
 # Модификатор: Shift
-riverctl map -layout 0 screen_sleep Shift Escape spawn /home/comu/.config/river/macros/macro_screen_sleep_Shift_Escape.sh
+riverctl map -layout 0 screen_sleep Shift Escape spawn "river-macros screen-sleep-to-normal"
+if [ ! -f "/tmp/river-macros/screen-sleep-to-normal" ]; then
+  cat << 'EOF' > "/tmp/river-macros/screen-sleep-to-normal"
+#!/usr/bin/env sh
+riverctl enter-mode normal
+riverctl spawn "wlr-randr --output eDP-1 --on"
+EOF
+  chmod +x "/tmp/river-macros/screen-sleep-to-normal"
+fi
+
 
 # ----------------------------------------
-# РЕЖИМ: SEARCH
+# MODE: SEARCH
 # ----------------------------------------
 # Модификатор: None
-riverctl map -layout 0 search None D spawn /home/comu/.config/river/macros/macro_search_None_D.sh
-riverctl map -layout 0 search None E spawn /home/comu/.config/river/macros/macro_search_None_E.sh
+riverctl map -layout 0 search None D spawn "river-macros search-apps"
+if [ ! -f "/tmp/river-macros/search-apps" ]; then
+  cat << 'EOF' > "/tmp/river-macros/search-apps"
+#!/usr/bin/env sh
+riverctl spawn 'fuzzel'
+riverctl enter-mode normal
+EOF
+  chmod +x "/tmp/river-macros/search-apps"
+fi
+
+riverctl map -layout 0 search None E spawn "river-macros search-emoji"
+if [ ! -f "/tmp/river-macros/search-emoji" ]; then
+  cat << 'EOF' > "/tmp/river-macros/search-emoji"
+#!/usr/bin/env sh
+riverctl spawn 'wofi-emoji'
+riverctl enter-mode normal
+EOF
+  chmod +x "/tmp/river-macros/search-emoji"
+fi
+
 riverctl map -layout 0 search None Escape enter-mode normal
-riverctl map -layout 0 search None L spawn /home/comu/.config/river/macros/macro_search_None_L.sh
+riverctl map -layout 0 search None L spawn "river-macros switch-layout"
+if [ ! -f "/tmp/river-macros/switch-layout" ]; then
+  cat << 'EOF' > "/tmp/river-macros/switch-layout"
+#!/usr/bin/env sh
+riverctl spawn "layoutmenu"
+riverctl enter-mode normal
+EOF
+  chmod +x "/tmp/river-macros/switch-layout"
+fi
+
 riverctl map -layout 0 search None Print spawn 'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png'
 riverctl map -layout 0 search None R enter-mode resize
 riverctl map -layout 0 search None Super_L enter-mode normal

@@ -1,65 +1,26 @@
 #!/usr/bin/env lua
 
-local function map(tbl, func)
-  local out = {}
-  for k, v in pairs(tbl) do out[k] = func(v, k) end
-  return (out)
-end
-local function map_values(tbl, func)
-  local out = {}
-  for k, v in pairs(tbl) do table.insert(out, func(v, k)) end
-  return (out)
-end
+local river_config_path = os.getenv("HOME") .. "/.dotfiles/configs/river";
+local river_static_config_path = os.getenv("HOME") .. "/.config/river";
+package.path = river_config_path .. "/config.d/?.lua;" .. package.path;
 
-
-local function freeze (...) local args = table.pack(...)
-	return (function () return table.unpack(args, 1, args.n) end)
-end
-
-local function configs ()
-	local function init_dir (path, value) test(path)
-		local keys
-		if not value then return (function (val) test(val)
-			path = os.getenv("HOME") .. "/.config/river" .. path
-			keys = {["path"] = false, ["var"] = true}
-				if(type(val) == "string")then
-					local result = filter(keys, function (el) return el end)[val]
-					test(result); return(result)
-				elseif(type(val) == "table")then return init_dir(path, val)
-				end; return (init_dir(val))
-		end) end
-		return (function (key) test(key)
-			if key == "path" then return (path)
-			elseif key == "value" then return (value)
-	end end) end
-	local function set (self, variable_name, value) test(variable_name, value)
-		self[variable_name] = self[variable_name](value)
-	end
-
-	local river = {
-		["configs"] = init_dir("/config.d"),
-		["templates"] = init_dir("/templates")
-	}; local river_paths = map_values(river, function (el)
-		return (el("path") .. "?.lua")
-	end); package.path = table.concat(river_paths, ";") .. ";" .. package.path
-
-	set(river, "configs", {
-		["inputs"] = require("inputs"), ["layouts"] = require("layouts"),
-		["keybindings"] = require("binds"), ["autostart"] = require("autostart")
-	}); set(river, "templates", {["init"] = require("init")})
-
-	return (function (dir, file) test(dir, file); dir=dir.."s"
-		if river[dir] then return (river[dir]("value")[file]) or error() end
-	end)
+configs = {}
+do
+  confgs.inputs                            = require("inputs");
+  configs.layouts                           = require("layouts");
+  configs.keybindings                       = require("binds");
+  configs.autostart                         = require("autostart");
 end
 
 init = {};
-init.path = river_config_path .. "/init";
-init.file = io.open(init.path, 'w');
-if not init.file then
-  print("Ошибка: Не удалось создать файл по адресу " .. init.path);
-  os.exit(1);
-end;
+do
+  init.path = river_config_path .. "/init";
+  init.file = io.open(init.path, 'w');
+  if not init.file then
+    print("Ошибка: Не удалось создать файл по адресу " .. init.path);
+    os.exit(1);
+  end;
+end
 
 -- Вспомогательная функция для сортировки ключей таблицы
 local function sorted_keys(elements)
@@ -128,14 +89,19 @@ local function generate_binds_section(keybindings)
     local output = {};
 
     for _, mode in ipairs(sorted_keys(keybindings)) do
-        table.insert(output, string.format("\n# %s\n# РЕЖИМ: %s\n# %s\n", string.rep("-", 40), mode:upper(), string.rep("-", 40)));
+        table.insert(output, string.format(
+			"\n# %s\n# РЕЖИМ: %s\n# %s\n",
+			string.rep("-", 40),
+			mode:upper(),
+			string.rep("-", 40)));
 
         for _, modifier in ipairs(sorted_keys(keybindings[mode])) do
-            table.insert(output, string.format("# Модификатор: %s\n", modifier));
+            table.insert(output, string.format(
+			"# Модификатор: %s\n", modifier));
 
             for _, key in ipairs(sorted_keys(keybindings[mode][modifier])) do
                 -- Вызываем функцию из конфига и получаем таблицу её действий
-                local actions = keybindings[mode][modifier][key]();
+                local actions = keybindings[mode][modifier][key];
 
                 -- Пропускаем через наш обработчик макросов
                 local bash_code = process_binding(mode, modifier, key, actions);
@@ -173,7 +139,7 @@ init.file:write("\n",
 -- 3. Запись устройств ввода и их настроек
 init.file:write([[# --- Inputs settings ---]]);
 init.file:write("\n");
-local input_devices_name = sorted_keys(inputs);
+local input_devices_name = sorted_keys(configs.inputs);
 for _, device_name in ipairs(input_devices_name) do
   init.file:write("\n");
   local commands = sorted_keys(inputs[device_name]);
@@ -189,9 +155,10 @@ end;
 init.file:write("\n\n");
 
 -- 4. Запись макетов, и установка дефолта
+init.file:write([[mkfifo "/tmp/river_ribbon_bar"]], "\n");
 init.file:write([[# --- Layouts ---]]);
 init.file:write("\n\n");
-local layouts_name = sorted_keys(layouts);
+local layouts_name = sorted_keys(configs.layouts);
 for _, name in ipairs(layouts_name) do
   local line
   if name ~= "luatile" then
@@ -199,7 +166,7 @@ for _, name in ipairs(layouts_name) do
       'riverctl spawn %s &%s',
       name, "\n");
   else
-    line = 'riverctl spawn river-luatile &\n'
+    line = "stdbuf -oL river-luatile > /tmp/river_ribbon_bar &\n"
   end;
   init.file:write(line);
 end;
@@ -246,4 +213,34 @@ init.file:write("\n");
 -- 7. запись биндов
 local binds_bash_code = generate_binds_section(keybindings)
 init.file:write(binds_bash_code)
+-- for _, mode in ipairs(modes_name) do
+--     local modifiers_table = keybindings[mode];
+--
+--     -- Красивая полоска для режима
+--     init.file:write("# " .. string.rep("-", 50) .. "\n");
+--     init.file:write(string.format("# РЕЖИМ: %s\n", mode:upper()));
+--     init.file:write("# " .. string.rep("-", 50) .. "\n\n");
+--
+--     local sorted_modifiers = sorted_keys(modifiers_table);
+--
+--     for _, modifier in ipairs(sorted_modifiers) do
+--         local keys_table = modifiers_table[modifier];
+--         init.file:write(string.format("# Модификатор: %s\n", modifier));
+--
+--         -- Сортируем клавиши по алфавиту, чтобы они не скакали
+--         local sorted_keys = sorted_keys(keys_table);
+--
+--         for _, key in ipairs(sorted_keys) do
+--             local func = keys_table[key];
+--             local river_action = func();
+--             local final_cmd = string.format(
+--               "riverctl map -layout 0 %s %s %s %s\n",
+--               mode, modifier, key, river_action
+--             );
+--             init.file:write(final_cmd);
+--         end;
+--         init.file:write("\n");
+--     end;
+-- end;
+
 init.file:close();

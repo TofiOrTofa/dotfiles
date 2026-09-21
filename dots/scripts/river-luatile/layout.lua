@@ -30,9 +30,11 @@ do
   end
 
   function Tag:log(message)
+    message = message or ""
     print(string.format(
-      "[Tag %d] %s (correct count: %d)",
-      self.num, message, self.current.count
+      "[Tag %d] (display: %d) (correct count: %d) %s",
+      self.num, self.current.display, self.current.count,
+      message
     ))
     return self
   end
@@ -65,6 +67,7 @@ do
   local CENTER_X  = (WIDTH - VIEW_W) / 2
   local LEFT_X    = 0
   local RIGHT_X   = WIDTH - VIEW_W
+
   local function generate_layout_coords(count, offset_index)
     local position = {
       [0]         = LEFT_X,
@@ -91,12 +94,8 @@ do
         display = calculate.valid_index(
           tag.current.display, "none", args.count
         )
-      })
+      }):log()
       state.current_tag = tag_num
-      print(string.format(
-        "%d %d %d",
-        tag.current.count, tag.current.display, args.tags
-      ))
       return generate_layout_coords(
         tag.current.count, state[tag_num].current.display)
   end

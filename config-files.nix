@@ -6,10 +6,13 @@ let
     ".config/sway/config".source = ./dots/configs/sway/config;
     ".config/sway/config.d".source = ./dots/configs/sway/config.d;
   };
-  river = { ".config/river".source = ./dots/configs/river; };
+  river = { 
+    ".config/river/init".source = ./dots/configs/river/init; 
+    ".config/river/config.d".source = ./dots/configs/river/config.d;
+  };
   river_luatile = {
     ".config/river-luatile/layout.lua".source =
-      ./dots/configs/river-luatile/layout.lua;
+      ./dots/scripts/river-luatile/layout.lua;
   };
   vim = {
     ".vimrc".source = ./dots/configs/vim/vimrc;

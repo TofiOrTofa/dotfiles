@@ -1,5 +1,5 @@
 
-" прокрутка
+" scroll
 set scrolloff=1
 set scrolljump=-50
 set sidescrolloff=0
@@ -11,20 +11,11 @@ set cmdheight=1
 
 
 
-" старый терминал
+" old terminal
 set guicursor=a:blinkon0-Underline
 set notermguicolors
 
-" перенос слов
-set wrap
 
-
-" подсветка пробелов в конце строк
-" highlight ExtraWhitespace ctermbg=9 guibg=#BF616A
-" match ExtraWhitespace /\s\+$/
-
-
-" типы файлов -
 filetype off
 filetype plugin off
 filetype indent off

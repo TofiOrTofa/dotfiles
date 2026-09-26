@@ -1,3 +1,6 @@
+set
+    \ tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+    \ wrap textwidth=0
 augroup School21_style
     autocmd!
 
@@ -72,7 +75,7 @@ augroup END
 augroup other_style
     autocmd!
 
-    autocmd BufNewFile,BufRead *.nix,*.json,*.yml setlocal
+    autocmd BufNewFile,BufRead *.nix,*.json,*.yml,*.conf setlocal
         \ tabstop=2 shiftwidth=2 softtabstop=2 expandtab
         \ wrap
 

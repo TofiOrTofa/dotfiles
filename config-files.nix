@@ -58,5 +58,5 @@ in
   ];
 
 
-  home.file = river // river_luatile // vim // zram  // wofi // tmux;
+  home.file = river // vim // zram  // wofi // tmux;
 }

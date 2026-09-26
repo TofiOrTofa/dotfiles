@@ -1,31 +1,68 @@
+local Display = {}
+Display.__index = Display
+do
+  function Display.new(parent, config)
+    local self = setmetatable(config or {}, Display)
+    self.parent = parent
+    self.window = {
+      current = (config.current_window or 1),
+      history = 1
+    }
+    return self
+  end
+  function Display:scroll_next()
+    local max_windows = self.parent.current.count
+    local w = self.window.current
+    self:update((w < max_windows) and (w + 1) or 1)
+    return self
+  end
+  function Display:scroll_prev()
+    local max_windows = self.parent.current.count
+    local w = self.window.current
+    self:update((w > 1) and (w - 1) or max_windows)
+    return self
+  end
+  function Display:check()
+    if self.window.current > self.parent.current.count then
+      self:update(self.window.history > self.parent.current.count
+        and 1 or self.window.history)
+    end
+    return self
+  function Display:update(current_window)
+    self.winodw.history = self.window.current
+    self.window.current = current_window
+    return self
+  end
+end
+
 local Tag = {}
 Tag.__index = Tag
 do
-
   function Tag.new(tag_num, display, count)
     local instance = {
       num     = tag_num,
       current = {
-        display = display or 0,
         count   = count   or 0,
         max     = math.max(0, (count or 0) - 1)
       },
       history = {
-        display = display or 0,
         count   = count   or 0
       }
     }
-    return setmetatable(instance, Tag)
+    setmetatable(instance, Tag)
+    instance.display = Display.new(instance, { current_window = display })
+    return instance
   end
 
-  function Tag:update(new_data)
-    -- history
-    self.history.display  = self.current.display
-    self.history.count    = self.current.count
-    -- update current
-    self.current.display  = new_data.display  or self.current.display
-    self.current.count    = new_data.count    or self.current.count
-    self.current.max      = math.max(0, self.current.count - 1)
+  function Tag:del_winodow()
+    self.history.count = self.current.count
+    self.current.count = self.current.count - 1
+    self.display:check()
+    return self
+  end
+  function Tag:add_window()
+    self.history.count = self.current.count
+    self.current.count = self.current.count + 1
     return self
   end
 
@@ -45,7 +82,7 @@ local calculate = {}
 do
   do
     local SHIFTS = { next = 1, prev = -1 }
-    function calculate.valid_index(current_index, action, count)
+    function calculate.valid_index(current_index, count, action)
       if not count or count <= 1 then return 0 end
       if max_index == 0 then return 0 end
       return (current_index + (SHIFTS[action] or 0)) % count
@@ -92,7 +129,7 @@ do
       state[tag_num] = tag:update({
         count = args.count,
         display = calculate.valid_index(
-          tag.current.display, "none", args.count
+          tag.current.display, args.count
         )
       }):log()
       state.current_tag = tag_num
@@ -110,11 +147,11 @@ do
       local tag = state[tag_num]
       if not tag then return "not init tag" end
       local tag_current = tag.current
-      state[tag_num] = tag:update({
+      state[tag_num] = tag:update{
         display = calculate.valid_index(
-          tag_current.display, direction, tag_current.count
+          tag_current.display, tag_current.count, direction
         )
-      })
+      }
       return;
     end
 

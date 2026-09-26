@@ -55,19 +55,16 @@ do
     local river_macros_path = "/tmp/river-macros"
     local macro_path = river_macros_path .. 
       "/" .. macro_name
-    local commands = "riverctl " .. table.concat(
-      actions, "\nriverctl ")
-    return tools.fmt(
-      [[
-        riverctl map -layout 0 %s %s %s spawn "river-macros %s"
-        if [ ! -f "%s" ]; then
-          cat << 'EOF' > "%s"
-        #!/usr/bin/env sh
-        %s
-        EOF
-          chmod +x "%s"
-        fi
-      ]],
+    local commands = "riverctl " .. table.concat(actions, "\nriverctl ")
+    return string.format([[
+riverctl map -layout 0 %s %s %s spawn "river-macros %s"
+if [ ! -f "%s" ]; then
+  cat << 'EOF' > "%s"
+#!/usr/bin/env sh
+%s
+EOF
+  chmod +x "%s"
+fi]],
       mode, modifier, key, macro_name,
       macro_path, macro_path,
       commands, macro_path

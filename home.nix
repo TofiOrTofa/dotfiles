@@ -10,11 +10,15 @@ let
     khal
     foot
 
-    python3
-    python3Packages.autopep8
+    (python3.withPackages (ps: with ps; [
+      autopep8
+    ]))
     pipx
 
-    lua
+    (lua.withPackages (ps: with ps; [
+      cjson
+    ]))
+
     gcc
 
     glibcLocales

@@ -1,15 +1,18 @@
 #!/usr/bin/env lua
 
-local home = os.getenv("HOME") or "/home/comu"
-local config_path = home .. "/.dotfiles/configs/river/config.d"
-package.path = config_path .. "/?.lua;" .. package.path
+local json_to_table = require("cjson").decode
+local user_json_configs = io.read("*all")
 
-configs = {
-  inputs              = require "inputs",
-  layouts             = require "layouts",
-  keybindings         = require "binds",
-  autostart           = require "autostart",
-}
+if not user_json_configs or user_json_configs == "" then
+    io.stderr:write("ERROR: not json config")
+    os.exit(1)
+end
+
+local success, configs = pcall(json_to_table, user_json_configs)
+if not success then
+    io.stderr:write("ERROR: not current json config")
+    os.exit(1)
+end
 
 tools = {}
 do
@@ -20,18 +23,6 @@ do
     end
     table.sort(keys)
     return keys
-  end
-  function tools.fmt(str, ...)
-    local indent = str:match("^\n?([ \t]*)")
-    local clean_str = ((indent and #indent > 0)
-      and str
-        :gsub("\n" .. indent, "\n")
-        :gsub("^" .. indent, "")
-      or str
-    ):gsub("%s*$", "\n")
-    return select("#", ...) > 0
-      and string.format(clean_str, ...) 
-      or  clean_str
   end
 end
 

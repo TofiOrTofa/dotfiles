@@ -1,48 +1,43 @@
 volume = {
-    up = function (percent)
-      return (
-        [[spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ ]]
-        .. percent
-        .. [[%+']]
-      )
-    end,
-    down = function (percent)
-      return (
-        [[spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ ]]
-        .. percent
-        .. [[%-']]
-      )
-    end,
-    mute = [[spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle']]
-  }
+  up = function(percent)
+    return (
+      [[spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ ]]
+      .. percent .. [[%+']]
+    )
+  end,
+  down = function(percent)
+    return (
+      [[spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ ]]
+      .. percent .. [[%-']]
+    )
+  end,
+  mute = [[spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle']]
+}
 microphone = {
-    up = function (percent)
-      return [[]]
-    end,
-    down = function (percent)
-      return [[]]
-    end,
-    mute = [[spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle']]
-  }
+  up = function (percent) return [[]] end,
+  down = function (percent) return [[]] end,
+  mute = [[spawn 'wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle']]
+}
 brightness = {
-    up = function (percent)
-      return [[spawn 'brightnessctl set +]] .. percent .. [[%']]
-    end,
-    down = function (percent)
-      return [[spawn 'brightnessctl set -- -]] .. percent .. [[%']]
-    end,
-    mute = [[]]
-  }
+  up = function (percent)
+    return [[spawn 'brightnessctl set +]] .. percent .. [[%']]
+  end,
+  down = function (percent)
+    return [[spawn 'brightnessctl set -- -]] .. percent .. [[%']]
+  end,
+  mute = [[]]
+}
 layout = {
-    windows = {
-        next = [[send-layout-cmd luatile "scroll_next()"]],
-        prev = [[send-layout-cmd luatile "scroll_prev()"]]
-      }
+  windows = {
+    next = [[send-layout-cmd luatile "scroll_next()"]],
+    prev = [[send-layout-cmd luatile "scroll_prev()"]]
   }
-screenshot = [[spawn 'grim -g "$(slurp)" ~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png']]
+}
+screenshot = [[spawn 'grim -g "$(slurp)" ]]
+             .. [[~/Pictures/Screenshots/$(date +%Y-%m-%d_%H-%M-%s).png']]
 terminal = [[spawn 'env LANG=C.UTF-8 LCALL=C.UTF-8 foot']]
 
-return                            {
+return {
   ["normal"]                      = {
     ["None"]                        = {
       ["XF86AudioRaiseVolume"]        = volume.up(10),
@@ -213,4 +208,4 @@ return                            {
                                           },
                                         },
                                       },
-                                    }
+}

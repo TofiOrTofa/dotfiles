@@ -155,21 +155,25 @@ io.write[[
 for _, program_name in ipairs(configs.autostart) do
   io.write('riverctl spawn "' .. program_name .. '" &\n')
 end
-io.write "\n\n"
 io.write[[
+
+
 # --- mods ---
 
 ]]
-for mode_name, _ in pairs(configs.keybindings) do
-  if mode_name == "normal" then
-    goto normal
-  end
+for _, mode_name in ipairs(tools.sorted_keys(configs.keybindings)) do
+  if mode_name == "normal" then break end
   local line = string.format(
     "riverctl declare-mode "
     .. mode_name .. "\n"
   )
   io.write(line)
-  ::normal::
 end
 io.write "\n"
+io.write[[
+
+
+# --- binds ---
+
+]]
 io.write(config_tools.generate_binds_section(configs.keybindings))

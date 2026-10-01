@@ -1,20 +1,6 @@
 set
     \ tabstop=2 shiftwidth=2 softtabstop=2 expandtab
     \ wrap textwidth=0
-augroup School21_style
-    autocmd!
-
-    " scripts
-    autocmd BufNewFile,BufRead *.sh,*.bash setlocal
-        \ tabstop=4 shiftwidth=4 softtabstop=4 expandtab
-        \ nowrap
-    autocmd BufReadPost *
-        \ if getline(1) =~ '^#!.*\(sh\|bash\)'                          |
-        \ setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab
-        \ nowrap                                                        |
-        \ endif
-
-augroup END
 augroup Google_style
     autocmd!
 
@@ -67,9 +53,14 @@ augroup GNU_style
     autocmd!
 
     " systems
-    autocmd BufNewFile,BufRead *.c,*.cpp,*.h,*.lua setlocal
+    autocmd BufNewFile,BufRead *.sh,*.bash,*.c,*.cpp,*.h,*.lua setlocal
         \ tabstop=2 shiftwidth=2 softtabstop=2 expandtab
         \ nowrap
+    autocmd BufReadPost *
+        \ if getline(1) =~ '^#!.*\(sh\|bash\|lua\)'                          |
+        \ setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+        \ nowrap                                                        |
+        \ endif
 
 augroup END
 augroup other_style
